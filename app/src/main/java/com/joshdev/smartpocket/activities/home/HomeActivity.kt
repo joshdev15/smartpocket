@@ -1,7 +1,6 @@
 package com.joshdev.smartpocket.activities.home
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -13,6 +12,7 @@ import androidx.compose.runtime.getValue
 import com.joshdev.smartpocket.activities.home.components.HomeMainView
 import com.joshdev.smartpocket.components.AppBasicTopBar
 import com.joshdev.smartpocket.components.HomeFloatingButton
+import com.joshdev.smartpocket.database.entity.invoice.Invoice
 import com.joshdev.smartpocket.ui.theme.SmartPocketTheme
 import com.joshdev.smartpocket.utils.AppUtils.showToast
 
@@ -33,7 +33,19 @@ class HomeActivity : ComponentActivity() {
                 Scaffold(
                     topBar = { AppBasicTopBar() },
                     floatingActionButton = {
-                        HomeFloatingButton { showToast(this, "New Invoice") }
+                        HomeFloatingButton {
+                            showToast(this, "New Invoice")
+
+                            val inv = Invoice(
+                                name = "Prueba",
+                                author = "Joshua",
+                                creationDate = "15-10-1991",
+                                modificationDate = "15-10-1991",
+                                total = 500.0
+                            )
+
+                            viewModel.addInvoice(inv)
+                        }
                     },
                     content = { innerPadding -> HomeMainView(innerPadding, invoices) }
                 )

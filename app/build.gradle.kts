@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.androidx.startup.runtime)
     implementation(libs.rive)
     implementation(libs.androidx.ui.text.google.fonts)
+    implementation(libs.google.mlkit)
 
     testImplementation(libs.junit)
 

@@ -9,15 +9,15 @@ import app.rive.runtime.kotlin.RiveAnimationView
 import com.joshdev.smartpocket.R
 
 @Composable
-fun RiveAnimation(modifier: Modifier = Modifier) {
+fun RiveAnimation(id: Int, modifier: Modifier = Modifier) {
     AndroidView(
         factory = { context ->
             RiveAnimationView(context).apply {
-                setRiveResource(R.raw.coqui)
+                setRiveResource(id)
                 play()
             }
         },
         update = {},
-        modifier = modifier.background(Color.Gray)
+        modifier = modifier
     )
 }
