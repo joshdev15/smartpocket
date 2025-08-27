@@ -51,6 +51,10 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.startup.runtime)
+    implementation(libs.rive)
+    implementation(libs.androidx.ui.text.google.fonts)
 
     testImplementation(libs.junit)
 
