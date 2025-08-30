@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.activities.home.components
+package com.joshdev.smartpocket.src.activities.home.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,11 +11,11 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.joshdev.smartpocket.components.InvoiceCard
-import com.joshdev.smartpocket.database.entity.invoice.Invoice
+import com.joshdev.smartpocket.src.components.InvoiceCard
+import com.joshdev.smartpocket.src.database.entity.invoice.Invoice
 
 @Composable
-fun HomeMainView(innerPadding: PaddingValues, invoices: List<Invoice>) {
+fun HomeScreen(innerPadding: PaddingValues, invoices: List<Invoice>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()

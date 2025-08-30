@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.activities.home
+package com.joshdev.smartpocket.src.activities.home
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,12 +9,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.joshdev.smartpocket.activities.home.components.HomeMainView
-import com.joshdev.smartpocket.components.AppBasicTopBar
-import com.joshdev.smartpocket.components.HomeFloatingButton
-import com.joshdev.smartpocket.database.entity.invoice.Invoice
+import com.joshdev.smartpocket.src.activities.home.components.HomeScreen
+import com.joshdev.smartpocket.src.components.AppBasicTopBar
+import com.joshdev.smartpocket.src.components.HomeFloatingButton
+import com.joshdev.smartpocket.src.database.entity.invoice.Invoice
 import com.joshdev.smartpocket.ui.theme.SmartPocketTheme
-import com.joshdev.smartpocket.utils.AppUtils.showToast
+import com.joshdev.smartpocket.src.utils.AppUtils.showToast
 
 class HomeActivity : ComponentActivity() {
     private val viewModel by viewModels<HomeViewModel>()
@@ -47,7 +47,7 @@ class HomeActivity : ComponentActivity() {
                             viewModel.addInvoice(inv)
                         }
                     },
-                    content = { innerPadding -> HomeMainView(innerPadding, invoices) }
+                    content = { innerPadding -> HomeScreen(innerPadding, invoices) }
                 )
             }
         }

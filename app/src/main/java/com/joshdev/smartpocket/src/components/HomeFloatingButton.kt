@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.components
+package com.joshdev.smartpocket.src.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add

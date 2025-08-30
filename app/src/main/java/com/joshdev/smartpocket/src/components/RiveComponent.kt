@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.components
+package com.joshdev.smartpocket.src.components
 
 import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable

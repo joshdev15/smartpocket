@@ -1,12 +1,12 @@
-package com.joshdev.smartpocket.activities.home
+package com.joshdev.smartpocket.src.activities.home
 
 import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.joshdev.smartpocket.database.AppDatabase
-import com.joshdev.smartpocket.database.AppDatabaseSingleton
-import com.joshdev.smartpocket.database.entity.invoice.Invoice
+import com.joshdev.smartpocket.src.database.AppDatabase
+import com.joshdev.smartpocket.src.database.AppDatabaseSingleton
+import com.joshdev.smartpocket.src.database.entity.invoice.Invoice
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

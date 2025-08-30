@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.utils
+package com.joshdev.smartpocket.src.utils
 
 import android.content.Context
 import android.widget.Toast

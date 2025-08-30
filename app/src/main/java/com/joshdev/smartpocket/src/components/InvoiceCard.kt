@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.components
+package com.joshdev.smartpocket.src.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -14,7 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.joshdev.smartpocket.database.entity.invoice.Invoice
+import com.joshdev.smartpocket.src.database.entity.invoice.Invoice
 
 @Composable
 fun InvoiceCard(invoice: Invoice) {

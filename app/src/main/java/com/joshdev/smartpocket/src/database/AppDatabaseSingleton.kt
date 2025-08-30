@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.database
+package com.joshdev.smartpocket.src.database
 
 import android.content.Context
 import androidx.room.Room

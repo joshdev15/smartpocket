@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.database.entity.invoice
+package com.joshdev.smartpocket.src.database.entity.invoice
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

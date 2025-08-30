@@ -1,5 +1,6 @@
-package com.joshdev.smartpocket.workers
+package com.joshdev.smartpocket.src.workers
 
+import android.R
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -9,8 +10,8 @@ import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
-import com.joshdev.smartpocket.database.AppDatabaseSingleton
-import com.joshdev.smartpocket.database.entity.invoice.Invoice
+import com.joshdev.smartpocket.src.database.AppDatabaseSingleton
+import com.joshdev.smartpocket.src.database.entity.invoice.Invoice
 import kotlinx.coroutines.delay
 
 class AddInvoiceWorker(
@@ -41,7 +42,7 @@ class AddInvoiceWorker(
         val notificationBuilder = NotificationCompat.Builder(applicationContext, channel.id)
             .setContentTitle("Guardando factura")
             .setContentText("Por favor, espere mientras se guarda el documento.")
-            .setSmallIcon(android.R.drawable.stat_notify_sync)
+            .setSmallIcon(R.drawable.stat_notify_sync)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
 
         return notificationBuilder.build()
