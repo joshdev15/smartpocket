@@ -1,10 +1,10 @@
-package com.joshdev.smartpocket.src.activities.main
+package com.joshdev.smartpocket.ui.activities.main
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
-import com.joshdev.smartpocket.src.activities.home.HomeActivity
+import com.joshdev.smartpocket.ui.activities.home.HomeActivity
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

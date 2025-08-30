@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.src.workers
+package com.joshdev.smartpocket.repository.workers
 
 import android.R
 import android.app.Notification
@@ -10,8 +10,8 @@ import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
-import com.joshdev.smartpocket.src.database.AppDatabaseSingleton
-import com.joshdev.smartpocket.src.database.entity.invoice.Invoice
+import com.joshdev.smartpocket.repository.database.AppDatabaseSingleton
+import com.joshdev.smartpocket.domain.models.Invoice
 import kotlinx.coroutines.delay
 
 class AddInvoiceWorker(
@@ -51,26 +51,26 @@ class AddInvoiceWorker(
     override suspend fun doWork(): Result {
         setForeground(getForegroundInfo())
 
-        val database = AppDatabaseSingleton.getInstance(applicationContext)
-        val invoiceDao = database.invoiceDao()
-
-        val invoice = Invoice(
-            name = inputData.getString("INVOICE_NAME") ?: return Result.failure(),
-            author = inputData.getString("INVOICE_AUTHOR") ?: return Result.failure(),
-            creationDate = inputData.getString("INVOICE_CREATION_DATE") ?: return Result.failure(),
-            modificationDate = inputData.getString("INVOICE_MODIFICATION_DATE")
-                ?: return Result.failure(),
-            total = inputData.getString("INVOICE_TOTAL")?.toDoubleOrNull()
-        )
-
-        delay(30000)
-
-        try {
-            invoiceDao.insert(invoice)
-            return Result.success()
-        } catch (e: Exception) {
-            println(e.message)
-            return Result.failure()
-        }
+//        val database = AppDatabaseSingleton.getInstance(applicationContext)
+//        val invoiceDao = database.invoiceDao()
+//
+//        val invoice = Invoice(
+//            name = inputData.getString("INVOICE_NAME") ?: return Result.failure(),
+//            author = inputData.getString("INVOICE_AUTHOR") ?: return Result.failure(),
+//            creationDate = inputData.getString("INVOICE_CREATION_DATE") ?: return Result.failure(),
+//            modificationDate = inputData.getString("INVOICE_MODIFICATION_DATE")
+//                ?: return Result.failure(),
+//            total = inputData.getString("INVOICE_TOTAL")?.toDoubleOrNull()
+//        )
+//
+//        delay(30000)
+//
+//        try {
+//            invoiceDao.insert(invoice)
+        return Result.success()
+//        } catch (e: Exception) {
+//            println(e.message)
+//            return Result.failure()
+//        }
     }
 }

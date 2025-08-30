@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.src.activities.home.components
+package com.joshdev.smartpocket.ui.activities.home.subcomponents
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,13 +9,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.joshdev.smartpocket.src.components.InvoiceCard
-import com.joshdev.smartpocket.src.database.entity.invoice.Invoice
+import com.joshdev.smartpocket.ui.activities.home.HomeViewModel
+import com.joshdev.smartpocket.ui.components.RecordCard
 
 @Composable
-fun HomeScreen(innerPadding: PaddingValues, invoices: List<Invoice>) {
+fun HomeScreen(innerPadding: PaddingValues, viewModel: HomeViewModel) {
+    val records by viewModel.records.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -24,15 +28,25 @@ fun HomeScreen(innerPadding: PaddingValues, invoices: List<Invoice>) {
         LazyColumn(
             modifier = Modifier.padding(horizontal = 10.dp)
         ) {
-            itemsIndexed(invoices) { idx, it ->
+            itemsIndexed(records) { idx, it ->
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(if (idx == 0) 10.dp else 0.dp)
                 )
 
-                InvoiceCard(it)
+                RecordCard(it) { viewModel.goToRecord(it.id) }
+            }
+
+            item {
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(70.dp)
+                )
             }
         }
     }
+
+    NewRecordDialog(viewModel)
 }

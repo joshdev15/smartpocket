@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.src.utils
+package com.joshdev.smartpocket.ui.utils
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
