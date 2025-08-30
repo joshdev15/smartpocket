@@ -59,7 +59,7 @@
             android:theme="@style/Theme.SmartPocket" />
 
         <activity
-            android:name=".ui.activities.records.RecordsActivity"
+            android:name=".ui.activities.invoice.InvoiceListActivity"
             android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/Theme.SmartPocket" />

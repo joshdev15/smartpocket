@@ -15,11 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.joshdev.smartpocket.domain.models.GeneralRecord
-import com.joshdev.smartpocket.ui.utils.AppUtils.formatDate
+import com.joshdev.smartpocket.ui.utils.UiUtils.formatDate
 
 @Composable
 fun RecordCard(record: GeneralRecord, onClick: () -> Unit) {
@@ -27,10 +28,10 @@ fun RecordCard(record: GeneralRecord, onClick: () -> Unit) {
         modifier = Modifier
             .padding(bottom = 10.dp)
             .fillMaxWidth()
+            .clip(RoundedCornerShape(30.dp))
             .clickable(onClick = { onClick() })
-            .clip(RoundedCornerShape(15.dp))
-            .border(1.dp, MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(15.dp))
-            .background(MaterialTheme.colorScheme.surfaceBright)
+            .border(2.dp, MaterialTheme.colorScheme.tertiaryContainer, RoundedCornerShape(30.dp))
+            .background(MaterialTheme.colorScheme.background)
             .padding(20.dp)
     ) {
         Column {
@@ -39,7 +40,8 @@ fun RecordCard(record: GeneralRecord, onClick: () -> Unit) {
                 style = TextStyle(
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontSize = 18.sp,
-                )
+                ),
+                modifier = Modifier.padding(bottom = 10.dp)
             )
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,

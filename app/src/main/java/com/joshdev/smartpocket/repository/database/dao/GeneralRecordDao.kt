@@ -9,7 +9,7 @@ import com.joshdev.smartpocket.domain.models.GeneralRecord
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface RecordDao {
+interface GeneralRecordDao {
     @Insert
     suspend fun insert(record: GeneralRecord)
 

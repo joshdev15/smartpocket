@@ -1,6 +1,7 @@
 package com.joshdev.smartpocket.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -20,12 +21,11 @@ fun AppBasicTopBar() {
     TopAppBar(
         title = { Text("Smart Pocket") },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            containerColor = MaterialTheme.colorScheme.background,
             titleContentColor = MaterialTheme.colorScheme.onBackground,
         ),
         modifier = Modifier
-            .shadow(10.dp, RoundedCornerShape(20.dp))
-            .clip(RoundedCornerShape(20.dp))
-            .background(Color.Red)
+            .shadow(10.dp, RoundedCornerShape(30.dp))
+            .clip(RoundedCornerShape(30.dp))
     )
 }

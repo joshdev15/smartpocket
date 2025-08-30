@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.ui.activities.records
+package com.joshdev.smartpocket.ui.activities.invoice
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.joshdev.smartpocket.ui.components.AppBasicTopBar
 import com.joshdev.smartpocket.ui.theme.SmartPocketTheme
 
-class RecordsActivity : ComponentActivity() {
+class InvoiceListActivity : ComponentActivity() {
     private var recordId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {

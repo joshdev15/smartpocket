@@ -11,7 +11,7 @@ import com.joshdev.smartpocket.repository.database.dao.CategoryDao
 import com.joshdev.smartpocket.repository.database.dao.CurrencyDao
 import com.joshdev.smartpocket.repository.database.dao.InvoiceDao
 import com.joshdev.smartpocket.repository.database.dao.ProductDao
-import com.joshdev.smartpocket.repository.database.dao.RecordDao
+import com.joshdev.smartpocket.repository.database.dao.GeneralRecordDao
 
 @Database(
     entities = [GeneralRecord::class, Invoice::class, Product::class, Category::class, Currency::class],
@@ -19,7 +19,7 @@ import com.joshdev.smartpocket.repository.database.dao.RecordDao
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun recordDao(): RecordDao
+    abstract fun recordDao(): GeneralRecordDao
     abstract fun invoiceDao(): InvoiceDao
     abstract fun productDao(): ProductDao
     abstract fun categoryDao(): CategoryDao

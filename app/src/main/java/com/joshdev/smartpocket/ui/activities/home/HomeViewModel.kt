@@ -10,7 +10,7 @@ import com.joshdev.smartpocket.domain.models.GeneralRecord
 import com.joshdev.smartpocket.repository.database.AppDatabase
 import com.joshdev.smartpocket.repository.database.AppDatabaseSingleton
 import com.joshdev.smartpocket.domain.models.Invoice
-import com.joshdev.smartpocket.ui.activities.records.RecordsActivity
+import com.joshdev.smartpocket.ui.activities.invoice.InvoiceListActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -77,9 +77,9 @@ class HomeViewModel : ViewModel() {
     }
 
     fun goToRecord(recordId: Int) {
-        val goToRecord = Intent(context, RecordsActivity::class.java)
-        goToRecord.putExtra("recordId", recordId)
-        context.startActivity(goToRecord)
+        val goToInvoiceList = Intent(context, InvoiceListActivity::class.java)
+        goToInvoiceList.putExtra("recordId", recordId)
+        context.startActivity(goToInvoiceList)
     }
 }
 
