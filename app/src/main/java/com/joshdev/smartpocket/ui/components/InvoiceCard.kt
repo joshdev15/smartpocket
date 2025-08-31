@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.joshdev.smartpocket.domain.models.Invoice
+import com.joshdev.smartpocket.ui.utils.UiUtils.formatAmount
 import com.joshdev.smartpocket.ui.utils.UiUtils.formatDate
 
 @Composable
@@ -55,7 +56,7 @@ fun InvoiceCard(invoice: Invoice, onClick: () -> Unit) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 AppText(
-                    text = "Total: ${invoice.total}",
+                    text = "Total: ${formatAmount(invoice.total ?: 0.0)}",
                     color = MaterialTheme.colorScheme.secondary,
                     fontSize = 12.sp,
                 )

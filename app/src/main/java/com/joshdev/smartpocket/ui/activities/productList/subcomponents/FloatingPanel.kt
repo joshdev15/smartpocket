@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.ui.activities.product.subcomponents
+package com.joshdev.smartpocket.ui.activities.productList.subcomponents
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

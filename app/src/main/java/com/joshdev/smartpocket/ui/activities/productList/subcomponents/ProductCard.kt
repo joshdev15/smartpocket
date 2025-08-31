@@ -1,5 +1,6 @@
-package com.joshdev.smartpocket.ui.activities.product.subcomponents
+package com.joshdev.smartpocket.ui.activities.productList.subcomponents
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -18,7 +19,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.joshdev.smartpocket.domain.models.Product
 import com.joshdev.smartpocket.ui.components.AppText
+import com.joshdev.smartpocket.ui.utils.UiUtils.formatAmount
 
+@SuppressLint("DefaultLocale")
 @Composable
 fun ProductCard(product: Product /*, onClick: () -> Unit */) {
     Row(
@@ -27,7 +30,7 @@ fun ProductCard(product: Product /*, onClick: () -> Unit */) {
             .fillMaxWidth()
             .clip(RoundedCornerShape(30.dp))
 //            .clickable(onClick = { onClick() })
-            .border(2.dp, MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(30.dp))
+            .border(2.dp, MaterialTheme.colorScheme.secondaryContainer, RoundedCornerShape(30.dp))
             .background(MaterialTheme.colorScheme.inverseOnSurface)
             .padding(20.dp)
     ) {
@@ -41,12 +44,13 @@ fun ProductCard(product: Product /*, onClick: () -> Unit */) {
                     text = product.name,
                     fontSize = 18.sp,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    fontWeight = FontWeight.Medium,
+                    fontWeight = FontWeight.Bold,
                 )
                 AppText(
-                    text = "ID: ${product.id}",
-                    color = MaterialTheme.colorScheme.secondary,
-                    fontSize = 12.sp,
+                    text = "$${formatAmount(product.cost)}",
+                    fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    fontWeight = FontWeight.Medium,
                 )
             }
 
@@ -56,14 +60,26 @@ fun ProductCard(product: Product /*, onClick: () -> Unit */) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 AppText(
-                    text = "$${product.cost}",
-                    fontSize = 18.sp,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    fontWeight = FontWeight.Bold,
+                    text = "ID: ${product.id}",
+                    color = MaterialTheme.colorScheme.secondary,
+                    fontSize = 12.sp,
                 )
                 AppText(
                     text = "Cant.: ${product.quantity}",
                     color = MaterialTheme.colorScheme.secondary,
+                    fontSize = 12.sp,
+                )
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                val total = formatAmount(product.cost * product.quantity)
+                AppText(
+                    text = "Costo total: $total",
+                    color = MaterialTheme.colorScheme.tertiary,
                     fontSize = 12.sp,
                 )
             }

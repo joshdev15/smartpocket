@@ -27,4 +27,7 @@ interface InvoiceDao {
 
     @Query("DELETE FROM invoices")
     suspend fun deleteAllInvoices()
+
+    @Query("UPDATE invoices SET total = :newTotal WHERE id = :invoiceId")
+    suspend fun updateInvoiceTotal(invoiceId: Int, newTotal: Double)
 }

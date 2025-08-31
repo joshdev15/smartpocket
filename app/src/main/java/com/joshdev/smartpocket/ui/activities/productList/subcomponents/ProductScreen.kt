@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.ui.activities.product.subcomponents
+package com.joshdev.smartpocket.ui.activities.productList.subcomponents
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,7 +12,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.joshdev.smartpocket.ui.activities.product.ProductListViewModel
+import com.joshdev.smartpocket.ui.activities.productList.ProductListViewModel
 
 @Composable
 fun ProductScreen(innerPadding: PaddingValues, viewModel: ProductListViewModel, invoiceId: Int) {
@@ -30,14 +30,14 @@ fun ProductScreen(innerPadding: PaddingValues, viewModel: ProductListViewModel, 
                         .height(if (idx == 0) 15.dp else 0.dp)
                 )
 
-                ProductCard(product) { }
+                ProductCard(product)
             }
 
             item {
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(70.dp)
+                        .height(140.dp)
                 )
             }
         }

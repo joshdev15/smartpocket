@@ -1,12 +1,13 @@
-package com.joshdev.smartpocket.ui.activities.product
+package com.joshdev.smartpocket.ui.activities.productList
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material3.Scaffold
-import com.joshdev.smartpocket.ui.activities.product.subcomponents.FloatingPanel
-import com.joshdev.smartpocket.ui.activities.product.subcomponents.ProductScreen
+import androidx.compose.runtime.LaunchedEffect
+import com.joshdev.smartpocket.ui.activities.productList.subcomponents.FloatingPanel
+import com.joshdev.smartpocket.ui.activities.productList.subcomponents.ProductScreen
 import com.joshdev.smartpocket.ui.components.AppBasicTopBar
 import com.joshdev.smartpocket.ui.theme.SmartPocketTheme
 
@@ -25,9 +26,17 @@ class ProductListActivity : ComponentActivity() {
         viewModel.loadProducts()
 
         setContent {
+            LaunchedEffect(viewModel.products.value) {
+                var totalValue = 0.0
+                viewModel.products.value.forEach {
+                    totalValue += it.cost * it.quantity
+                }
+                viewModel.updateInvoiceTotal(totalValue)
+            }
+
             SmartPocketTheme {
                 Scaffold(
-                    topBar = { AppBasicTopBar() },
+                    topBar = { AppBasicTopBar("Productos de ${viewModel.invoice.value?.name ?: ""}") },
                     floatingActionButton = {
                         FloatingPanel(
                             "Lectura con IA",

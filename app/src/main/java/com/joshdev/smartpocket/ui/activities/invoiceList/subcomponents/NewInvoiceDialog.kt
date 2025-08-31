@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.ui.activities.product.subcomponents
+package com.joshdev.smartpocket.ui.activities.invoiceList.subcomponents
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,24 +20,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.joshdev.smartpocket.domain.models.Product
-import com.joshdev.smartpocket.ui.activities.product.ProductListViewModel
-import com.joshdev.smartpocket.ui.components.AppText
+import com.joshdev.smartpocket.domain.models.Invoice
+import com.joshdev.smartpocket.ui.activities.invoiceList.InvoiceListViewModel
 
 @Composable
-fun NewProductDialog(invoiceId: Int, viewModel: ProductListViewModel) {
-    var proName by remember { mutableStateOf("") }
-    var proCost by remember { mutableStateOf("") }
-    var proQty by remember { mutableStateOf("") }
+fun NewInvoiceDialog(recordId: Int, viewModel: InvoiceListViewModel) {
+    var invName by remember { mutableStateOf("") }
 
     val onClose = {
         viewModel.toggleNewInvoiceDialog(false)
     }
 
-    if (viewModel.showNewProductDialog.value) {
+    if (viewModel.showNewInvoiceDialog.value) {
         Dialog(
             onDismissRequest = { onClose() },
             properties = DialogProperties(
@@ -51,34 +50,18 @@ fun NewProductDialog(invoiceId: Int, viewModel: ProductListViewModel) {
                     .background(MaterialTheme.colorScheme.surfaceBright)
                     .padding(20.dp)
             ) {
-                AppText(
-                    text = "Nueva Producto",
-                    color = MaterialTheme.colorScheme.primary,
-                    fontSize = MaterialTheme.typography.titleLarge.fontSize
+                Text(
+                    text = "Nueva Factura",
+                    style = TextStyle(
+                        color = MaterialTheme.colorScheme.primary,
+                        fontSize = MaterialTheme.typography.titleLarge.fontSize
+                    ),
                 )
 
                 OutlinedTextField(
-                    value = proName,
-                    onValueChange = { proName = it },
-                    label = { AppText("Nombre de Producto") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp),
-                )
-
-                OutlinedTextField(
-                    value = proCost,
-                    onValueChange = { proCost = it },
-                    label = { AppText("Costo") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp),
-                )
-
-                OutlinedTextField(
-                    value = proQty,
-                    onValueChange = { proQty = it },
-                    label = { AppText("Cantidad") },
+                    value = invName,
+                    onValueChange = { invName = it },
+                    label = { Text("Nombre de Factura") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp),
@@ -91,29 +74,24 @@ fun NewProductDialog(invoiceId: Int, viewModel: ProductListViewModel) {
                 ) {
                     Button(
                         onClick = {
-                            val pro = Product(
-                                invoiceId = invoiceId,
-                                name = proName,
-                                quantity = 0,
-                                cost = 0.0,
-                                currency = 0,
-                                customRate = 0.0,
-                                order = 0,
-                                baseCost = 0.0,
+                            val inv = Invoice(
+                                recordId = recordId,
+                                name = invName,
+                                author = "",
+                                creationDate = System.currentTimeMillis(),
+                                modificationDate = System.currentTimeMillis(),
+                                total = 0.0,
                             )
 
-                            viewModel.addProduct(pro)
-                            viewModel.loadProducts()
-                            proName = ""
-                            proCost = ""
-                            proQty = ""
+                            viewModel.addInvoice(inv)
+                            invName = ""
                             onClose()
                         },
                         modifier = Modifier
                             .width(100.dp)
                             .padding(top = 10.dp)
                     ) {
-                        AppText("Crear")
+                        Text("Crear")
                     }
                 }
             }

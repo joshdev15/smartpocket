@@ -19,10 +19,10 @@ interface ProductDao {
     @Delete
     suspend fun delete(product: Product)
 
-    @Query("SELECT * FROM products WHERE invoiceId = :invoiceId")
+    @Query("SELECT * FROM products WHERE invoiceId = :invoiceId ORDER BY id DESC")
     fun getProductsByInvoiceId(invoiceId: Int): Flow<List<Product>>?
 
-    @Query("SELECT * FROM products ORDER BY `order` ASC")
+    @Query("SELECT * FROM products ORDER BY `order` DESC")
     fun getAllProducts(): Flow<List<Product>>
 
     @Query("DELETE FROM products")

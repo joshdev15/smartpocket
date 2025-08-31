@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.ui.activities.invoice.subcomponents
+package com.joshdev.smartpocket.ui.activities.invoiceList.subcomponents
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,7 +13,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.joshdev.smartpocket.ui.activities.invoice.InvoiceListViewModel
+import com.joshdev.smartpocket.ui.activities.invoiceList.InvoiceListViewModel
 import com.joshdev.smartpocket.ui.components.InvoiceCard
 
 @Composable

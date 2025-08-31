@@ -1,5 +1,6 @@
 package com.joshdev.smartpocket.ui.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.Toast
 import java.text.SimpleDateFormat
@@ -16,5 +17,10 @@ object UiUtils {
         val formatter = SimpleDateFormat("dd-MM-yy", Locale.getDefault())
         val formattedDate: String = formatter.format(date)
         return formattedDate
+    }
+
+    @SuppressLint("DefaultLocale")
+    fun formatAmount(amount: Double): String {
+        return String.format("%.2f", amount)
     }
 }

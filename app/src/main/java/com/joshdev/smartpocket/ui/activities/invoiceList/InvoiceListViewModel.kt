@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.ui.activities.invoice
+package com.joshdev.smartpocket.ui.activities.invoiceList
 
 import android.content.Context
 import android.content.Intent
@@ -6,10 +6,11 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.joshdev.smartpocket.domain.models.GeneralRecord
 import com.joshdev.smartpocket.domain.models.Invoice
 import com.joshdev.smartpocket.repository.database.AppDatabase
 import com.joshdev.smartpocket.repository.database.AppDatabaseSingleton
-import com.joshdev.smartpocket.ui.activities.product.ProductListActivity
+import com.joshdev.smartpocket.ui.activities.productList.ProductListActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -26,6 +27,9 @@ class InvoiceListViewModel : ViewModel() {
     private val _showNewInvoiceDialog = mutableStateOf(false)
     val showNewInvoiceDialog: State<Boolean> = _showNewInvoiceDialog
 
+    private val _record = mutableStateOf<GeneralRecord?>(null)
+    val record: State<GeneralRecord?> = _record
+
     val invoices: StateFlow<List<Invoice>> = flow {
         database.value?.invoiceDao()?.getAllInvoices()?.collect {
             emit(it)
@@ -41,6 +45,11 @@ class InvoiceListViewModel : ViewModel() {
         context.value = ctx
         recordId.value = recId
         database.value = AppDatabaseSingleton.getInstance(ctx)
+        viewModelScope.launch(Dispatchers.IO) {
+            database.value?.recordDao()?.getRecordById(recId)?.let { rec ->
+                _record.value = rec
+            }
+        }
     }
 
     fun addInvoice(invoice: Invoice) {

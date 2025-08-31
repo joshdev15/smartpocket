@@ -20,7 +20,7 @@ interface GeneralRecordDao {
     suspend fun delete(record: GeneralRecord)
 
     @Query("SELECT * FROM generalRecords WHERE id = :recordId")
-    suspend fun getRecordById(recordId: Long): GeneralRecord?
+    suspend fun getRecordById(recordId: Int): GeneralRecord?
 
     @Query("SELECT * FROM generalRecords ORDER BY creationDate DESC")
     fun getAllRecords(): Flow<List<GeneralRecord>>

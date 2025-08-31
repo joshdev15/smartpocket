@@ -1,10 +1,11 @@
-package com.joshdev.smartpocket.ui.activities.product
+package com.joshdev.smartpocket.ui.activities.productList
 
 import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.joshdev.smartpocket.domain.models.Invoice
 import com.joshdev.smartpocket.domain.models.Product
 import com.joshdev.smartpocket.repository.database.AppDatabase
 import com.joshdev.smartpocket.repository.database.AppDatabaseSingleton
@@ -17,6 +18,9 @@ class ProductListViewModel : ViewModel() {
     private val invoiceId = mutableStateOf<Int?>(null)
     private val database = mutableStateOf<AppDatabase?>(null)
 
+    private val _invoice = mutableStateOf<Invoice?>(null)
+    val invoice: State<Invoice?> = _invoice;
+
     private val _products = mutableStateOf<List<Product>>(emptyList())
     val products: State<List<Product>> = _products;
 
@@ -28,6 +32,11 @@ class ProductListViewModel : ViewModel() {
         context.value = ctx
         invoiceId.value = invId
         database.value = AppDatabaseSingleton.getInstance(ctx)
+        viewModelScope.launch(Dispatchers.IO) {
+            database.value?.invoiceDao()?.getInvoiceById(invoiceId.value!!)?.let { invoice ->
+                _invoice.value = invoice
+            }
+        }
     }
 
     fun loadProducts() {
@@ -50,6 +59,14 @@ class ProductListViewModel : ViewModel() {
     fun addProduct(product: Product) {
         viewModelScope.launch(Dispatchers.IO) {
             database.value?.productDao()?.insert(product)
+        }
+    }
+
+    fun updateInvoiceTotal(total: Double) {
+        viewModelScope.launch(Dispatchers.IO) {
+            invoiceId.value?.let {
+                database.value?.invoiceDao()?.updateInvoiceTotal(it, total)
+            }
         }
     }
 }

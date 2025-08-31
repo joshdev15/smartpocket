@@ -59,13 +59,13 @@
             android:theme="@style/Theme.SmartPocket" />
 
         <activity
-            android:name=".ui.activities.invoice.InvoiceListActivity"
+            android:name=".ui.activities.invoiceList.InvoiceListActivity"
             android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/Theme.SmartPocket" />
 
         <activity
-            android:name=".ui.activities.product.ProductListActivity"
+            android:name=".ui.activities.productList.ProductListActivity"
             android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/Theme.SmartPocket" />

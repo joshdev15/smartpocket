@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.joshdev.smartpocket.domain.models.GeneralRecord
 import com.joshdev.smartpocket.repository.database.AppDatabase
 import com.joshdev.smartpocket.repository.database.AppDatabaseSingleton
-import com.joshdev.smartpocket.ui.activities.invoice.InvoiceListActivity
+import com.joshdev.smartpocket.ui.activities.invoiceList.InvoiceListActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
