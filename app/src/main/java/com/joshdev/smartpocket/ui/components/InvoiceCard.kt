@@ -14,30 +14,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.joshdev.smartpocket.domain.models.GeneralRecord
+import com.joshdev.smartpocket.domain.models.Invoice
 import com.joshdev.smartpocket.ui.utils.UiUtils.formatDate
 
 @Composable
-fun RecordCard(record: GeneralRecord, onClick: () -> Unit) {
+fun InvoiceCard(invoice: Invoice, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .padding(bottom = 10.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(30.dp))
             .clickable(onClick = { onClick() })
-            .border(2.dp, MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(30.dp))
+            .border(2.dp, MaterialTheme.colorScheme.tertiaryContainer, RoundedCornerShape(30.dp))
             .background(MaterialTheme.colorScheme.inverseOnSurface)
             .padding(20.dp)
     ) {
         Column {
             AppText(
-                text = record.name,
-                fontSize = 18.sp,
+                text = invoice.name,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
-                fontWeight = FontWeight.Medium,
+                fontSize = 18.sp,
                 modifier = Modifier.padding(bottom = 10.dp)
             )
             Row(
@@ -46,12 +44,23 @@ fun RecordCard(record: GeneralRecord, onClick: () -> Unit) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 AppText(
-                    text = "ID: ${record.id}",
+                    text = "ID: ${invoice.id}",
+                    color = MaterialTheme.colorScheme.secondary,
+                    fontSize = 12.sp,
+                )
+            }
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                AppText(
+                    text = "Total: ${invoice.total}",
                     color = MaterialTheme.colorScheme.secondary,
                     fontSize = 12.sp,
                 )
                 AppText(
-                    text = formatDate(record.creationDate),
+                    text = formatDate(invoice.creationDate),
                     color = MaterialTheme.colorScheme.tertiary,
                     fontSize = 12.sp,
                 )

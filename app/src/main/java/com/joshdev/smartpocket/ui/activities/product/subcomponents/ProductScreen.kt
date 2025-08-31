@@ -1,6 +1,5 @@
-package com.joshdev.smartpocket.ui.activities.home.subcomponents
+package com.joshdev.smartpocket.ui.activities.product.subcomponents
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -10,36 +9,28 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.joshdev.smartpocket.ui.activities.home.HomeViewModel
-import com.joshdev.smartpocket.ui.components.RecordCard
+import com.joshdev.smartpocket.ui.activities.product.ProductListViewModel
 
 @Composable
-fun HomeScreen(innerPadding: PaddingValues, viewModel: HomeViewModel) {
-    val records by viewModel.records.collectAsState()
-
+fun ProductScreen(innerPadding: PaddingValues, viewModel: ProductListViewModel, invoiceId: Int) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
             .padding(innerPadding)
+            .padding(horizontal = 10.dp)
     ) {
-        LazyColumn(
-            modifier = Modifier.padding(horizontal = 10.dp)
-        ) {
-            itemsIndexed(records) { idx, it ->
+        LazyColumn {
+            itemsIndexed(viewModel.products.value) { idx, product ->
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(if (idx == 0) 15.dp else 0.dp)
                 )
 
-                RecordCard(it) { viewModel.goToRecord(it.id) }
+                ProductCard(product) { }
             }
 
             item {
@@ -52,5 +43,5 @@ fun HomeScreen(innerPadding: PaddingValues, viewModel: HomeViewModel) {
         }
     }
 
-    NewRecordDialog(viewModel)
+    NewProductDialog(invoiceId, viewModel)
 }

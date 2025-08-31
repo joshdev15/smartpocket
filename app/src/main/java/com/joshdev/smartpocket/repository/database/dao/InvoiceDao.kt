@@ -22,7 +22,7 @@ interface InvoiceDao {
     @Query("SELECT * FROM invoices WHERE id = :invoiceId")
     suspend fun getInvoiceById(invoiceId: Int): Invoice?
 
-    @Query("SELECT * FROM invoices ORDER BY creationDate ASC")
+    @Query("SELECT * FROM invoices ORDER BY creationDate DESC")
     fun getAllInvoices(): Flow<List<Invoice>>
 
     @Query("DELETE FROM invoices")

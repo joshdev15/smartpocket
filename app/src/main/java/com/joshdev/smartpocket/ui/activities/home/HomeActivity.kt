@@ -9,7 +9,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import com.joshdev.smartpocket.ui.activities.home.subcomponents.HomeScreen
 import com.joshdev.smartpocket.ui.components.AppBasicTopBar
-import com.joshdev.smartpocket.ui.components.HomeFloatingButton
+import com.joshdev.smartpocket.ui.components.FloatingButton
 import com.joshdev.smartpocket.ui.theme.SmartPocketTheme
 
 class HomeActivity : ComponentActivity() {
@@ -20,14 +20,14 @@ class HomeActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        viewModel.start(this@HomeActivity)
+        viewModel.start(this, this@HomeActivity)
 
         setContent {
             SmartPocketTheme {
                 Scaffold(
                     topBar = { AppBasicTopBar() },
                     floatingActionButton = {
-                        HomeFloatingButton { viewModel.toggleNewRecordDialog(true) }
+                        FloatingButton("Nuevo Registro") { viewModel.toggleNewRecordDialog(true) }
                     },
                     content = { innerPadding -> HomeScreen(innerPadding, viewModel) }
                 )

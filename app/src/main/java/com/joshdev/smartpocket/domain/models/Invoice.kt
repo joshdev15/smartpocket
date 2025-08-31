@@ -23,5 +23,5 @@ data class Invoice(
     val author: String,
     val creationDate: Long,
     val modificationDate: Long,
-    val total: Double?
+    var total: Double?
 )

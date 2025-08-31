@@ -13,24 +13,6 @@ import androidx.room.PrimaryKey
             childColumns = ["invoiceId"],
             onDelete = ForeignKey.CASCADE
         ),
-        ForeignKey(
-            entity = Currency::class,
-            parentColumns = ["id"],
-            childColumns = ["currency"],
-            onDelete = ForeignKey.SET_NULL
-        ),
-        ForeignKey(
-            entity = Category::class,
-            parentColumns = ["id"],
-            childColumns = ["categoryId"],
-            onDelete = ForeignKey.SET_NULL
-        ),
-        ForeignKey(
-            entity = Category::class,
-            parentColumns = ["id"],
-            childColumns = ["subCategoryId"],
-            onDelete = ForeignKey.SET_NULL
-        )
     ]
 )
 data class Product(
@@ -43,7 +25,7 @@ data class Product(
     val currency: Int?,
     val customRate: Double,
     val order: Int,
-    val categoryId: Int = -1,
-    val subCategoryId: Int = -1,
+    val categoryId: Int? = null,
+    val subCategoryId: Int? = null,
     val baseCost: Double,
 )

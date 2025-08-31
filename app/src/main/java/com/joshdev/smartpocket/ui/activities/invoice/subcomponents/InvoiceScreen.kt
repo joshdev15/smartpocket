@@ -1,0 +1,53 @@
+package com.joshdev.smartpocket.ui.activities.invoice.subcomponents
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.joshdev.smartpocket.ui.activities.invoice.InvoiceListViewModel
+import com.joshdev.smartpocket.ui.components.InvoiceCard
+
+@Composable
+fun InvoiceScreen(innerPadding: PaddingValues, viewModel: InvoiceListViewModel, recordId: Int) {
+    val invoices by viewModel.invoices.collectAsState()
+    val filteredInvoices = invoices.filter { it.recordId == recordId }
+
+    Column(
+        modifier = Modifier
+            .padding(innerPadding)
+            .padding(horizontal = 10.dp)
+    ) {
+        if (filteredInvoices.isNotEmpty()) {
+            LazyColumn {
+                itemsIndexed(filteredInvoices) { idx, it ->
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(if (idx == 0) 15.dp else 0.dp)
+                    )
+
+                    InvoiceCard(it) { viewModel.goToInvoice(it.id) }
+                }
+
+                item {
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(70.dp)
+                    )
+                }
+            }
+        }
+    }
+
+    NewInvoiceDialog(recordId, viewModel)
+}

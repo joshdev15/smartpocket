@@ -1,8 +1,7 @@
-package com.joshdev.smartpocket.ui.components
+package com.joshdev.smartpocket.ui.activities.product.subcomponents
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,42 +16,54 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.joshdev.smartpocket.domain.models.GeneralRecord
-import com.joshdev.smartpocket.ui.utils.UiUtils.formatDate
+import com.joshdev.smartpocket.domain.models.Product
+import com.joshdev.smartpocket.ui.components.AppText
 
 @Composable
-fun RecordCard(record: GeneralRecord, onClick: () -> Unit) {
+fun ProductCard(product: Product /*, onClick: () -> Unit */) {
     Row(
         modifier = Modifier
             .padding(bottom = 10.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(30.dp))
-            .clickable(onClick = { onClick() })
+//            .clickable(onClick = { onClick() })
             .border(2.dp, MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(30.dp))
             .background(MaterialTheme.colorScheme.inverseOnSurface)
             .padding(20.dp)
     ) {
         Column {
-            AppText(
-                text = record.name,
-                fontSize = 18.sp,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier.padding(bottom = 10.dp)
-            )
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 AppText(
-                    text = "ID: ${record.id}",
+                    text = product.name,
+                    fontSize = 18.sp,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    fontWeight = FontWeight.Medium,
+                )
+                AppText(
+                    text = "ID: ${product.id}",
                     color = MaterialTheme.colorScheme.secondary,
                     fontSize = 12.sp,
                 )
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 AppText(
-                    text = formatDate(record.creationDate),
-                    color = MaterialTheme.colorScheme.tertiary,
+                    text = "$${product.cost}",
+                    fontSize = 18.sp,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    fontWeight = FontWeight.Bold,
+                )
+                AppText(
+                    text = "Cant.: ${product.quantity}",
+                    color = MaterialTheme.colorScheme.secondary,
                     fontSize = 12.sp,
                 )
             }

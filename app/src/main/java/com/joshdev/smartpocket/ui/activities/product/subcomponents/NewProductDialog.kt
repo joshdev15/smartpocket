@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.ui.activities.home.subcomponents
+package com.joshdev.smartpocket.ui.activities.product.subcomponents
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,7 +11,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,20 +22,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.joshdev.smartpocket.domain.models.GeneralRecord
-import com.joshdev.smartpocket.ui.activities.home.HomeViewModel
+import com.joshdev.smartpocket.domain.models.Product
+import com.joshdev.smartpocket.ui.activities.product.ProductListViewModel
 import com.joshdev.smartpocket.ui.components.AppText
-import java.util.Calendar
 
 @Composable
-fun NewRecordDialog(viewModel: HomeViewModel) {
-    var recName by remember { mutableStateOf("") }
+fun NewProductDialog(invoiceId: Int, viewModel: ProductListViewModel) {
+    var proName by remember { mutableStateOf("") }
+    var proCost by remember { mutableStateOf("") }
+    var proQty by remember { mutableStateOf("") }
 
     val onClose = {
-        viewModel.toggleNewRecordDialog(false)
+        viewModel.toggleNewInvoiceDialog(false)
     }
 
-    if (viewModel.showNewRecordDialog.value) {
+    if (viewModel.showNewProductDialog.value) {
         Dialog(
             onDismissRequest = { onClose() },
             properties = DialogProperties(
@@ -52,15 +52,33 @@ fun NewRecordDialog(viewModel: HomeViewModel) {
                     .padding(20.dp)
             ) {
                 AppText(
-                    text = "Nuevo Registro",
+                    text = "Nueva Producto",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = MaterialTheme.typography.titleLarge.fontSize
                 )
 
                 OutlinedTextField(
-                    value = recName,
-                    onValueChange = { recName = it },
-                    label = { Text("Nombre del Registro") },
+                    value = proName,
+                    onValueChange = { proName = it },
+                    label = { AppText("Nombre de Producto") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp),
+                )
+
+                OutlinedTextField(
+                    value = proCost,
+                    onValueChange = { proCost = it },
+                    label = { AppText("Costo") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp),
+                )
+
+                OutlinedTextField(
+                    value = proQty,
+                    onValueChange = { proQty = it },
+                    label = { AppText("Cantidad") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp),
@@ -73,16 +91,22 @@ fun NewRecordDialog(viewModel: HomeViewModel) {
                 ) {
                     Button(
                         onClick = {
-                            val inv = GeneralRecord(
-                                name = recName,
-                                author = "",
-                                year = Calendar.YEAR,
-                                month = Calendar.MONTH,
-                                creationDate = System.currentTimeMillis(),
+                            val pro = Product(
+                                invoiceId = invoiceId,
+                                name = proName,
+                                quantity = 0,
+                                cost = 0.0,
+                                currency = 0,
+                                customRate = 0.0,
+                                order = 0,
+                                baseCost = 0.0,
                             )
 
-                            viewModel.addRecord(inv)
-                            recName = ""
+                            viewModel.addProduct(pro)
+                            viewModel.loadProducts()
+                            proName = ""
+                            proCost = ""
+                            proQty = ""
                             onClose()
                         },
                         modifier = Modifier
