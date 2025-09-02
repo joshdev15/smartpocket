@@ -41,7 +41,7 @@ class ProductListActivity : ComponentActivity() {
                         FloatingPanel(
                             "Lectura con IA",
                             "Agregar Producto",
-                            { },
+                            { viewModel.goToPhotoIA(invoiceId) },
                             { viewModel.toggleNewInvoiceDialog(true) },
                         )
                     },

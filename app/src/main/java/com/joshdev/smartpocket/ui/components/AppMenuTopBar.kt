@@ -1,14 +1,14 @@
 package com.joshdev.smartpocket.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -28,13 +28,10 @@ fun AppMenuTopBar(section: String, onClick: () -> Unit) {
     TopAppBar(
         title = {
             Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth().padding(20.dp)
             ) {
-                Column(
-                    modifier = Modifier.weight(1f)
-                ) {
+                Column {
                     AppText(
                         "Smart Pocket",
                         fontSize = 18.sp,
@@ -46,23 +43,25 @@ fun AppMenuTopBar(section: String, onClick: () -> Unit) {
                         fontSize = 12.sp
                     )
                 }
-                Column {
-                    Icon(
-                        painter = painterResource(id = R.drawable.menu),
-                        contentDescription = "arrow down",
-                        tint = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.clickable( onClick = { onClick() })
-                    )
-                }
             }
+        },
+        actions = {
+            Image(
+                painter = painterResource(id = R.drawable.smartpocket),
+                contentDescription = "arrow down",
+                modifier = Modifier
+                    .padding(end = 10.dp)
+                    .size(25.dp)
+                    .clickable(onClick = { onClick() })
+            )
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.inverseOnSurface,
             titleContentColor = MaterialTheme.colorScheme.onBackground,
         ),
         modifier = Modifier
-            .shadow(10.dp, RoundedCornerShape(30.dp))
-            .clip(RoundedCornerShape(30.dp))
+            .shadow(10.dp, RoundedCornerShape(20.dp))
+            .clip(RoundedCornerShape(20.dp))
     )
 }
 

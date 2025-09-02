@@ -1,6 +1,7 @@
 package com.joshdev.smartpocket.ui.activities.productList
 
 import android.content.Context
+import android.content.Intent
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,7 @@ import com.joshdev.smartpocket.domain.models.Invoice
 import com.joshdev.smartpocket.domain.models.Product
 import com.joshdev.smartpocket.repository.database.AppDatabase
 import com.joshdev.smartpocket.repository.database.AppDatabaseSingleton
+import com.joshdev.smartpocket.ui.activities.photoai.PhotoAIActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -68,5 +70,11 @@ class ProductListViewModel : ViewModel() {
                 database.value?.invoiceDao()?.updateInvoiceTotal(it, total)
             }
         }
+    }
+
+    fun goToPhotoIA(invoiceId: Int) {
+        val goToProductList = Intent(context.value, PhotoAIActivity::class.java)
+        goToProductList.putExtra("invoiceId", invoiceId)
+        activity.value?.startActivity(goToProductList)
     }
 }

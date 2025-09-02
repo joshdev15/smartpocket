@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.joshdev.smartpocket"
-        minSdk = 30
+        minSdk = 29
         targetSdk = 36
         versionCode = 2
         versionName = "0.0.2"
@@ -45,6 +45,10 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
