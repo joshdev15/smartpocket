@@ -9,7 +9,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -19,16 +18,18 @@ fun AppBasicTopBar(section: String) {
     TopAppBar(
         title = {
             Column {
-                AppText("Smart Pocket", fontSize = 18.sp, color = MaterialTheme.colorScheme.onBackground)
+                AppText(
+                    "Smart Pocket",
+                    fontSize = 18.sp,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
                 AppText(section, color = MaterialTheme.colorScheme.onBackground, fontSize = 12.sp)
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.inverseOnSurface,
+            containerColor = MaterialTheme.colorScheme.surfaceDim,
             titleContentColor = MaterialTheme.colorScheme.onBackground,
         ),
-        modifier = Modifier
-            .shadow(10.dp, RoundedCornerShape(30.dp))
-            .clip(RoundedCornerShape(30.dp))
+        modifier = Modifier.clip(RoundedCornerShape(30.dp))
     )
 }

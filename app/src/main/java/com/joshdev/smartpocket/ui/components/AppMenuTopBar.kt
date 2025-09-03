@@ -56,12 +56,10 @@ fun AppMenuTopBar(section: String, onClick: () -> Unit) {
             )
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.inverseOnSurface,
+            containerColor = MaterialTheme.colorScheme.surfaceDim,
             titleContentColor = MaterialTheme.colorScheme.onBackground,
         ),
-        modifier = Modifier
-            .shadow(10.dp, RoundedCornerShape(20.dp))
-            .clip(RoundedCornerShape(20.dp))
+        modifier = Modifier.clip(RoundedCornerShape(20.dp))
     )
 }
 

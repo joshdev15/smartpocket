@@ -1,6 +1,7 @@
 package com.joshdev.smartpocket.ui.activities.home
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -18,6 +19,8 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.joshdev.smartpocket.R
+import com.joshdev.smartpocket.ui.activities.categoryList.CategoryListActivity
+import com.joshdev.smartpocket.ui.activities.currency.CurrencyActivity
 import com.joshdev.smartpocket.ui.activities.home.subcomponents.HomeScreen
 import com.joshdev.smartpocket.ui.components.AppMenuTopBar
 import com.joshdev.smartpocket.ui.components.FloatingButton
@@ -44,13 +47,18 @@ class HomeActivity : ComponentActivity() {
 
         viewModel.start(this, this@HomeActivity)
 
-
         setContent {
             val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
             val scope = rememberCoroutineScope()
             val options = listOf(
-                MenuOption(R.drawable.category, "Categorías") { println("Click en Categorías") },
-                MenuOption(R.drawable.dollar, "Divisas") { println("Click en Divisas") }
+                MenuOption(R.drawable.category, "Categorías") {
+                    val goToCategoryList = Intent(this, CategoryListActivity::class.java)
+                    startActivity(goToCategoryList)
+                },
+                MenuOption(R.drawable.dollar, "Divisas") {
+                    val goToCurrency = Intent(this, CurrencyActivity::class.java)
+                    startActivity(goToCurrency)
+                }
             )
 
             SmartPocketTheme {

@@ -33,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -127,10 +128,10 @@ class PhotoAIActivity : ComponentActivity() {
                                                         executor = cameraExecutor!!,
                                                     )
                                                 })
-                                                .background(MaterialTheme.colorScheme.onBackground)
+                                                .background(MaterialTheme.colorScheme.primary)
                                                 .border(
                                                     2.dp,
-                                                    MaterialTheme.colorScheme.tertiary,
+                                                    MaterialTheme.colorScheme.surfaceDim,
                                                     RoundedCornerShape(25.dp)
                                                 )
                                         )

@@ -1,11 +1,18 @@
 package com.joshdev.smartpocket.ui.activities.productList
 
+import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.view.WindowInsetsController
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import com.joshdev.smartpocket.ui.activities.productList.subcomponents.FloatingPanel
 import com.joshdev.smartpocket.ui.activities.productList.subcomponents.ProductScreen
 import com.joshdev.smartpocket.ui.components.AppBasicTopBar
