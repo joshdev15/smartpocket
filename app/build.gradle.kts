@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.rive)
     implementation(libs.androidx.ui.text.google.fonts)
     implementation(libs.google.mlkit)
+    implementation(libs.androidx.navigation.compose)
 
     testImplementation(libs.junit)
 
