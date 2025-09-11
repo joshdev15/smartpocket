@@ -12,5 +12,6 @@ fun PhotoNavigator(viewModel: PhotoAIViewModel, navController: NavHostController
     NavHost(navController, startDestination = "camera") {
         composable("camera") { PhotoCamera(innerPadding, viewModel) }
         composable("analysis") { PhotoAnalysis(innerPadding, viewModel) }
+        composable("edition") { PhotoEditor(innerPadding, viewModel) }
     }
 }

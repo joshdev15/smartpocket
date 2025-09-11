@@ -30,6 +30,6 @@ fun AppBasicTopBar(section: String) {
             containerColor = MaterialTheme.colorScheme.surfaceDim,
             titleContentColor = MaterialTheme.colorScheme.onBackground,
         ),
-        modifier = Modifier.clip(RoundedCornerShape(30.dp))
+        modifier = Modifier.clip(RoundedCornerShape(10.dp))
     )
 }

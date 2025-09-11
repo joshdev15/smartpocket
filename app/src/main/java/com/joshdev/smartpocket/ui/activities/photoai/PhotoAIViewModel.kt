@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
+import android.graphics.Point
 import android.hardware.camera2.CameraManager
 import android.util.Log
 import android.widget.Toast
@@ -88,8 +89,17 @@ class PhotoAIViewModel : ViewModel() {
         bitmap.value = null
     }
 
+    fun setResultToEdit(orders: List<Int>) {
+        val tmpResult = result.value.filter { orders.contains(it?.order) }
+        result.value = tmpResult
+    }
+
     fun goToAnalysis() {
         navController.value?.navigate("analysis")
+    }
+
+    fun goToEdition() {
+        navController.value?.navigate("edition")
     }
 
     fun analyzeImage() {
@@ -138,45 +148,80 @@ class PhotoAIViewModel : ViewModel() {
     }
 
     private fun processText(result: Text): List<AnalysedBlock> {
-        val analysedImage = mutableListOf<AnalysedBlock>()
-        var counter = 0
-
+        val allLines = mutableListOf<Text.Line>()
         for (block in result.textBlocks) {
-            val blockText = block.text
-            val blockCornerPoints = block.cornerPoints
-
-            var pointText = ""
-            blockCornerPoints?.forEachIndexed { innerIdx, it ->
-                if (innerIdx == 0) pointText += "Order: $counter "
-                if (innerIdx != 0) pointText += " - "
-                pointText += "x:${it.x}, y:${it.y}"
-            }
-
-            Log.i("--> ProcessText", pointText)
-            val blockLanguage = block.recognizedLanguage
-            val listLines = mutableListOf<AnalysedBlock.AnalysedLine>()
-            for (line in block.lines) {
-                val lineText = line.text
-                val lineCornerPoints = line.cornerPoints
-                val lineLanguage = line.recognizedLanguage
-                val listText = mutableListOf<AnalysedBlock.AnalysedLine.AnalysedText>()
-                for (element in line.elements) {
-                    val elementText = element.text
-                    val newAnalysedText = AnalysedBlock.AnalysedLine.AnalysedText(elementText)
-                    listText.add(newAnalysedText)
-                }
-                val newAnalysedLine =
-                    AnalysedBlock.AnalysedLine(lineText, lineLanguage, lineCornerPoints, listText)
-                listLines.add(newAnalysedLine)
-            }
-            val newAnalysedBlock =
-                AnalysedBlock(blockText, blockLanguage, blockCornerPoints, listLines, counter)
-            analysedImage.add(newAnalysedBlock)
-            counter++
+            allLines.addAll(block.lines)
         }
 
-        val sortedList = analysedImage.sortedBy { it.order }
-        return sortedList
+        allLines.sortWith(compareBy { it.boundingBox?.top ?: 0 })
+
+        val startIndex = allLines.indexOfFirst {
+            it.text.lowercase().contains("factura")
+        }
+        val endIndex = allLines.indexOfFirst {
+            it.text.lowercase().contains("total")
+        }
+
+        if (startIndex == -1 || endIndex == -1 || startIndex >= endIndex) {
+            return emptyList()
+        }
+
+        val relevantLines = allLines.subList(startIndex, endIndex + 1)
+
+        val analysedImage = mutableListOf<AnalysedBlock>()
+        val processedLineIndices = mutableSetOf<Int>()
+
+        relevantLines.forEachIndexed { index, line ->
+            if (index in processedLineIndices) {
+                return@forEachIndexed
+            }
+
+            val combinedLineText = StringBuilder()
+            val combinedCornerPoints = mutableListOf<Point>()
+            val combinedElements = mutableListOf<AnalysedBlock.AnalysedLine.AnalysedText>()
+
+            combinedLineText.append(line.text)
+            line.cornerPoints?.let { combinedCornerPoints.addAll(it) }
+            line.elements.forEach { element ->
+                combinedElements.add(AnalysedBlock.AnalysedLine.AnalysedText(element.text))
+            }
+            processedLineIndices.add(index)
+
+            for (i in (index + 1) until allLines.size) {
+                val nextLine = allLines[i]
+                val verticalTolerance = 15
+
+                if (Math.abs(line.boundingBox!!.centerY() - nextLine.boundingBox!!.centerY()) < verticalTolerance) {
+                    combinedLineText.append(" ${nextLine.text}") // Unir el texto.
+                    nextLine.cornerPoints?.let { combinedCornerPoints.addAll(it) } // Unir los puntos.
+                    nextLine.elements.forEach { element ->
+                        combinedElements.add(AnalysedBlock.AnalysedLine.AnalysedText(element.text))
+                    }
+                    processedLineIndices.add(i)
+                } else {
+                    break
+                }
+            }
+
+            val newAnalysedLine = AnalysedBlock.AnalysedLine(
+                line = combinedLineText.toString(),
+                language = line.recognizedLanguage,
+                cornerPoints = combinedCornerPoints.toTypedArray(),
+                texts = combinedElements
+            )
+
+            analysedImage.add(
+                AnalysedBlock(
+                    block = newAnalysedLine.line,
+                    language = newAnalysedLine.language,
+                    cornerPoints = newAnalysedLine.cornerPoints,
+                    lines = listOf(newAnalysedLine),
+                    order = analysedImage.size
+                )
+            )
+        }
+
+        return analysedImage
     }
 
     fun toggleFlashlight(cameraManager: CameraManager, isOn: Boolean) {

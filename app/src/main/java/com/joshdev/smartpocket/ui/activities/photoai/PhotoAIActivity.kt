@@ -19,7 +19,7 @@ class PhotoAIActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        intent.getIntExtra("invoiceId", -1)?.let {
+        intent.getIntExtra("invoiceId", -1).let {
             invoiceId = it
         }
 
