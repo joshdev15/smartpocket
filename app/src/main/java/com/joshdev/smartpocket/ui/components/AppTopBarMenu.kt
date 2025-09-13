@@ -23,7 +23,7 @@ import com.joshdev.smartpocket.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppMenuTopBar(section: String, onClick: () -> Unit) {
+fun AppTopBarMenu(section: String, onClick: () -> Unit) {
     TopAppBar(
         title = {
             Row(
@@ -55,7 +55,7 @@ fun AppMenuTopBar(section: String, onClick: () -> Unit) {
             )
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surfaceDim,
+            containerColor = MaterialTheme.colorScheme.background,
             titleContentColor = MaterialTheme.colorScheme.onBackground,
         ),
         modifier = Modifier.clip(RoundedCornerShape(10.dp))

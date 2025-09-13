@@ -8,7 +8,7 @@ import androidx.activity.viewModels
 import androidx.compose.material3.Scaffold
 import androidx.navigation.compose.rememberNavController
 import com.joshdev.smartpocket.ui.activities.photoai.subcomponents.PhotoNavigator
-import com.joshdev.smartpocket.ui.components.AppBasicTopBar
+import com.joshdev.smartpocket.ui.components.AppTopBarBasic
 import com.joshdev.smartpocket.ui.theme.SmartPocketTheme
 
 class PhotoAIActivity : ComponentActivity() {
@@ -31,7 +31,7 @@ class PhotoAIActivity : ComponentActivity() {
             SmartPocketTheme {
                 Scaffold(
                     topBar = {
-                        AppBasicTopBar("Lectura con IA")
+                        AppTopBarBasic("Lectura con IA")
                     },
                     content = { innerPadding ->
                         PhotoNavigator(

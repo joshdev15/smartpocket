@@ -14,8 +14,8 @@ import com.joshdev.smartpocket.repository.database.dao.ProductDao
 import com.joshdev.smartpocket.repository.database.dao.GeneralRecordDao
 
 @Database(
+    version = 19,
     entities = [GeneralRecord::class, Invoice::class, Product::class, Category::class, Currency::class],
-    version = 13,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

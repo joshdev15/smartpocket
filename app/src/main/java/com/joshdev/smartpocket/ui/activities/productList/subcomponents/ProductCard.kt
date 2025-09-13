@@ -31,7 +31,7 @@ fun ProductCard(product: Product /*, onClick: () -> Unit */) {
             .clip(RoundedCornerShape(30.dp))
 //            .clickable(onClick = { onClick() })
             .border(2.dp, MaterialTheme.colorScheme.secondaryContainer, RoundedCornerShape(30.dp))
-            .background(MaterialTheme.colorScheme.inverseOnSurface)
+            .background(MaterialTheme.colorScheme.background)
             .padding(20.dp)
     ) {
         Column {

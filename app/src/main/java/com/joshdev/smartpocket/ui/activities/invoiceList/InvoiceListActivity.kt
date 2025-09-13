@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.material3.Scaffold
 import com.joshdev.smartpocket.ui.activities.invoiceList.subcomponents.InvoiceScreen
-import com.joshdev.smartpocket.ui.components.AppBasicTopBar
+import com.joshdev.smartpocket.ui.components.AppTopBarBasic
 import com.joshdev.smartpocket.ui.components.FloatingButton
 import com.joshdev.smartpocket.ui.theme.SmartPocketTheme
 
@@ -28,7 +28,7 @@ class InvoiceListActivity : ComponentActivity() {
         setContent {
             SmartPocketTheme {
                 Scaffold(
-                    topBar = { AppBasicTopBar("Facturas de ${viewModel.record.value?.name}") },
+                    topBar = { AppTopBarBasic("Facturas de ${viewModel.record.value?.name}") },
                     floatingActionButton = {
                         FloatingButton("Nueva Factura") { viewModel.toggleNewInvoiceDialog(true) }
                     },

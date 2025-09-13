@@ -8,5 +8,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#FF37393E</color>
+    <color name="surface">#FF121318</color>
     <color name="appBlue">#FF1B4874</color>
 </resources>

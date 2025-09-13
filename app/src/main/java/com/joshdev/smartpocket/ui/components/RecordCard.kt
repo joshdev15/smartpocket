@@ -29,7 +29,8 @@ fun RecordCard(record: GeneralRecord, onClick: () -> Unit) {
             .clip(RoundedCornerShape(30.dp))
             .clickable(onClick = { onClick() })
             .border(2.dp, MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(30.dp))
-            .background(MaterialTheme.colorScheme.inverseOnSurface)
+            .background(MaterialTheme.colorScheme.background)
+//            .background(MaterialTheme.colorScheme.inverseOnSurface)
             .padding(20.dp)
     ) {
         Column {

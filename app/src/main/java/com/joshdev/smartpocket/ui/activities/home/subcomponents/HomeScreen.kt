@@ -26,7 +26,7 @@ fun HomeScreen(innerPadding: PaddingValues, viewModel: HomeViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.inverseOnSurface)
             .padding(innerPadding)
     ) {
         LazyColumn(

@@ -22,7 +22,7 @@ import com.joshdev.smartpocket.R
 import com.joshdev.smartpocket.ui.activities.categoryList.CategoryListActivity
 import com.joshdev.smartpocket.ui.activities.currency.CurrencyActivity
 import com.joshdev.smartpocket.ui.activities.home.subcomponents.HomeScreen
-import com.joshdev.smartpocket.ui.components.AppMenuTopBar
+import com.joshdev.smartpocket.ui.components.AppTopBarMenu
 import com.joshdev.smartpocket.ui.components.FloatingButton
 import com.joshdev.smartpocket.ui.components.MenuOptionContainer
 import com.joshdev.smartpocket.ui.models.MenuOption
@@ -58,17 +58,18 @@ class HomeActivity : ComponentActivity() {
                 MenuOption(R.drawable.dollar, "Divisas") {
                     val goToCurrency = Intent(this, CurrencyActivity::class.java)
                     startActivity(goToCurrency)
-                }
+                },
             )
 
             SmartPocketTheme {
                 ModalNavigationDrawer(
                     drawerState = drawerState,
-                    drawerContent = { MenuOptionContainer(options) },
+                    drawerContent = { MenuOptionContainer(options) { scope.launch { drawerState.close() } } },
+                    gesturesEnabled = false,
                     content = {
                         Scaffold(
                             topBar = {
-                                AppMenuTopBar("Registros") {
+                                AppTopBarMenu("Registros") {
                                     scope.launch {
                                         drawerState.open()
                                     }

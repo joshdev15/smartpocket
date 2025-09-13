@@ -6,8 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material3.Scaffold
 import com.joshdev.smartpocket.ui.activities.categoryList.subcomponents.CategoryListScreen
-import com.joshdev.smartpocket.ui.components.AppBasicTopBar
-import com.joshdev.smartpocket.ui.components.AppText
+import com.joshdev.smartpocket.ui.components.AppTopBarBasic
 import com.joshdev.smartpocket.ui.theme.SmartPocketTheme
 
 class CategoryListActivity: ComponentActivity()  {
@@ -19,7 +18,7 @@ class CategoryListActivity: ComponentActivity()  {
         setContent {
             SmartPocketTheme {
                 Scaffold(
-                    topBar = { AppBasicTopBar("Categorías") },
+                    topBar = { AppTopBarBasic("Categorías") },
                     content = { innerPadding -> CategoryListScreen(innerPadding, viewModel) }
                 )
             }

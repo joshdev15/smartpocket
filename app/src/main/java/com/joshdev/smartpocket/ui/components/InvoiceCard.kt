@@ -29,7 +29,7 @@ fun InvoiceCard(invoice: Invoice, onClick: () -> Unit) {
             .clip(RoundedCornerShape(30.dp))
             .clickable(onClick = { onClick() })
             .border(2.dp, MaterialTheme.colorScheme.tertiaryContainer, RoundedCornerShape(30.dp))
-            .background(MaterialTheme.colorScheme.inverseOnSurface)
+            .background(MaterialTheme.colorScheme.background)
             .padding(20.dp)
     ) {
         Column {

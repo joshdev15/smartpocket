@@ -9,7 +9,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
 import com.joshdev.smartpocket.ui.activities.productList.subcomponents.FloatingPanel
 import com.joshdev.smartpocket.ui.activities.productList.subcomponents.ProductScreen
-import com.joshdev.smartpocket.ui.components.AppBasicTopBar
+import com.joshdev.smartpocket.ui.components.AppTopBarBasic
 import com.joshdev.smartpocket.ui.theme.SmartPocketTheme
 
 class ProductListActivity : ComponentActivity() {
@@ -38,7 +38,7 @@ class ProductListActivity : ComponentActivity() {
 
             SmartPocketTheme {
                 Scaffold(
-                    topBar = { AppBasicTopBar("Productos de ${viewModel.invoice.value?.name ?: ""}") },
+                    topBar = { AppTopBarBasic("Productos de ${viewModel.invoice.value?.name ?: ""}") },
                     floatingActionButton = {
                         FloatingPanel(
                             "Lectura con IA",

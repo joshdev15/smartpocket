@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppBasicTopBar(section: String) {
+fun AppTopBarBasic(section: String) {
     TopAppBar(
         title = {
             Column {
@@ -27,7 +27,7 @@ fun AppBasicTopBar(section: String) {
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surfaceDim,
+            containerColor = MaterialTheme.colorScheme.background,
             titleContentColor = MaterialTheme.colorScheme.onBackground,
         ),
         modifier = Modifier.clip(RoundedCornerShape(10.dp))
