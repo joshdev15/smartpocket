@@ -1,11 +1,9 @@
 package com.joshdev.smartpocket.domain.models
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import io.realm.kotlin.types.annotations.PrimaryKey
 
-@Entity(tableName = "currencies")
 data class Currency(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     val id: Int = 0,
     val name: String,
     val symbol: String,

@@ -8,9 +8,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.joshdev.smartpocket.domain.models.Invoice
 import com.joshdev.smartpocket.domain.models.Product
-import com.joshdev.smartpocket.repository.database.AppDatabase
-import com.joshdev.smartpocket.repository.database.AppDatabaseSingleton
+import com.joshdev.smartpocket.repository.database.realm.RealmDBSingleton
 import com.joshdev.smartpocket.ui.activities.photoai.PhotoAIActivity
+import io.realm.kotlin.Realm
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -18,7 +18,7 @@ class ProductListViewModel : ViewModel() {
     private val activity = mutableStateOf<ProductListActivity?>(null)
     private val context = mutableStateOf<Context?>(null)
     private val invoiceId = mutableStateOf<Int?>(null)
-    private val database = mutableStateOf<AppDatabase?>(null)
+    private val database = mutableStateOf<Realm?>(null)
 
     private val _invoice = mutableStateOf<Invoice?>(null)
     val invoice: State<Invoice?> = _invoice;
@@ -33,20 +33,20 @@ class ProductListViewModel : ViewModel() {
         activity.value = act
         context.value = ctx
         invoiceId.value = invId
-        database.value = AppDatabaseSingleton.getInstance(ctx)
+        database.value = RealmDBSingleton.getInstance(ctx)
         viewModelScope.launch(Dispatchers.IO) {
-            database.value?.invoiceDao()?.getInvoiceById(invoiceId.value!!)?.let { invoice ->
-                _invoice.value = invoice
-            }
+//            database.value?.invoiceDao()?.getInvoiceById(invoiceId.value!!)?.let { invoice ->
+//                _invoice.value = invoice
+//            }
         }
     }
 
     fun loadProducts() {
         viewModelScope.launch(Dispatchers.IO) {
-            database.value?.productDao()?.getProductsByInvoiceId(invoiceId.value!!)
-                ?.collect { products ->
-                    _products.value = products
-                }
+//            database.value?.productDao()?.getProductsByInvoiceId(invoiceId.value!!)
+//                ?.collect { products ->
+//                    _products.value = products
+//                }
         }
     }
 
@@ -60,14 +60,14 @@ class ProductListViewModel : ViewModel() {
 
     fun addProduct(product: Product) {
         viewModelScope.launch(Dispatchers.IO) {
-            database.value?.productDao()?.insert(product)
+//            database.value?.productDao()?.insert(product)
         }
     }
 
     fun updateInvoiceTotal(total: Double) {
         viewModelScope.launch(Dispatchers.IO) {
             invoiceId.value?.let {
-                database.value?.invoiceDao()?.updateInvoiceTotal(it, total)
+//                database.value?.invoiceDao()?.updateInvoiceTotal(it, total)
             }
         }
     }

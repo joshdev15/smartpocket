@@ -6,11 +6,11 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.joshdev.smartpocket.domain.models.GeneralRecord
+import com.joshdev.smartpocket.domain.models.Ledger
 import com.joshdev.smartpocket.domain.models.Invoice
-import com.joshdev.smartpocket.repository.database.AppDatabase
-import com.joshdev.smartpocket.repository.database.AppDatabaseSingleton
+import com.joshdev.smartpocket.repository.database.realm.RealmDBSingleton
 import com.joshdev.smartpocket.ui.activities.productList.ProductListActivity
+import io.realm.kotlin.Realm
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -22,39 +22,31 @@ class InvoiceListViewModel : ViewModel() {
     private val activity = mutableStateOf<InvoiceListActivity?>(null)
     private val context = mutableStateOf<Context?>(null)
     private val recordId = mutableStateOf<Int?>(null)
-    private val database = mutableStateOf<AppDatabase?>(null)
+    private val database = mutableStateOf<Realm?>(null)
 
     private val _showNewInvoiceDialog = mutableStateOf(false)
     val showNewInvoiceDialog: State<Boolean> = _showNewInvoiceDialog
 
-    private val _record = mutableStateOf<GeneralRecord?>(null)
-    val record: State<GeneralRecord?> = _record
+    private val _record = mutableStateOf<Ledger?>(null)
+    val record: State<Ledger?> = _record
 
-    val invoices: StateFlow<List<Invoice>> = flow {
-        database.value?.invoiceDao()?.getAllInvoices()?.collect {
-            emit(it)
-        }
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(5000),
-        emptyList()
-    )
+    val invoices: State<List<Invoice>> = mutableStateOf(listOf())
 
     fun start(act: InvoiceListActivity, ctx: Context, recId: Int) {
         activity.value = act
         context.value = ctx
         recordId.value = recId
-        database.value = AppDatabaseSingleton.getInstance(ctx)
+        database.value = RealmDBSingleton.getInstance(ctx)
         viewModelScope.launch(Dispatchers.IO) {
-            database.value?.recordDao()?.getRecordById(recId)?.let { rec ->
-                _record.value = rec
-            }
+//            database.value?.recordDao()?.getRecordById(recId)?.let { rec ->
+//                _record.value = rec
+//            }
         }
     }
 
     fun addInvoice(invoice: Invoice) {
         viewModelScope.launch(Dispatchers.IO) {
-            database.value?.invoiceDao()?.insert(invoice)
+//            database.value?.invoiceDao()?.insert(invoice)
         }
     }
 

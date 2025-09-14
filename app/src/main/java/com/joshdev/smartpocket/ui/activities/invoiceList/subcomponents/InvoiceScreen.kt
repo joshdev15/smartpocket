@@ -12,8 +12,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.joshdev.smartpocket.ui.activities.invoiceList.InvoiceListViewModel
@@ -21,7 +21,7 @@ import com.joshdev.smartpocket.ui.components.InvoiceCard
 
 @Composable
 fun InvoiceScreen(innerPadding: PaddingValues, viewModel: InvoiceListViewModel, recordId: Int) {
-    val invoices by viewModel.invoices.collectAsState()
+    val invoices = viewModel.invoices.value
     val filteredInvoices = invoices.filter { it.recordId == recordId }
 
     Column(
