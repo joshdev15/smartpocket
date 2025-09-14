@@ -32,10 +32,4 @@ class CurrencyActivity : ComponentActivity() {
             }
         }
     }
-
-    private fun verifyBaseCurrencyData() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val usd = Currency(name = "USD", symbol = "$", rate = 1.0)
-        }
-    }
 }
