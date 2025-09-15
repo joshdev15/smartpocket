@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.ui.activities.home
+package com.joshdev.smartpocket.ui.activities.ledger
 
 import android.content.Context
 import android.content.Intent
@@ -14,9 +14,9 @@ import io.realm.kotlin.ext.query
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-class HomeViewModel : ViewModel() {
+class LedgerViewModel : ViewModel() {
     private val database = RealmDatabase.getInstance()
-    private val activity = mutableStateOf<HomeActivity?>(null)
+    private val activity = mutableStateOf<LedgerActivity?>(null)
     private val context = mutableStateOf<Context?>(null)
 
     private val _showNewRecordDialog = mutableStateOf(false)
@@ -25,7 +25,7 @@ class HomeViewModel : ViewModel() {
     private val _records = mutableStateOf<List<Ledger>>(listOf())
     val records: State<List<Ledger>> = _records
 
-    fun start(act: HomeActivity, ctx: Context) {
+    fun start(act: LedgerActivity, ctx: Context) {
         activity.value = act
         context.value = ctx
 

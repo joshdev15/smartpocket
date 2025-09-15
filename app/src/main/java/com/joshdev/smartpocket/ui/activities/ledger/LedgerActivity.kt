@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.ui.activities.home
+package com.joshdev.smartpocket.ui.activities.ledger
 
 import android.Manifest
 import android.content.Intent
@@ -21,7 +21,7 @@ import androidx.core.content.ContextCompat
 import com.joshdev.smartpocket.R
 import com.joshdev.smartpocket.ui.activities.categoryList.CategoryListActivity
 import com.joshdev.smartpocket.ui.activities.currency.CurrencyActivity
-import com.joshdev.smartpocket.ui.activities.home.subcomponents.HomeScreen
+import com.joshdev.smartpocket.ui.activities.ledger.subcomponents.HomeScreen
 import com.joshdev.smartpocket.ui.components.AppTopBarMenu
 import com.joshdev.smartpocket.ui.components.FloatingButton
 import com.joshdev.smartpocket.ui.components.MenuOptionContainer
@@ -29,8 +29,8 @@ import com.joshdev.smartpocket.ui.models.MenuOption
 import com.joshdev.smartpocket.ui.theme.SmartPocketTheme
 import kotlinx.coroutines.launch
 
-class HomeActivity : ComponentActivity() {
-    private val viewModel by viewModels<HomeViewModel>()
+class LedgerActivity : ComponentActivity() {
+    private val viewModel by viewModels<LedgerViewModel>()
     private var cameraAllowed = false
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
@@ -45,7 +45,7 @@ class HomeActivity : ComponentActivity() {
 
         checkCameraPermissionAndLaunch()
 
-        viewModel.start(this, this@HomeActivity)
+        viewModel.start(this, this@LedgerActivity)
 
         setContent {
             val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)

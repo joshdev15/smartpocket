@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.ui.activities.home.subcomponents
+package com.joshdev.smartpocket.ui.activities.ledger.subcomponents
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -24,12 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.joshdev.smartpocket.domain.models.Ledger
-import com.joshdev.smartpocket.ui.activities.home.HomeViewModel
+import com.joshdev.smartpocket.ui.activities.ledger.LedgerViewModel
 import com.joshdev.smartpocket.ui.components.AppText
 import java.util.Calendar
 
 @Composable
-fun NewRecordDialog(viewModel: HomeViewModel) {
+fun NewRecordDialog(viewModel: LedgerViewModel) {
     var recName by remember { mutableStateOf("") }
 
     val onClose = {
