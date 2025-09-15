@@ -5,7 +5,7 @@ import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.ObjectId
 
 data class Ledger(
-    val id: Int = 0,
+    val id: String = "",
     val name: String,
     val year: Int,
     val month: Int,
@@ -22,11 +22,14 @@ class LedgerRealm() : RealmObject {
     var author: String = ""
     var creationDate: Long = 0L
 
-    constructor(name: String, year: Int, month: Int, author: String, creationDate: Long) : this() {
-        this.name = name
-        this.year = year
-        this.month = month
-        this.author = author
-        this.creationDate = creationDate
+    fun toLedger(): Ledger {
+        return Ledger(
+            id = id.toHexString(),
+            name = name,
+            year = year,
+            month = month,
+            author = author,
+            creationDate = creationDate
+        )
     }
 }

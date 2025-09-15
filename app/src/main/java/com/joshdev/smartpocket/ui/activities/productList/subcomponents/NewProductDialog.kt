@@ -27,7 +27,7 @@ import com.joshdev.smartpocket.ui.activities.productList.ProductListViewModel
 import com.joshdev.smartpocket.ui.components.AppText
 
 @Composable
-fun NewProductDialog(invoiceId: Int, viewModel: ProductListViewModel) {
+fun NewProductDialog(invoiceId: String, viewModel: ProductListViewModel) {
     var proName by remember { mutableStateOf("") }
     var proCost by remember { mutableStateOf("") }
     var proQty by remember { mutableStateOf("") }
@@ -103,7 +103,7 @@ fun NewProductDialog(invoiceId: Int, viewModel: ProductListViewModel) {
                             )
 
                             viewModel.addProduct(pro)
-                            viewModel.loadProducts()
+//                            viewModel.loadProducts()
                             proName = ""
                             proCost = ""
                             proQty = ""

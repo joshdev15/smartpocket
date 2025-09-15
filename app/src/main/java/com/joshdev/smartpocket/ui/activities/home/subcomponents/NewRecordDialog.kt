@@ -81,7 +81,7 @@ fun NewRecordDialog(viewModel: HomeViewModel) {
                                 creationDate = System.currentTimeMillis(),
                             )
 
-                            viewModel.addRecord(inv)
+                            viewModel.addLedger(inv)
                             recName = ""
                             onClose()
                         },

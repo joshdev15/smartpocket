@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.joshdev.smartpocket.ui.activities.productList.ProductListViewModel
 
 @Composable
-fun ProductScreen(innerPadding: PaddingValues, viewModel: ProductListViewModel, invoiceId: Int) {
+fun ProductScreen(innerPadding: PaddingValues, viewModel: ProductListViewModel, invoiceId: String) {
     Column(
         modifier = Modifier
             .fillMaxSize()

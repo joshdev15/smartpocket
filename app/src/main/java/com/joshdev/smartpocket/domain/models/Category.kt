@@ -12,8 +12,7 @@ data class Category(
     val color: String
 )
 
-class CategoryRealms(
-) : RealmObject {
+class CategoryRealms() : RealmObject {
     var id: Int = 0
     var name: String = ""
     var level: Int = 0

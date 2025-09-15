@@ -28,7 +28,7 @@ import com.joshdev.smartpocket.domain.models.Invoice
 import com.joshdev.smartpocket.ui.activities.invoiceList.InvoiceListViewModel
 
 @Composable
-fun NewInvoiceDialog(recordId: Int, viewModel: InvoiceListViewModel) {
+fun NewInvoiceDialog(recordId: String, viewModel: InvoiceListViewModel) {
     var invName by remember { mutableStateOf("") }
 
     val onClose = {

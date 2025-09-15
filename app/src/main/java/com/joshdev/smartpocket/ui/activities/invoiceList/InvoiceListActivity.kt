@@ -13,13 +13,13 @@ import com.joshdev.smartpocket.ui.theme.SmartPocketTheme
 
 class InvoiceListActivity : ComponentActivity() {
     private val viewModel by viewModels<InvoiceListViewModel>()
-    private var recordId: Int = -1
+    private var recordId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        intent.getIntExtra("recordId", -1)?.let {
+        intent.getStringExtra("recordId")?.let {
             recordId = it
         }
 
