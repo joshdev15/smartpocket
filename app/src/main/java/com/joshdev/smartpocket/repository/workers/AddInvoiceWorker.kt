@@ -10,9 +10,6 @@ import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
-import com.joshdev.smartpocket.repository.database.AppDatabaseSingleton
-import com.joshdev.smartpocket.domain.models.Invoice
-import kotlinx.coroutines.delay
 
 class AddInvoiceWorker(
     appContext: Context,
@@ -51,7 +48,7 @@ class AddInvoiceWorker(
     override suspend fun doWork(): Result {
         setForeground(getForegroundInfo())
 
-//        val database = AppDatabaseSingleton.getInstance(applicationContext)
+//        val database = RoomDBSingleton.getInstance(applicationContext)
 //        val invoiceDao = database.invoiceDao()
 //
 //        val invoice = Invoice(

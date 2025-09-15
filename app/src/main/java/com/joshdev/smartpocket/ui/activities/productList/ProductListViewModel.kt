@@ -7,18 +7,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.joshdev.smartpocket.domain.models.Invoice
+import com.joshdev.smartpocket.domain.models.InvoiceRealm
 import com.joshdev.smartpocket.domain.models.Product
-import com.joshdev.smartpocket.repository.database.AppDatabase
-import com.joshdev.smartpocket.repository.database.AppDatabaseSingleton
+import com.joshdev.smartpocket.domain.models.ProductRealm
+import com.joshdev.smartpocket.repository.database.realm.RealmDatabase
 import com.joshdev.smartpocket.ui.activities.photoai.PhotoAIActivity
+import io.realm.kotlin.ext.query
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import org.mongodb.kbson.ObjectId
 
 class ProductListViewModel : ViewModel() {
+    private val database = RealmDatabase.getInstance()
     private val activity = mutableStateOf<ProductListActivity?>(null)
     private val context = mutableStateOf<Context?>(null)
-    private val invoiceId = mutableStateOf<Int?>(null)
-    private val database = mutableStateOf<AppDatabase?>(null)
+    private val invoiceId = mutableStateOf<String?>(null)
 
     private val _invoice = mutableStateOf<Invoice?>(null)
     val invoice: State<Invoice?> = _invoice;
@@ -29,24 +33,33 @@ class ProductListViewModel : ViewModel() {
     private val _showNewProductDialog = mutableStateOf(false)
     val showNewProductDialog: State<Boolean> = _showNewProductDialog
 
-    fun start(act: ProductListActivity, ctx: Context, invId: Int) {
+    fun start(act: ProductListActivity, ctx: Context, invId: String) {
         activity.value = act
         context.value = ctx
         invoiceId.value = invId
-        database.value = AppDatabaseSingleton.getInstance(ctx)
         viewModelScope.launch(Dispatchers.IO) {
-            database.value?.invoiceDao()?.getInvoiceById(invoiceId.value!!)?.let { invoice ->
-                _invoice.value = invoice
+            val invoice =
+                database.query<InvoiceRealm>("id == $0", ObjectId(invId)).find().firstOrNull()
+            invoice?.let {
+                _invoice.value = it.toInvoice()
+                observeProducts()
             }
         }
     }
 
-    fun loadProducts() {
-        viewModelScope.launch(Dispatchers.IO) {
-            database.value?.productDao()?.getProductsByInvoiceId(invoiceId.value!!)
-                ?.collect { products ->
-                    _products.value = products
-                }
+    fun observeProducts() {
+        viewModelScope.launch {
+            database.let { realm ->
+                realm.query<ProductRealm>()
+                    .asFlow()
+                    .map { results ->
+                        val tmp = results.list.filter { it.invoiceId == invoiceId.value }
+                        tmp.map { it.toProduct() }
+                    }
+                    .collect { productList ->
+                        _products.value = productList
+                    }
+            }
         }
     }
 
@@ -59,20 +72,35 @@ class ProductListViewModel : ViewModel() {
     }
 
     fun addProduct(product: Product) {
-        viewModelScope.launch(Dispatchers.IO) {
-            database.value?.productDao()?.insert(product)
+        database.writeBlocking {
+            val newProductRealm = ProductRealm().apply {
+                invoiceId = product.invoiceId
+                name = product.name
+                cost = product.cost
+                quantity = product.quantity
+            }
+
+            copyToRealm(newProductRealm)
         }
     }
 
     fun updateInvoiceTotal(total: Double) {
         viewModelScope.launch(Dispatchers.IO) {
-            invoiceId.value?.let {
-                database.value?.invoiceDao()?.updateInvoiceTotal(it, total)
+            database.writeBlocking {
+                invoiceId.value?.let { id ->
+                    val invoice = this.query<InvoiceRealm>("id == $0", ObjectId(id))
+                        .find()
+                        .firstOrNull()
+
+                    invoice?.apply {
+                        this.total = total
+                    }
+                }
             }
         }
     }
 
-    fun goToPhotoIA(invoiceId: Int) {
+    fun goToPhotoIA(invoiceId: String) {
         val goToProductList = Intent(context.value, PhotoAIActivity::class.java)
         goToProductList.putExtra("invoiceId", invoiceId)
         activity.value?.startActivity(goToProductList)

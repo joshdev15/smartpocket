@@ -4,35 +4,32 @@ import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.ObjectId
 
-data class Invoice(
+data class Ledger(
     val id: String = "",
-    val recordId: String = "",
     val name: String,
+    val year: Int,
+    val month: Int,
     val author: String,
-    val creationDate: Long,
-    val modificationDate: Long,
-    var total: Double?
+    val creationDate: Long
 )
 
-class InvoiceRealm() : RealmObject {
+class LedgerRealm() : RealmObject {
     @PrimaryKey
     var id: ObjectId = ObjectId.invoke()
-    var recordId: String = ""
     var name: String = ""
+    var year: Int = 0
+    var month: Int = 0
     var author: String = ""
     var creationDate: Long = 0L
-    var modificationDate: Long = 0L
-    var total: Double? = null
 
-    fun toInvoice(): Invoice {
-        return Invoice(
+    fun toLedger(): Ledger {
+        return Ledger(
             id = id.toHexString(),
-            recordId = recordId,
             name = name,
+            year = year,
+            month = month,
             author = author,
-            creationDate = creationDate,
-            modificationDate = modificationDate,
-            total = total
+            creationDate = creationDate
         )
     }
 }

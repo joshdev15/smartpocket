@@ -17,11 +17,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.joshdev.smartpocket.domain.models.GeneralRecord
+import com.joshdev.smartpocket.domain.models.Ledger
 import com.joshdev.smartpocket.ui.utils.UiUtils.formatDate
 
 @Composable
-fun RecordCard(record: GeneralRecord, onClick: () -> Unit) {
+fun RecordCard(record: Ledger, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .padding(bottom = 10.dp)

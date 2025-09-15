@@ -6,44 +6,60 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.joshdev.smartpocket.domain.models.GeneralRecord
-import com.joshdev.smartpocket.repository.database.AppDatabase
-import com.joshdev.smartpocket.repository.database.AppDatabaseSingleton
+import com.joshdev.smartpocket.domain.models.Ledger
+import com.joshdev.smartpocket.domain.models.LedgerRealm
+import com.joshdev.smartpocket.repository.database.realm.RealmDatabase
 import com.joshdev.smartpocket.ui.activities.invoiceList.InvoiceListActivity
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.stateIn
+import io.realm.kotlin.ext.query
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
+    private val database = RealmDatabase.getInstance()
     private val activity = mutableStateOf<HomeActivity?>(null)
     private val context = mutableStateOf<Context?>(null)
-    private val database = mutableStateOf<AppDatabase?>(null)
 
     private val _showNewRecordDialog = mutableStateOf(false)
     val showNewRecordDialog: State<Boolean> = _showNewRecordDialog
 
-    val records: StateFlow<List<GeneralRecord>> = flow {
-        database.value?.recordDao()?.getAllRecords()?.collect {
-            emit(it)
-        }
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(5000),
-        emptyList()
-    )
+    private val _records = mutableStateOf<List<Ledger>>(listOf())
+    val records: State<List<Ledger>> = _records
 
     fun start(act: HomeActivity, ctx: Context) {
         activity.value = act
         context.value = ctx
-        database.value = AppDatabaseSingleton.getInstance(ctx)
+
+        observeLedgers()
     }
 
-    fun addRecord(record: GeneralRecord) {
-        viewModelScope.launch(Dispatchers.IO) {
-            database.value?.recordDao()?.insert(record)
+    private fun observeLedgers() {
+        viewModelScope.launch {
+            database.let { realm ->
+                realm.query<LedgerRealm>()
+                    .asFlow()
+                    .map { results ->
+                        results.list.map { ledgerRealm ->
+                            ledgerRealm.toLedger()
+                        }
+                    }
+                    .collect { ledgerList ->
+                        _records.value = ledgerList
+                    }
+            }
+        }
+    }
+
+    fun addLedger(record: Ledger) {
+        database.writeBlocking {
+            val newLedger = LedgerRealm().apply {
+                name = record.name
+                author = record.author
+                year = record.year
+                month = record.month
+                creationDate = record.creationDate
+            }
+
+            copyToRealm(newLedger)
         }
     }
 
@@ -55,7 +71,7 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun goToRecord(recordId: Int) {
+    fun goToRecord(recordId: String) {
         val goToInvoiceList = Intent(context.value, InvoiceListActivity::class.java)
         goToInvoiceList.putExtra("recordId", recordId)
         activity.value?.startActivity(goToInvoiceList)

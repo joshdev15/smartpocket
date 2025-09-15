@@ -14,18 +14,14 @@ import com.joshdev.smartpocket.ui.theme.SmartPocketTheme
 
 class ProductListActivity : ComponentActivity() {
     val viewModel by viewModels<ProductListViewModel>()
-    private var invoiceId: Int = -1
+    private var invoiceId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        intent.getIntExtra("invoiceId", -1)?.let {
-            invoiceId = it
-        }
-
+        intent.getStringExtra("invoiceId")?.let { invoiceId = it }
         viewModel.start(this, this@ProductListActivity, invoiceId)
-        viewModel.loadProducts()
 
         setContent {
             LaunchedEffect(viewModel.products.value) {

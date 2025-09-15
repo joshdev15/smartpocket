@@ -23,7 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.joshdev.smartpocket.domain.models.GeneralRecord
+import com.joshdev.smartpocket.domain.models.Ledger
 import com.joshdev.smartpocket.ui.activities.home.HomeViewModel
 import com.joshdev.smartpocket.ui.components.AppText
 import java.util.Calendar
@@ -73,7 +73,7 @@ fun NewRecordDialog(viewModel: HomeViewModel) {
                 ) {
                     Button(
                         onClick = {
-                            val inv = GeneralRecord(
+                            val inv = Ledger(
                                 name = recName,
                                 author = "",
                                 year = Calendar.YEAR,
@@ -81,7 +81,7 @@ fun NewRecordDialog(viewModel: HomeViewModel) {
                                 creationDate = System.currentTimeMillis(),
                             )
 
-                            viewModel.addRecord(inv)
+                            viewModel.addLedger(inv)
                             recName = ""
                             onClose()
                         },

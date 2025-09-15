@@ -22,10 +22,6 @@ fun CurrencyScreen(innerPadding: PaddingValues, viewModel: CurrencyViewModel) {
             .padding(innerPadding)
     ) {
         LazyColumn(modifier = Modifier.padding(horizontal = 10.dp)) {
-            item {
-                CurrencyCard(usd)
-            }
-
             items(viewModel.currencies.value ?: emptyList()) {
                 CurrencyCard(it)
             }
