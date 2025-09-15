@@ -45,17 +45,6 @@ fun InvoiceCard(invoice: Invoice, onClick: () -> Unit) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 AppText(
-                    text = "ID: ${invoice.id}",
-                    color = MaterialTheme.colorScheme.secondary,
-                    fontSize = 12.sp,
-                )
-            }
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                AppText(
                     text = "Total: ${formatAmount(invoice.total ?: 0.0)}",
                     color = MaterialTheme.colorScheme.secondary,
                     fontSize = 12.sp,

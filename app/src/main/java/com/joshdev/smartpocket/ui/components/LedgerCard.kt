@@ -21,7 +21,7 @@ import com.joshdev.smartpocket.domain.models.Ledger
 import com.joshdev.smartpocket.ui.utils.UiUtils.formatDate
 
 @Composable
-fun RecordCard(record: Ledger, onClick: () -> Unit) {
+fun LedgerCard(record: Ledger, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .padding(bottom = 10.dp)
@@ -41,15 +41,10 @@ fun RecordCard(record: Ledger, onClick: () -> Unit) {
                 modifier = Modifier.padding(bottom = 10.dp)
             )
             Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                AppText(
-                    text = "ID: ${record.id}",
-                    color = MaterialTheme.colorScheme.secondary,
-                    fontSize = 12.sp,
-                )
                 AppText(
                     text = formatDate(record.creationDate),
                     color = MaterialTheme.colorScheme.tertiary,

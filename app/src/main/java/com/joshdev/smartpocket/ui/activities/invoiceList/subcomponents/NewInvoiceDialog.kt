@@ -20,12 +20,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.joshdev.smartpocket.domain.models.Invoice
 import com.joshdev.smartpocket.ui.activities.invoiceList.InvoiceListViewModel
+import com.joshdev.smartpocket.ui.components.AppText
 
 @Composable
 fun NewInvoiceDialog(recordId: String, viewModel: InvoiceListViewModel) {
@@ -50,12 +50,10 @@ fun NewInvoiceDialog(recordId: String, viewModel: InvoiceListViewModel) {
                     .background(MaterialTheme.colorScheme.surfaceBright)
                     .padding(20.dp)
             ) {
-                Text(
+                AppText(
                     text = "Nueva Factura",
-                    style = TextStyle(
-                        color = MaterialTheme.colorScheme.primary,
-                        fontSize = MaterialTheme.typography.titleLarge.fontSize
-                    ),
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = MaterialTheme.typography.titleLarge.fontSize
                 )
 
                 OutlinedTextField(
@@ -91,7 +89,7 @@ fun NewInvoiceDialog(recordId: String, viewModel: InvoiceListViewModel) {
                             .width(100.dp)
                             .padding(top = 10.dp)
                     ) {
-                        Text("Crear")
+                        AppText("Crear")
                     }
                 }
             }

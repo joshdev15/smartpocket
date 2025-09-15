@@ -103,7 +103,6 @@ fun NewProductDialog(invoiceId: String, viewModel: ProductListViewModel) {
                             )
 
                             viewModel.addProduct(pro)
-//                            viewModel.loadProducts()
                             proName = ""
                             proCost = ""
                             proQty = ""

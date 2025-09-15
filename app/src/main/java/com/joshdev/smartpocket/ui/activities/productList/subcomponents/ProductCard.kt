@@ -21,15 +21,13 @@ import com.joshdev.smartpocket.domain.models.Product
 import com.joshdev.smartpocket.ui.components.AppText
 import com.joshdev.smartpocket.ui.utils.UiUtils.formatAmount
 
-@SuppressLint("DefaultLocale")
 @Composable
-fun ProductCard(product: Product /*, onClick: () -> Unit */) {
+fun ProductCard(product: Product) {
     Row(
         modifier = Modifier
             .padding(bottom = 10.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(30.dp))
-//            .clickable(onClick = { onClick() })
             .border(2.dp, MaterialTheme.colorScheme.secondaryContainer, RoundedCornerShape(30.dp))
             .background(MaterialTheme.colorScheme.background)
             .padding(20.dp)
@@ -55,15 +53,10 @@ fun ProductCard(product: Product /*, onClick: () -> Unit */) {
             }
 
             Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                AppText(
-                    text = "ID: ${product.id}",
-                    color = MaterialTheme.colorScheme.secondary,
-                    fontSize = 12.sp,
-                )
                 AppText(
                     text = "Cant.: ${product.quantity}",
                     color = MaterialTheme.colorScheme.secondary,

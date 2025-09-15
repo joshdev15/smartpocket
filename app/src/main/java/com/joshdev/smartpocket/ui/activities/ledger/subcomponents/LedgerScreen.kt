@@ -15,12 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.joshdev.smartpocket.ui.activities.ledger.LedgerViewModel
-import com.joshdev.smartpocket.ui.components.RecordCard
+import com.joshdev.smartpocket.ui.components.LedgerCard
 
 @Composable
-fun HomeScreen(innerPadding: PaddingValues, viewModel: LedgerViewModel) {
-    val records = viewModel.records.value
-
+fun LedgerScreen(innerPadding: PaddingValues, viewModel: LedgerViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -30,14 +28,14 @@ fun HomeScreen(innerPadding: PaddingValues, viewModel: LedgerViewModel) {
         LazyColumn(
             modifier = Modifier.padding(horizontal = 10.dp)
         ) {
-            itemsIndexed(records) { idx, it ->
+            itemsIndexed(viewModel.records.value) { idx, it ->
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(if (idx == 0) 15.dp else 0.dp)
                 )
 
-                RecordCard(it) { viewModel.goToRecord(it.id) }
+                LedgerCard(it) { viewModel.goToRecord(it.id) }
             }
 
             item {

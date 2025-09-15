@@ -14,17 +14,5 @@ class MainActivity : ComponentActivity() {
         val goToHome = Intent(this, LedgerActivity::class.java)
         goToHome.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(goToHome)
-
-//        setContent {
-//            SmartPocketTheme {
-//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-//                    Column(
-//                        modifier = Modifier.padding(innerPadding)
-//                    ) {
-//                        Text("Hola mundo!")
-//                    }
-//                }
-//            }
-//        }
     }
 }

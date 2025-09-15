@@ -16,22 +16,27 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.rememberCoroutineScope
 import android.os.Build
+import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.joshdev.smartpocket.R
 import com.joshdev.smartpocket.ui.activities.categoryList.CategoryListActivity
 import com.joshdev.smartpocket.ui.activities.currency.CurrencyActivity
-import com.joshdev.smartpocket.ui.activities.ledger.subcomponents.HomeScreen
+import com.joshdev.smartpocket.ui.activities.ledger.subcomponents.LedgerScreen
 import com.joshdev.smartpocket.ui.components.AppTopBarMenu
 import com.joshdev.smartpocket.ui.components.FloatingButton
 import com.joshdev.smartpocket.ui.components.MenuOptionContainer
 import com.joshdev.smartpocket.ui.models.MenuOption
 import com.joshdev.smartpocket.ui.theme.SmartPocketTheme
+import com.joshdev.smartpocket.ui.utils.UiUtils.showToast
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class LedgerActivity : ComponentActivity() {
     private val viewModel by viewModels<LedgerViewModel>()
     private var cameraAllowed = false
+    private var allowExit = false
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
             cameraAllowed = isGranted
@@ -52,14 +57,35 @@ class LedgerActivity : ComponentActivity() {
             val scope = rememberCoroutineScope()
             val options = listOf(
                 MenuOption(R.drawable.category, "Categorías") {
+                    scope.launch { drawerState.close() }
                     val goToCategoryList = Intent(this, CategoryListActivity::class.java)
                     startActivity(goToCategoryList)
                 },
                 MenuOption(R.drawable.dollar, "Divisas") {
+                    scope.launch { drawerState.close() }
                     val goToCurrency = Intent(this, CurrencyActivity::class.java)
                     startActivity(goToCurrency)
                 },
             )
+
+            BackHandler {
+                when {
+                    drawerState.isOpen -> {
+                        scope.launch { drawerState.close() }
+                    }
+                    allowExit -> {
+                        finish()
+                    }
+                    else -> {
+                        showToast(this@LedgerActivity, "Presione nuevamente para salir")
+                        allowExit = true
+                        lifecycleScope.launch {
+                            delay(2000)
+                            allowExit = false
+                        }
+                    }
+                }
+            }
 
             SmartPocketTheme {
                 ModalNavigationDrawer(
@@ -69,20 +95,20 @@ class LedgerActivity : ComponentActivity() {
                     content = {
                         Scaffold(
                             topBar = {
-                                AppTopBarMenu("Registros") {
+                                AppTopBarMenu("Cuentas") {
                                     scope.launch {
                                         drawerState.open()
                                     }
                                 }
                             },
                             floatingActionButton = {
-                                FloatingButton("Nuevo Registro") {
+                                FloatingButton("Nueva Cuenta") {
                                     viewModel.toggleNewRecordDialog(
                                         true
                                     )
                                 }
                             },
-                            content = { innerPadding -> HomeScreen(innerPadding, viewModel) }
+                            content = { innerPadding -> LedgerScreen(innerPadding, viewModel) }
                         )
                     }
                 )
