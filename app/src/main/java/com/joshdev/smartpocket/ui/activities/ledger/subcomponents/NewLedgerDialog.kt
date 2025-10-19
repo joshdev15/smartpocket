@@ -26,11 +26,11 @@ import androidx.compose.ui.window.DialogProperties
 import com.joshdev.smartpocket.domain.models.Ledger
 import com.joshdev.smartpocket.ui.activities.ledger.LedgerViewModel
 import com.joshdev.smartpocket.ui.components.AppText
-import java.util.Calendar
 
 @Composable
-fun NewRecordDialog(viewModel: LedgerViewModel) {
-    var recName by remember { mutableStateOf("") }
+fun NewLedgerDialog(viewModel: LedgerViewModel) {
+    var ledgerName by remember { mutableStateOf("") }
+    var ledgerCapital by remember { mutableStateOf("") }
 
     val onClose = {
         viewModel.toggleNewRecordDialog(false)
@@ -52,15 +52,24 @@ fun NewRecordDialog(viewModel: LedgerViewModel) {
                     .padding(20.dp)
             ) {
                 AppText(
-                    text = "Nuevo Registro",
+                    text = "Nueva Cuenta",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = MaterialTheme.typography.titleLarge.fontSize
                 )
 
                 OutlinedTextField(
-                    value = recName,
-                    onValueChange = { recName = it },
-                    label = { Text("Nombre del Registro") },
+                    value = ledgerName,
+                    onValueChange = { ledgerName = it },
+                    label = { Text("Nombre de la cuenta") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp),
+                )
+
+                OutlinedTextField(
+                    value = ledgerCapital,
+                    onValueChange = { ledgerCapital = it },
+                    label = { Text("Capital inicial") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp),
@@ -73,16 +82,15 @@ fun NewRecordDialog(viewModel: LedgerViewModel) {
                 ) {
                     Button(
                         onClick = {
-                            val inv = Ledger(
-                                name = recName,
-                                author = "",
-                                year = Calendar.YEAR,
-                                month = Calendar.MONTH,
+                            val newLedger = Ledger(
+                                name = ledgerName,
+                                initialCapital = ledgerCapital.toDouble(),
+                                totalBalance = ledgerCapital.toDouble(),
                                 creationDate = System.currentTimeMillis(),
                             )
 
-                            viewModel.addLedger(inv)
-                            recName = ""
+                            viewModel.addLedger(newLedger)
+                            ledgerName = ""
                             onClose()
                         },
                         modifier = Modifier

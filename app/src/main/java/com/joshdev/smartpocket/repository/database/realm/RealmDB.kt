@@ -2,9 +2,9 @@ package com.joshdev.smartpocket.repository.database.realm
 
 import com.joshdev.smartpocket.domain.models.CategoryRealms
 import com.joshdev.smartpocket.domain.models.CurrencyRealm
-import com.joshdev.smartpocket.domain.models.InvoiceRealm
 import com.joshdev.smartpocket.domain.models.LedgerRealm
 import com.joshdev.smartpocket.domain.models.ProductRealm
+import com.joshdev.smartpocket.domain.models.TransactionRealm
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.ext.query
@@ -21,10 +21,10 @@ object RealmDatabase {
                 .create(
                     schema = setOf(
                         LedgerRealm::class,
-                        InvoiceRealm::class,
+                        TransactionRealm::class,
                         ProductRealm::class,
                         CategoryRealms::class,
-                        CurrencyRealm::class
+                        CurrencyRealm::class,
                     ) as Set<KClass<out TypedRealmObject>>
                 )
 

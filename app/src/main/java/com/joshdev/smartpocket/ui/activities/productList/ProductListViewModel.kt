@@ -6,10 +6,10 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.joshdev.smartpocket.domain.models.Invoice
-import com.joshdev.smartpocket.domain.models.InvoiceRealm
 import com.joshdev.smartpocket.domain.models.Product
 import com.joshdev.smartpocket.domain.models.ProductRealm
+import com.joshdev.smartpocket.domain.models.Transaction
+import com.joshdev.smartpocket.domain.models.TransactionRealm
 import com.joshdev.smartpocket.repository.database.realm.RealmDatabase
 import com.joshdev.smartpocket.ui.activities.photoai.PhotoAIActivity
 import io.realm.kotlin.ext.query
@@ -22,10 +22,10 @@ class ProductListViewModel : ViewModel() {
     private val database = RealmDatabase.getInstance()
     private val activity = mutableStateOf<ProductListActivity?>(null)
     private val context = mutableStateOf<Context?>(null)
-    private val invoiceId = mutableStateOf<String?>(null)
+    private val transactionId = mutableStateOf<String?>(null)
 
-    private val _invoice = mutableStateOf<Invoice?>(null)
-    val invoice: State<Invoice?> = _invoice;
+    private val _transaction = mutableStateOf<Transaction?>(null)
+    val transaction: State<Transaction?> = _transaction;
 
     private val _products = mutableStateOf<List<Product>>(emptyList())
     val products: State<List<Product>> = _products;
@@ -33,15 +33,15 @@ class ProductListViewModel : ViewModel() {
     private val _showNewProductDialog = mutableStateOf(false)
     val showNewProductDialog: State<Boolean> = _showNewProductDialog
 
-    fun start(act: ProductListActivity, ctx: Context, invId: String) {
+    fun start(act: ProductListActivity, ctx: Context, txId: String) {
         activity.value = act
         context.value = ctx
-        invoiceId.value = invId
+        transactionId.value = txId
         viewModelScope.launch(Dispatchers.IO) {
             val invoice =
-                database.query<InvoiceRealm>("id == $0", ObjectId(invId)).find().firstOrNull()
+                database.query<TransactionRealm>("id == $0", ObjectId(txId)).find().firstOrNull()
             invoice?.let {
-                _invoice.value = it.toInvoice()
+                _transaction.value = it.toTransaction()
                 observeProducts()
             }
         }
@@ -53,7 +53,7 @@ class ProductListViewModel : ViewModel() {
                 realm.query<ProductRealm>()
                     .asFlow()
                     .map { results ->
-                        val tmp = results.list.filter { it.invoiceId == invoiceId.value }
+                        val tmp = results.list.filter { it.invoiceId == transactionId.value }
                         tmp.map { it.toProduct() }
                     }
                     .collect { productList ->
@@ -84,16 +84,16 @@ class ProductListViewModel : ViewModel() {
         }
     }
 
-    fun updateInvoiceTotal(total: Double) {
+    fun updateTransactionAmount(amount: Double) {
         viewModelScope.launch(Dispatchers.IO) {
             database.writeBlocking {
-                invoiceId.value?.let { id ->
-                    val invoice = this.query<InvoiceRealm>("id == $0", ObjectId(id))
+                transactionId.value?.let { id ->
+                    val invoice = this.query<TransactionRealm>("id == $0", ObjectId(id))
                         .find()
                         .firstOrNull()
 
                     invoice?.apply {
-                        this.total = total
+                        this.amount = amount
                     }
                 }
             }

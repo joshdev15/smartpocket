@@ -1,0 +1,72 @@
+classDiagram
+    direction LR
+
+    class User {
+        + id: Int
+        + name: String
+        + email: String
+        + deviceId: String
+    }
+
+    class Ledger {
+        + id: Int
+        + name: String
+        + initialCapital: Double
+        + balance: Double
+        + participants: List<Participant>
+    }
+
+
+    class Transaction {
+        + id: Int
+        + amount: Double
+        + description: String
+        + egressDate: Date
+        + ledgerId: String
+        + currencyId: Int
+        + hasProducts: Boolean
+        + postBalance: Double
+        + products: List<Product>
+    }
+
+    class Product {
+        + id: Int
+        + name: String
+        + primaryCategory: Int
+        + secondaryCategory: Int
+        + baseCost: Double
+        + basePrice: Double
+        + quantity: Int
+    }
+
+    class Participant {
+        + id: Int
+        + name: String
+        + participationPercentage: Double
+        + ledgerId: String <<FK>>
+    }
+
+    class Currency {
+        + id: Int
+        + name: String
+        + symbol: String
+    }
+
+    class Category {
+        + id: Int
+        + name: String
+        + level: Int
+        + description: String
+    }
+
+    %% RELACIONES
+    User "1..*" -- "0..*" Ledger : shares
+
+    Ledger "1" *-- "1..*" Transaction : has
+    Ledger "1" *-- "0..*" Transaction : has
+    Ledger "1" *-- "1..*" Participant : includes
+
+    Transaction "1" o-- "0..*" Product : Product List (Optional)
+    Transaction "1..*" -- "1" Currency : Transaction Currency
+
+    Product "1..*" -- "1" Category : represents

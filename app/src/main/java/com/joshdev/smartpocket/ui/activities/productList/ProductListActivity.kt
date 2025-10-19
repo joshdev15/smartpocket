@@ -29,12 +29,12 @@ class ProductListActivity : ComponentActivity() {
                 viewModel.products.value.forEach {
                     totalValue += it.cost * it.quantity
                 }
-                viewModel.updateInvoiceTotal(totalValue)
+                viewModel.updateTransactionAmount(totalValue)
             }
 
             SmartPocketTheme {
                 Scaffold(
-                    topBar = { AppTopBarBasic("Productos de ${viewModel.invoice.value?.name ?: ""}") },
+                    topBar = { AppTopBarBasic("Productos de ${viewModel.transaction.value?.name ?: ""}") },
                     floatingActionButton = {
                         FloatingPanel(
                             "Lectura con IA",

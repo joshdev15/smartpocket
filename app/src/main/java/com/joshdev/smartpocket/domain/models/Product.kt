@@ -16,7 +16,26 @@ data class Product(
     val categoryId: Int? = null,
     val subCategoryId: Int? = null,
     val baseCost: Double,
-)
+) {
+    fun toProductRealm(): ProductRealm {
+        val productRealm = ProductRealm()
+        productRealm.id = ObjectId(id)
+
+        productRealm.invoiceId = invoiceId
+        productRealm.name = name
+        productRealm.quantity = quantity
+        productRealm.cost = cost
+        productRealm.currency = currency
+        productRealm.customRate = customRate
+        productRealm.order = order
+        productRealm.categoryId = categoryId
+        productRealm.subCategoryId = subCategoryId
+        productRealm.baseCost = baseCost
+
+        productRealm
+        return productRealm
+    }
+}
 
 class ProductRealm : RealmObject {
     @PrimaryKey

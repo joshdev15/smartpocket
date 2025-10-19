@@ -35,7 +35,7 @@ fun LedgerScreen(innerPadding: PaddingValues, viewModel: LedgerViewModel) {
                         .height(if (idx == 0) 15.dp else 0.dp)
                 )
 
-                LedgerCard(it) { viewModel.goToRecord(it.id) }
+                LedgerCard(it) { viewModel.goToLedger(it.id) }
             }
 
             item {
@@ -48,5 +48,5 @@ fun LedgerScreen(innerPadding: PaddingValues, viewModel: LedgerViewModel) {
         }
     }
 
-    NewRecordDialog(viewModel)
+    NewLedgerDialog(viewModel)
 }

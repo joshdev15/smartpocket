@@ -18,6 +18,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import android.os.Build
 import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.LaunchedEffect
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.joshdev.smartpocket.R
@@ -108,7 +109,9 @@ class LedgerActivity : ComponentActivity() {
                                     )
                                 }
                             },
-                            content = { innerPadding -> LedgerScreen(innerPadding, viewModel) }
+                            content = { innerPadding ->
+                                LedgerScreen(innerPadding, viewModel)
+                            }
                         )
                     }
                 )

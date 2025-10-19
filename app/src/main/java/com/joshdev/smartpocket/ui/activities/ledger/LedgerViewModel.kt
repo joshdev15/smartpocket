@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.joshdev.smartpocket.domain.models.Ledger
 import com.joshdev.smartpocket.domain.models.LedgerRealm
 import com.joshdev.smartpocket.repository.database.realm.RealmDatabase
-import com.joshdev.smartpocket.ui.activities.invoiceList.InvoiceListActivity
+import com.joshdev.smartpocket.ui.activities.invoiceList.TransactionListActivity
 import io.realm.kotlin.ext.query
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -49,17 +49,9 @@ class LedgerViewModel : ViewModel() {
         }
     }
 
-    fun addLedger(record: Ledger) {
+    fun addLedger(ledger: Ledger) {
         database.writeBlocking {
-            val newLedger = LedgerRealm().apply {
-                name = record.name
-                author = record.author
-                year = record.year
-                month = record.month
-                creationDate = record.creationDate
-            }
-
-            copyToRealm(newLedger)
+            copyToRealm(ledger.toLedgerRealm())
         }
     }
 
@@ -71,10 +63,10 @@ class LedgerViewModel : ViewModel() {
         }
     }
 
-    fun goToRecord(recordId: String) {
-        val goToInvoiceList = Intent(context.value, InvoiceListActivity::class.java)
-        goToInvoiceList.putExtra("recordId", recordId)
-        activity.value?.startActivity(goToInvoiceList)
+    fun goToLedger(ledgerId: String) {
+        val goToTransactionList = Intent(context.value, TransactionListActivity::class.java)
+        goToTransactionList.putExtra("ledgerId", ledgerId)
+        activity.value?.startActivity(goToTransactionList)
     }
 }
 

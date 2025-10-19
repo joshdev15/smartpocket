@@ -21,7 +21,7 @@ import com.joshdev.smartpocket.domain.models.Ledger
 import com.joshdev.smartpocket.ui.utils.UiUtils.formatDate
 
 @Composable
-fun LedgerCard(record: Ledger, onClick: () -> Unit) {
+fun LedgerCard(ledger: Ledger, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .padding(bottom = 10.dp)
@@ -33,20 +33,43 @@ fun LedgerCard(record: Ledger, onClick: () -> Unit) {
             .padding(20.dp)
     ) {
         Column {
-            AppText(
-                text = record.name,
-                fontSize = 18.sp,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier.padding(bottom = 10.dp)
-            )
             Row(
-                horizontalArrangement = Arrangement.End,
+                horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 AppText(
-                    text = formatDate(record.creationDate),
+                    text = ledger.name,
+                    fontSize = 18.sp,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.padding(bottom = 10.dp)
+                )
+            }
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                AppText(
+                    text = "Capital inicial: ${ledger.initialCapital}",
+                    color = MaterialTheme.colorScheme.tertiary,
+                    fontSize = 12.sp,
+                )
+            }
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                AppText(
+                    text = "Total: ${ledger.totalBalance}",
+                    color = MaterialTheme.colorScheme.tertiary,
+                    fontSize = 12.sp,
+                )
+
+                AppText(
+                    text = formatDate(ledger.creationDate),
                     color = MaterialTheme.colorScheme.tertiary,
                     fontSize = 12.sp,
                 )

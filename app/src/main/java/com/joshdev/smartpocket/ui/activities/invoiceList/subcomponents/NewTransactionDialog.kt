@@ -23,19 +23,22 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.joshdev.smartpocket.domain.models.Invoice
-import com.joshdev.smartpocket.ui.activities.invoiceList.InvoiceListViewModel
+import com.joshdev.smartpocket.domain.models.Transaction
+import com.joshdev.smartpocket.ui.activities.invoiceList.TransactionListViewModel
+import com.joshdev.smartpocket.ui.components.AppSwitch
 import com.joshdev.smartpocket.ui.components.AppText
 
 @Composable
-fun NewInvoiceDialog(recordId: String, viewModel: InvoiceListViewModel) {
-    var invName by remember { mutableStateOf("") }
+fun NewTransactionDialog(ledgerId: String, viewModel: TransactionListViewModel) {
+    var txName by remember { mutableStateOf("") }
+    var txType by remember { mutableStateOf(false) }
+    var txAmount by remember { mutableStateOf("") }
 
     val onClose = {
-        viewModel.toggleNewInvoiceDialog(false)
+        viewModel.toggleNewTransactionDialog(false)
     }
 
-    if (viewModel.showNewInvoiceDialog.value) {
+    if (viewModel.showNewTransactionDialog.value) {
         Dialog(
             onDismissRequest = { onClose() },
             properties = DialogProperties(
@@ -51,15 +54,41 @@ fun NewInvoiceDialog(recordId: String, viewModel: InvoiceListViewModel) {
                     .padding(20.dp)
             ) {
                 AppText(
-                    text = "Nueva Factura",
+                    text = "Nueva Transacción",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = MaterialTheme.typography.titleLarge.fontSize
                 )
 
                 OutlinedTextField(
-                    value = invName,
-                    onValueChange = { invName = it },
-                    label = { Text("Nombre de Factura") },
+                    value = txName,
+                    onValueChange = { txName = it },
+                    label = { Text("Nombre") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp),
+                )
+
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 20.dp)
+                ) {
+                    AppSwitch(
+                        leftOptionText = "Egreso",
+                        rightOptionText = "Ingreso",
+                        isChecked = txType,
+                        onChange = { txType = !txType },
+                        checkedTextColor = MaterialTheme.colorScheme.onBackground,
+                        enableColor = MaterialTheme.colorScheme.primaryContainer,
+                    )
+                }
+
+                OutlinedTextField(
+                    value = txAmount,
+                    onValueChange = { txAmount = it },
+                    label = { Text("Monto") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp),
@@ -72,17 +101,23 @@ fun NewInvoiceDialog(recordId: String, viewModel: InvoiceListViewModel) {
                 ) {
                     Button(
                         onClick = {
-                            val inv = Invoice(
-                                recordId = recordId,
-                                name = invName,
-                                author = "",
-                                creationDate = System.currentTimeMillis(),
-                                modificationDate = System.currentTimeMillis(),
-                                total = 0.0,
+                            val tx = Transaction(
+                                id = "",
+                                name = txName,
+                                type = if (txType) Transaction.TxType.INCOME else Transaction.TxType.EGRESS,
+                                amount = txAmount.toDouble(),
+                                date = System.currentTimeMillis(),
+                                description = "",
+                                ledgerId = ledgerId,
+                                currencyId = 0,
+                                postBalance = viewModel.ledger.value?.totalBalance?.minus(txAmount.toDouble())
+                                    ?: 0.0,
+                                hasProducts = false,
+                                products = emptyList()
                             )
 
-                            viewModel.addInvoice(inv)
-                            invName = ""
+                            viewModel.addTransaction(tx)
+                            txName = ""
                             onClose()
                         },
                         modifier = Modifier
