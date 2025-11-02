@@ -1,9 +1,8 @@
 package com.joshdev.smartpocket.domain.models
 
-import io.realm.kotlin.ext.realmListOf
-import io.realm.kotlin.types.RealmList
-import io.realm.kotlin.types.RealmObject
-import io.realm.kotlin.types.annotations.PrimaryKey
+import com.joshdev.smartpocket.repository.interfaces.ToRealm
+import com.joshdev.smartpocket.repository.models.TransactionRealm
+import io.realm.kotlin.ext.toRealmList
 import org.mongodb.kbson.ObjectId
 
 data class Transaction(
@@ -18,45 +17,27 @@ data class Transaction(
     val postBalance: Double,
     val hasProducts: Boolean,
     val products: List<Product>,
-) {
+) : ToRealm<TransactionRealm> {
+    override fun toRealm(): TransactionRealm {
+        val newTransactionRealm = TransactionRealm().apply {
+            id = ObjectId.invoke()
+            name = this@Transaction.name
+            type = this@Transaction.type.toString()
+            amount = this@Transaction.amount
+            date = this@Transaction.date
+            description = this@Transaction.description
+            ledgerId = this@Transaction.ledgerId
+            currencyId = this@Transaction.currencyId
+            postBalance = this@Transaction.postBalance
+            hasProducts = this@Transaction.hasProducts
+            products = this@Transaction.products.map { it.toRealm() }.toRealmList()
+        }
+
+        return newTransactionRealm
+    }
+
     enum class TxType {
         INCOME,
         EGRESS,
     }
-}
-
-class TransactionRealm() : RealmObject {
-    @PrimaryKey
-    var id: ObjectId = ObjectId.invoke()
-    var name: String = ""
-    var type: String = ""
-    var amount: Double = 0.0
-    var date: Long = 0L
-    var description: String = ""
-    var ledgerId: String = ""
-    var currencyId: Int = 0
-    var postBalance: Double = 0.0
-    var hasProducts: Boolean = false
-    var products: RealmList<ProductRealm> = realmListOf()
-
-    fun toTransaction(): Transaction {
-        return Transaction(
-            id = id.toHexString(),
-            name = name,
-            type = Transaction.TxType.valueOf(type),
-            amount = amount,
-            date = date,
-            description = description,
-            ledgerId = ledgerId,
-            currencyId = currencyId,
-            postBalance = postBalance,
-            hasProducts = hasProducts,
-            products = products.map { it.toProduct() }
-        )
-    }
-
-}
-
-private fun Product.toProductRealm() {
-    TODO("Not yet implemented")
 }

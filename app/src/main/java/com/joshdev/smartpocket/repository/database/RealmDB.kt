@@ -1,10 +1,10 @@
-package com.joshdev.smartpocket.repository.database.realm
+package com.joshdev.smartpocket.repository.database
 
 import com.joshdev.smartpocket.domain.models.CategoryRealms
 import com.joshdev.smartpocket.domain.models.CurrencyRealm
-import com.joshdev.smartpocket.domain.models.LedgerRealm
-import com.joshdev.smartpocket.domain.models.ProductRealm
-import com.joshdev.smartpocket.domain.models.TransactionRealm
+import com.joshdev.smartpocket.repository.models.LedgerRealm
+import com.joshdev.smartpocket.repository.models.ProductRealm
+import com.joshdev.smartpocket.repository.models.TransactionRealm
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.ext.query

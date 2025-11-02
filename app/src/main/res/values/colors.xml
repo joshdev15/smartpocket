@@ -10,4 +10,7 @@
     <color name="gray">#FF37393E</color>
     <color name="surface">#FF121318</color>
     <color name="appBlue">#FF1B4874</color>
+    <color name="income">#FF4CAF50</color>
+    <color name="egress">#FFFF6347</color>
+    <color name="capital">#FF607D8B</color>
 </resources>

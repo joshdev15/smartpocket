@@ -2,7 +2,7 @@ package com.joshdev.smartpocket.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,13 +21,16 @@ import com.joshdev.smartpocket.domain.models.Ledger
 import com.joshdev.smartpocket.ui.utils.UiUtils.formatDate
 
 @Composable
-fun LedgerCard(ledger: Ledger, onClick: () -> Unit) {
+fun LedgerCard(ledger: Ledger, onClick: () -> Unit, onLongClick: () -> Unit) {
     Row(
         modifier = Modifier
             .padding(bottom = 10.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(30.dp))
-            .clickable(onClick = { onClick() })
+            .combinedClickable(
+                onClick = { onClick() },
+                onLongClick = { onLongClick() }
+            )
             .border(2.dp, MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(30.dp))
             .background(MaterialTheme.colorScheme.background)
             .padding(20.dp)

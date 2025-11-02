@@ -28,14 +28,18 @@ fun LedgerScreen(innerPadding: PaddingValues, viewModel: LedgerViewModel) {
         LazyColumn(
             modifier = Modifier.padding(horizontal = 10.dp)
         ) {
-            itemsIndexed(viewModel.records.value) { idx, it ->
+            itemsIndexed(viewModel.ledgers.value) { idx, it ->
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(if (idx == 0) 15.dp else 0.dp)
                 )
 
-                LedgerCard(it) { viewModel.goToLedger(it.id) }
+                LedgerCard(
+                    it,
+                    onClick = { viewModel.goToLedger(it.id) },
+                    onLongClick = { viewModel.toggleLedgerOptionsDialog(it, true) }
+                )
             }
 
             item {
@@ -49,4 +53,6 @@ fun LedgerScreen(innerPadding: PaddingValues, viewModel: LedgerViewModel) {
     }
 
     NewLedgerDialog(viewModel)
+
+    LedgerOptionsDialog(viewModel)
 }

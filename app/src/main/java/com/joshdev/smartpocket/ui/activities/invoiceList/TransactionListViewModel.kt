@@ -7,15 +7,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.joshdev.smartpocket.domain.models.Ledger
-import com.joshdev.smartpocket.domain.models.LedgerRealm
 import com.joshdev.smartpocket.domain.models.Transaction
-import com.joshdev.smartpocket.domain.models.TransactionRealm
-import com.joshdev.smartpocket.repository.database.realm.RealmDatabase
+import com.joshdev.smartpocket.repository.database.Operations
+import com.joshdev.smartpocket.repository.database.RealmDatabase
+import com.joshdev.smartpocket.repository.models.LedgerRealm
+import com.joshdev.smartpocket.repository.models.TransactionRealm
 import com.joshdev.smartpocket.ui.activities.productList.ProductListActivity
 import io.realm.kotlin.ext.query
-import io.realm.kotlin.ext.toRealmList
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.mongodb.kbson.ObjectId
 
@@ -24,6 +23,8 @@ class TransactionListViewModel : ViewModel() {
     private val context = mutableStateOf<Context?>(null)
     private val ledgerId = mutableStateOf<String?>(null)
     private val database = RealmDatabase.getInstance()
+
+    private val operations = Operations(database)
 
     private val _showNewTransactionDialog = mutableStateOf(false)
     val showNewTransactionDialog: State<Boolean> = _showNewTransactionDialog
@@ -51,48 +52,13 @@ class TransactionListViewModel : ViewModel() {
             ).find().firstOrNull()
 
             ledger?.let {
-                _ledger.value = ledger.toLedger()
+                _ledger.value = ledger.toData()
                 observeTransactions()
             }
         }
     }
 
-    fun observeTransactions() {
-        viewModelScope.launch {
-            database.let { realm ->
-                realm.query<TransactionRealm>()
-                    .asFlow()
-                    .map { results ->
-                        val tmp = results.list.filter { it.ledgerId == ledgerId.value }
-                        tmp.map { it.toTransaction() }
-                    }
-                    .collect { transactionList ->
-                        _transactions.value = transactionList
-                    }
-            }
-        }
-    }
-
-    fun addTransaction(transaction: Transaction) {
-        database.writeBlocking {
-            val newTransactionRealm = TransactionRealm().apply {
-                id = ObjectId.invoke()
-                name = transaction.name
-                type = transaction.type.toString()
-                amount = transaction.amount
-                date = transaction.date
-                description = transaction.description
-                ledgerId = transaction.ledgerId
-                currencyId = transaction.currencyId
-                postBalance = transaction.postBalance
-                hasProducts = transaction.hasProducts
-                products = transaction.products.map { it.toProductRealm() }.toRealmList()
-            }
-
-            copyToRealm(newTransactionRealm)
-        }
-    }
-
+    // UI Actions
     fun toggleNewTransactionDialog(value: Boolean?) {
         if (value != null) {
             _showNewTransactionDialog.value = value
@@ -112,17 +78,23 @@ class TransactionListViewModel : ViewModel() {
         _showTransactionOptionsDialog.value = value
     }
 
+    // Operations
+    fun observeTransactions() {
+        viewModelScope.launch {
+            operations.observeItems<Transaction, TransactionRealm>().collect { transactionList ->
+                _transactions.value = transactionList
+            }
+        }
+    }
+
+    fun addTransaction(transaction: Transaction) {
+        operations.addItem<Transaction, TransactionRealm>(transaction)
+    }
+
     fun deleteTransaction() {
         selectedTransaction.value?.let { tx ->
-            val id = ObjectId(tx.id)
-
             viewModelScope.launch(Dispatchers.IO) {
-                database.writeBlocking {
-                    val txToDelete = this.query<TransactionRealm>("id == $0", id).first().find()
-                    txToDelete?.let {
-                        delete(it)
-                    }
-                }
+                operations.deleteItem<Transaction, TransactionRealm>(tx.id)
             }
         }
     }

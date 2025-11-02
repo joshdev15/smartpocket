@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.joshdev.smartpocket.domain.models.Currency
 import com.joshdev.smartpocket.domain.models.CurrencyRealm
-import com.joshdev.smartpocket.repository.database.realm.RealmDatabase
+import com.joshdev.smartpocket.repository.database.RealmDatabase
 import io.realm.kotlin.ext.query
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch

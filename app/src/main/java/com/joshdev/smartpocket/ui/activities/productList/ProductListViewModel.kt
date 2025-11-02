@@ -7,10 +7,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.joshdev.smartpocket.domain.models.Product
-import com.joshdev.smartpocket.domain.models.ProductRealm
 import com.joshdev.smartpocket.domain.models.Transaction
-import com.joshdev.smartpocket.domain.models.TransactionRealm
-import com.joshdev.smartpocket.repository.database.realm.RealmDatabase
+import com.joshdev.smartpocket.repository.database.RealmDatabase
+import com.joshdev.smartpocket.repository.models.ProductRealm
+import com.joshdev.smartpocket.repository.models.TransactionRealm
 import com.joshdev.smartpocket.ui.activities.photoai.PhotoAIActivity
 import io.realm.kotlin.ext.query
 import kotlinx.coroutines.Dispatchers
@@ -25,10 +25,10 @@ class ProductListViewModel : ViewModel() {
     private val transactionId = mutableStateOf<String?>(null)
 
     private val _transaction = mutableStateOf<Transaction?>(null)
-    val transaction: State<Transaction?> = _transaction;
+    val transaction: State<Transaction?> = _transaction
 
     private val _products = mutableStateOf<List<Product>>(emptyList())
-    val products: State<List<Product>> = _products;
+    val products: State<List<Product>> = _products
 
     private val _showNewProductDialog = mutableStateOf(false)
     val showNewProductDialog: State<Boolean> = _showNewProductDialog
@@ -41,7 +41,7 @@ class ProductListViewModel : ViewModel() {
             val invoice =
                 database.query<TransactionRealm>("id == $0", ObjectId(txId)).find().firstOrNull()
             invoice?.let {
-                _transaction.value = it.toTransaction()
+                _transaction.value = it.toData()
                 observeProducts()
             }
         }
@@ -54,7 +54,7 @@ class ProductListViewModel : ViewModel() {
                     .asFlow()
                     .map { results ->
                         val tmp = results.list.filter { it.invoiceId == transactionId.value }
-                        tmp.map { it.toProduct() }
+                        tmp.map { it.toData() }
                     }
                     .collect { productList ->
                         _products.value = productList

@@ -33,10 +33,12 @@ fun NewLedgerDialog(viewModel: LedgerViewModel) {
     var ledgerCapital by remember { mutableStateOf("") }
 
     val onClose = {
+        ledgerCapital = ""
+        ledgerName = ""
         viewModel.toggleNewRecordDialog(false)
     }
 
-    if (viewModel.showNewRecordDialog.value) {
+    if (viewModel.showNewLedgerDialog.value) {
         Dialog(
             onDismissRequest = { onClose() },
             properties = DialogProperties(
@@ -81,7 +83,10 @@ fun NewLedgerDialog(viewModel: LedgerViewModel) {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Button(
+                        enabled = ledgerName != "",
                         onClick = {
+                            if (ledgerCapital.isEmpty()) ledgerCapital = "0"
+
                             val newLedger = Ledger(
                                 name = ledgerName,
                                 initialCapital = ledgerCapital.toDouble(),
@@ -90,7 +95,6 @@ fun NewLedgerDialog(viewModel: LedgerViewModel) {
                             )
 
                             viewModel.addLedger(newLedger)
-                            ledgerName = ""
                             onClose()
                         },
                         modifier = Modifier
