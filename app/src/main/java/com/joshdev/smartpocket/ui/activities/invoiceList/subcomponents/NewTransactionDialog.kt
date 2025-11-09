@@ -122,6 +122,7 @@ fun NewTransactionDialog(ledgerId: String, viewModel: TransactionListViewModel) 
 
                             viewModel.addTransaction(tx)
                             txName = ""
+                            txAmount = ""
                             onClose()
                         },
                         modifier = Modifier

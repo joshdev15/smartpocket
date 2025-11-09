@@ -34,7 +34,7 @@ import com.joshdev.smartpocket.ui.utils.UiUtils
 @SuppressLint("ResourceAsColor")
 @Composable
 fun LedgerResume(ledger: Ledger, transactions: List<Transaction>) {
-    val capitalColor = MaterialTheme.colorScheme.onBackground.copy(0.3f)
+    val capitalColor = MaterialTheme.colorScheme.background.copy(0.3f)
     val incomeColor = colorResource(id = R.color.income)
     val egressColor = colorResource(id = R.color.egress)
 
@@ -47,7 +47,7 @@ fun LedgerResume(ledger: Ledger, transactions: List<Transaction>) {
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(20.dp))
-            .background(MaterialTheme.colorScheme.surfaceBright)
+            .background(MaterialTheme.colorScheme.tertiaryContainer)
             .padding(10.dp)
     ) {
         Column(
