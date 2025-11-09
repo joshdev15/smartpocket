@@ -34,15 +34,12 @@ import com.joshdev.smartpocket.ui.utils.UiUtils
 @SuppressLint("ResourceAsColor")
 @Composable
 fun LedgerResume(ledger: Ledger, transactions: List<Transaction>) {
-    val capitalColor = MaterialTheme.colorScheme.primaryContainer
+    val capitalColor = MaterialTheme.colorScheme.onBackground.copy(0.3f)
     val incomeColor = colorResource(id = R.color.income)
     val egressColor = colorResource(id = R.color.egress)
 
     val income = transactions.filter { it.type == Transaction.TxType.INCOME }.sumOf { it.amount }
     val egress = transactions.filter { it.type == Transaction.TxType.EGRESS }.sumOf { it.amount }
-
-    val incomeAnalysis = UiUtils.amountAnalysis(ledger.totalBalance, income)
-    val egressAnalysis = UiUtils.amountAnalysis(ledger.totalBalance, egress)
 
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -54,122 +51,42 @@ fun LedgerResume(ledger: Ledger, transactions: List<Transaction>) {
             .padding(10.dp)
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .size(200.dp)
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Canvas(modifier = Modifier.size(150.dp)) {
-                val radius = size.minDimension / 2f
-                val center = Offset(x = size.width / 2, y = size.height / 2)
-                val strokeWidth = 50f
-                val startAngle = -90f
-
-                drawCircle(
-                    color = capitalColor,
-                    radius = radius,
-                    center = center,
-                    style = Stroke(width = strokeWidth)
-                )
-
-                drawArc(
-                    color = incomeColor,
-                    startAngle = startAngle,
-                    sweepAngle = incomeAnalysis.second,
-                    useCenter = false,
-                    topLeft = Offset(center.x + 25 - radius, center.y + 25 - radius),
-                    size = Size(2 * radius - 50, 2 * radius - 50),
-                    style = Stroke(width = strokeWidth - 30)
-                )
-
-                drawArc(
-                    color = egressColor,
-                    startAngle = startAngle,
-                    sweepAngle = egressAnalysis.second,
-                    useCenter = false,
-                    topLeft = Offset(center.x + 25 - (radius + 50), center.y + 25 - (radius + 50)),
-                    size = Size(2 * radius + 50, 2 * radius + 50),
-                    style = Stroke(width = strokeWidth - 30)
-                )
-            }
-        }
-        Column(modifier = Modifier.weight(1f)) {
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Spacer(
-                    modifier = Modifier
-                        .width(10.dp)
-                        .height(10.dp)
-                        .background(capitalColor)
-                )
-                Spacer(
-                    modifier = Modifier
-                        .width(10.dp)
-                        .height(10.dp)
-                )
-                AppText("Capital inicial: ${ledger.initialCapital}", fontSize = 10.sp)
-            }
-
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Spacer(
-                    modifier = Modifier
-                        .width(10.dp)
-                        .height(10.dp)
-                        .background(incomeColor)
-                )
-                Spacer(
-                    modifier = Modifier
-                        .width(10.dp)
-                        .height(10.dp)
-                )
-                AppText("Ingresos: $income", fontSize = 10.sp)
-            }
-
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Spacer(
-                    modifier = Modifier
-                        .width(10.dp)
-                        .height(10.dp)
-                        .background(egressColor)
-                )
-                Spacer(
-                    modifier = Modifier
-                        .width(10.dp)
-                        .height(10.dp)
-                )
-                AppText("Egresos: $egress", fontSize = 10.sp)
-            }
-
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(10.dp)
-            )
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(1.dp)
-                    .background(Color.Gray)
-            )
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(10.dp)
+            BarChart(
+                totalBalance = ledger.initialCapital + income,
+                income = income,
+                egress = egress,
             )
 
-            AppText("Saldo actual: ${ledger?.totalBalance ?: 0}", fontSize = 12.sp)
-            AppText("Transacciones: ${transactions.size}", fontSize = 10.sp)
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.weight(1f)) {
+                    DescriptorWithColor(
+                        text = "Capital inicial",
+                        color = capitalColor,
+                        amount = ledger.initialCapital
+                    )
+
+                    DescriptorWithColor(
+                        text = "Ingresos",
+                        color = incomeColor,
+                        amount = income
+                    )
+
+                    DescriptorWithColor(
+                        text = "Egresos",
+                        color = egressColor,
+                        amount = egress
+                    )
+                }
+                Column(
+                    horizontalAlignment = Alignment.End,
+                    verticalArrangement = Arrangement.Top,
+                ) {
+                    AppText("Saldo actual: ${ledger?.totalBalance ?: 0}", fontSize = 10.sp)
+                    AppText("Transacciones: ${transactions.size}", fontSize = 10.sp)
+                }
+            }
         }
     }
 }

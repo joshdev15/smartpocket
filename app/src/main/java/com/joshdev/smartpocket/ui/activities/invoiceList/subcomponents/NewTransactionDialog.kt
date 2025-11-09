@@ -61,7 +61,11 @@ fun NewTransactionDialog(ledgerId: String, viewModel: TransactionListViewModel) 
 
                 OutlinedTextField(
                     value = txName,
-                    onValueChange = { txName = it },
+                    onValueChange = {
+                        if (txName.length <= 20) {
+                            txName = it
+                        }
+                    },
                     label = { Text("Nombre") },
                     modifier = Modifier
                         .fillMaxWidth()
