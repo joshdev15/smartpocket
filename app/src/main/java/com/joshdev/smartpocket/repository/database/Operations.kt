@@ -1,7 +1,11 @@
 package com.joshdev.smartpocket.repository.database
 
+import com.joshdev.smartpocket.domain.models.Ledger
+import com.joshdev.smartpocket.domain.models.Transaction
 import com.joshdev.smartpocket.repository.interfaces.ToData
 import com.joshdev.smartpocket.repository.interfaces.ToRealm
+import com.joshdev.smartpocket.repository.models.LedgerRealm
+import com.joshdev.smartpocket.repository.models.TransactionRealm
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.types.RealmObject
@@ -31,6 +35,32 @@ class Operations @Inject constructor(val db: Realm) {
 
         db.writeBlocking {
             copyToRealm(item.toRealm())
+        }
+    }
+
+    suspend inline fun updateItem(itemId: String) {
+        val objectId = ObjectId(itemId)
+
+        val ledger = db.query<LedgerRealm>("id == $0", objectId).first().find()
+        val allTransactions = db.query<TransactionRealm>("ledgerId == $0", itemId).find()
+
+        if (ledger != null) {
+            var totalAmount = ledger.initialCapital
+
+            allTransactions.forEach { transactionRealm ->
+                val transaction = transactionRealm.toData()
+                if (transaction.type == Transaction.TxType.INCOME) {
+                    totalAmount += transaction.amount
+                } else {
+                    totalAmount -= transaction.amount
+                }
+            }
+
+            db.write {
+                findLatest(ledger)?.let { latestLedger ->
+                    latestLedger.totalBalance = totalAmount
+                }
+            }
         }
     }
 

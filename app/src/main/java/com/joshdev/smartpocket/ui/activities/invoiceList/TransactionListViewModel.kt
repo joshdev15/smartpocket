@@ -52,8 +52,9 @@ class TransactionListViewModel : ViewModel() {
             ).find().firstOrNull()
 
             ledger?.let {
-                _ledger.value = ledger.toData()
+                _ledger.value = it.toData()
                 observeTransactions()
+                observeLedger(it.toData().id)
             }
         }
     }
@@ -79,6 +80,16 @@ class TransactionListViewModel : ViewModel() {
     }
 
     // Operations
+    fun observeLedger(itemId: String) {
+        viewModelScope.launch {
+            operations.observeItems<Ledger, LedgerRealm>().collect { ledgerList ->
+                val ledger = ledgerList.find { it.id == itemId }
+                _ledger.value = ledger
+            }
+        }
+    }
+
+
     fun observeTransactions() {
         viewModelScope.launch {
             operations.observeItems<Transaction, TransactionRealm>().collect { transactionList ->
@@ -89,12 +100,22 @@ class TransactionListViewModel : ViewModel() {
 
     fun addTransaction(transaction: Transaction) {
         operations.addItem<Transaction, TransactionRealm>(transaction)
+        updateLedgerBalance()
+    }
+
+    fun updateLedgerBalance() {
+        ledger.value?.let {
+            viewModelScope.launch(Dispatchers.IO) {
+                operations.updateItem(it.id)
+            }
+        }
     }
 
     fun deleteTransaction() {
         selectedTransaction.value?.let { tx ->
             viewModelScope.launch(Dispatchers.IO) {
                 operations.deleteItem<Transaction, TransactionRealm>(tx.id)
+                updateLedgerBalance()
             }
         }
     }
