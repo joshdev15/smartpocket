@@ -69,22 +69,11 @@ class LedgerActivity : ComponentActivity() {
             )
 
             BackHandler {
-                when {
-                    drawerState.isOpen -> {
-                        scope.launch { drawerState.close() }
-                    }
-                    allowExit -> {
-                        finish()
-                    }
-                    else -> {
-                        showToast(this@LedgerActivity, "Presione nuevamente para salir")
-                        allowExit = true
-                        lifecycleScope.launch {
-                            delay(2000)
-                            allowExit = false
-                        }
-                    }
+                if (drawerState.isOpen) {
+                    scope.launch { drawerState.close() }
                 }
+
+                finish()
             }
 
             SmartPocketTheme {

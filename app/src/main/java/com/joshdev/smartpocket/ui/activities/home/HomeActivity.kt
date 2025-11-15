@@ -1,0 +1,78 @@
+package com.joshdev.smartpocket.ui.activities.home
+
+import android.content.Intent
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.material3.Scaffold
+import androidx.lifecycle.lifecycleScope
+import com.joshdev.smartpocket.ui.activities.arching.ArchingActivity
+import com.joshdev.smartpocket.ui.activities.currency.CurrencyActivity
+import com.joshdev.smartpocket.ui.activities.home.subcomponents.HomeScreen
+import com.joshdev.smartpocket.ui.activities.ledger.LedgerActivity
+import com.joshdev.smartpocket.ui.components.AppTopBarBasic
+import com.joshdev.smartpocket.ui.models.HomeOption
+import com.joshdev.smartpocket.ui.theme.SmartPocketTheme
+import com.joshdev.smartpocket.ui.utils.UiUtils
+import com.joshdev.smartpocket.ui.utils.UiUtils.showToast
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
+class HomeActivity : ComponentActivity() {
+    private var allowExit = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+
+        val options = UiUtils.getHomeOptions()
+
+        setContent {
+            BackHandler {
+                when {
+                    allowExit -> {
+                        finish()
+                    }
+
+                    else -> {
+                        showToast(this@HomeActivity, "Presione nuevamente para salir")
+                        allowExit = true
+                        lifecycleScope.launch {
+                            delay(2000)
+                            allowExit = false
+                        }
+                    }
+                }
+            }
+
+            SmartPocketTheme {
+                Scaffold(
+                    topBar = { AppTopBarBasic("Inicio") },
+                    content = { innerPadding ->
+                        HomeScreen(innerPadding, options) {
+                            goToOption(it)
+                        }
+                    }
+                )
+            }
+        }
+    }
+
+    fun goToOption(optionId: HomeOption.IDs) {
+        val goTo = when (optionId) {
+            HomeOption.IDs.LEDGERS -> {
+                Intent(this, LedgerActivity::class.java)
+            }
+            HomeOption.IDs.ARCHING -> {
+                Intent(this, ArchingActivity::class.java)
+            }
+            HomeOption.IDs.COINS -> {
+                Intent(this, CurrencyActivity::class.java)
+            }
+        }
+
+        startActivity(goTo)
+    }
+}

@@ -3,6 +3,8 @@ package com.joshdev.smartpocket.ui.utils
 import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.Toast
+import com.joshdev.smartpocket.ui.models.HomeOption
+import com.joshdev.smartpocket.R
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -24,26 +26,31 @@ object UiUtils {
         return String.format("%.2f", amount)
     }
 
-    fun amountAnalysis(
-        totalBalance: Double,
-        amount: Double,
-        degrees: Int = 360
-    ): Pair<Float, Float> {
-        if (totalBalance == 0.0) {
-            return Pair(0f, 0f)
-        }
-
-        val percentage: Float = (amount.toFloat() / totalBalance.toFloat()) * 100f
-        val finalDegrees: Float = (amount.toFloat() / totalBalance.toFloat()) * degrees.toFloat()
-
-        return Pair(percentage, finalDegrees)
-    }
-
     fun ellipsis(text: String, length: Int): String {
         return if (text.length <= length) {
             text
         } else {
             "${text.take(length)}..."
         }
+    }
+
+    fun getHomeOptions(): List<HomeOption> {
+        return listOf(
+            HomeOption(
+                id = HomeOption.IDs.LEDGERS,
+                name = "Cuentas",
+                icon = R.drawable.card,
+            ),
+            HomeOption(
+                id = HomeOption.IDs.ARCHING,
+                name = "Arqueo",
+                icon = R.drawable.arching,
+            ),
+            HomeOption(
+                id = HomeOption.IDs.COINS,
+                name = "Divisas",
+                icon = R.drawable.coins,
+            ),
+        )
     }
 }

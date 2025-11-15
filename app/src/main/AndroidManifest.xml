@@ -59,7 +59,7 @@
 
         <!-- Activities-->
         <activity
-            android:name=".ui.activities.main.MainActivity"
+            android:name=".ui.activities.home.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -67,10 +67,20 @@
             </intent-filter>
         </activity>
 
+        <!-- Main Activities -->
         <activity
             android:name=".ui.activities.ledger.LedgerActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".ui.activities.currency.CurrencyActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activities.arching.ArchingActivity"
+            android:exported="false" />
+
+        <!-- Secondary Activities -->
         <activity
             android:name=".ui.activities.invoiceList.TransactionListActivity"
             android:exported="false" />
