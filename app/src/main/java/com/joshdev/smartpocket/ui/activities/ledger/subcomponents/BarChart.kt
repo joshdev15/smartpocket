@@ -52,7 +52,8 @@ fun BarChart(
             cornerRadius = cornerRadius
         )
 
-        val egressWidth = (egress / totalBalance).toFloat() * totalWidth
+        var egressWidth = (egress / totalBalance).toFloat() * totalWidth
+        egressWidth = if (egressWidth > totalWidth) totalWidth else egressWidth
         drawRoundRect(
             color = egressColor.copy(alpha = 0.8f),
             topLeft = Offset(0f, 0f),

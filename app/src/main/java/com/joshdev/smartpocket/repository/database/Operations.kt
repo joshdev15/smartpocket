@@ -1,6 +1,5 @@
 package com.joshdev.smartpocket.repository.database
 
-import com.joshdev.smartpocket.domain.models.Ledger
 import com.joshdev.smartpocket.domain.models.Transaction
 import com.joshdev.smartpocket.repository.interfaces.ToData
 import com.joshdev.smartpocket.repository.interfaces.ToRealm

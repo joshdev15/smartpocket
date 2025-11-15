@@ -44,12 +44,12 @@ fun CurrencyCard(currency: Currency) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 AppText(
-                    text = "Symbol: ${currency.symbol}",
+                    text = "Simbolo: ${currency.symbol}",
                     color = MaterialTheme.colorScheme.tertiary,
                     fontSize = 12.sp,
                 )
                 AppText(
-                    text = "Rate: ${currency.rate}",
+                    text = "Taza: ${currency.rate}",
                     color = MaterialTheme.colorScheme.tertiary,
                     fontSize = 12.sp,
                 )

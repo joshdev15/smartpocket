@@ -1,7 +1,7 @@
 package com.joshdev.smartpocket.repository.database
 
 import com.joshdev.smartpocket.domain.models.CategoryRealms
-import com.joshdev.smartpocket.domain.models.CurrencyRealm
+import com.joshdev.smartpocket.repository.models.CurrencyRealm
 import com.joshdev.smartpocket.repository.models.LedgerRealm
 import com.joshdev.smartpocket.repository.models.ProductRealm
 import com.joshdev.smartpocket.repository.models.TransactionRealm

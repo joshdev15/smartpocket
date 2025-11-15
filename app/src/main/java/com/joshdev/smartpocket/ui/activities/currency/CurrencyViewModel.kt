@@ -1,22 +1,24 @@
 package com.joshdev.smartpocket.ui.activities.currency
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.joshdev.smartpocket.domain.models.Currency
-import com.joshdev.smartpocket.domain.models.CurrencyRealm
+import com.joshdev.smartpocket.repository.database.Operations
 import com.joshdev.smartpocket.repository.database.RealmDatabase
-import io.realm.kotlin.ext.query
-import kotlinx.coroutines.flow.map
+import com.joshdev.smartpocket.repository.models.CurrencyRealm
 import kotlinx.coroutines.launch
 
 class CurrencyViewModel : ViewModel() {
     private val database = RealmDatabase.getInstance()
     private val activity = mutableStateOf<CurrencyActivity?>(null)
     private val context = mutableStateOf<Context?>(null)
+    private val operation = Operations(database)
+
+    private val _showNewCurrencyDialog = mutableStateOf(false)
+    val showNewCurrencyDialog: State<Boolean> = _showNewCurrencyDialog
 
     private val _currencies = mutableStateOf<List<Currency>?>(null)
     val currencies: State<List<Currency>?> = _currencies;
@@ -28,25 +30,27 @@ class CurrencyViewModel : ViewModel() {
         observeLedgers()
     }
 
+    // UI Actions
+    fun toggleNewCurrencyDialog(value: Boolean? = null) {
+        if (value != null) {
+            _showNewCurrencyDialog.value = value
+        } else {
+            _showNewCurrencyDialog.value = !_showNewCurrencyDialog.value
+        }
+    }
+
+    // Operations
     private fun observeLedgers() {
         viewModelScope.launch {
-            database.let { realm ->
-                realm.query<CurrencyRealm>()
-                    .asFlow()
-                    .map { results ->
-                        results.list.map { currencyRealm ->
-                            currencyRealm.toCurrency()
-                        }
-                    }
-                    .collect { ledgerList ->
-                        _currencies.value = ledgerList
-                    }
+            operation.observeItems<Currency, CurrencyRealm>().collect {
+                _currencies.value = it
             }
         }
     }
 
-    suspend fun setCurrency(currency: Currency) {
-        Log.i("CurrencyScreen", "Set currency")
-//        database.value?.currencyDao()?.insert(currency)
+    fun addCurrency(currency: Currency) {
+        viewModelScope.launch {
+            operation.addItem<Currency, CurrencyRealm>(currency)
+        }
     }
 }
