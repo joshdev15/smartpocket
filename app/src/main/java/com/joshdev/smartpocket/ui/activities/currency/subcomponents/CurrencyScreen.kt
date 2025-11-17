@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.joshdev.smartpocket.ui.activities.currency.CurrencyViewModel
+import com.joshdev.smartpocket.ui.utils.UiUtils.SCREEN_PADDING
 
 @Composable
 fun CurrencyScreen(innerPadding: PaddingValues, viewModel: CurrencyViewModel) {
@@ -23,11 +24,11 @@ fun CurrencyScreen(innerPadding: PaddingValues, viewModel: CurrencyViewModel) {
             .padding(innerPadding)
             .background(MaterialTheme.colorScheme.inverseOnSurface)
     ) {
-        LazyColumn(modifier = Modifier.padding(horizontal = 10.dp)) {
+        LazyColumn(modifier = Modifier.padding(horizontal = SCREEN_PADDING)) {
             itemsIndexed(viewModel.currencies.value ?: emptyList()) { idx, it ->
                 Spacer(
                     modifier = Modifier
-                        .height(if (idx == 0) 15.dp else 0.dp)
+                        .height(if (idx == 0) SCREEN_PADDING else 0.dp)
                         .padding(bottom = 10.dp)
                         .fillMaxSize()
                 )

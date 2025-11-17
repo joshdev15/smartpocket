@@ -18,12 +18,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.joshdev.smartpocket.domain.models.Currency
 import com.joshdev.smartpocket.ui.components.AppText
+import com.joshdev.smartpocket.ui.utils.UiUtils.SCREEN_PADDING
 
 @Composable
 fun CurrencyCard(currency: Currency) {
     Row(
         modifier = Modifier
-            .padding(bottom = 10.dp)
+            .padding(bottom = SCREEN_PADDING)
             .fillMaxWidth()
             .clip(RoundedCornerShape(30.dp))
             .border(2.dp, MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(30.dp))

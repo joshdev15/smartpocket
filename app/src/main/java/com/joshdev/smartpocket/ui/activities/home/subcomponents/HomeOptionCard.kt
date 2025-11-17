@@ -28,7 +28,7 @@ fun HomeOptionsCard(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
-            .padding(5.dp)
+            .padding(10.dp)
             .clip(RoundedCornerShape(10.dp))
             .clickable(
                 onClick = {

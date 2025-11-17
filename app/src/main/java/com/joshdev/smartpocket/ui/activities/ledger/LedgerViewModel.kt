@@ -11,6 +11,8 @@ import com.joshdev.smartpocket.repository.database.Operations
 import com.joshdev.smartpocket.repository.database.RealmDatabase
 import com.joshdev.smartpocket.repository.models.LedgerRealm
 import com.joshdev.smartpocket.ui.activities.invoiceList.TransactionListActivity
+import com.joshdev.smartpocket.ui.models.FastPanelOption
+import com.joshdev.smartpocket.ui.utils.UiUtils.getIntentByFastOptionID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -79,6 +81,12 @@ class LedgerViewModel : ViewModel() {
             viewModelScope.launch(Dispatchers.IO) {
                 operations.deleteItem<Ledger, LedgerRealm>(ledger.id)
             }
+        }
+    }
+
+    fun goTo(id: FastPanelOption.IDs) {
+        getIntentByFastOptionID(id, context.value)?.let {
+            activity.value?.startActivity(it)
         }
     }
 }

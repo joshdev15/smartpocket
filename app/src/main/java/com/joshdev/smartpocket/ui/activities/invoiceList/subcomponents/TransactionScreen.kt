@@ -17,6 +17,8 @@ import androidx.compose.ui.unit.dp
 import com.joshdev.smartpocket.ui.activities.invoiceList.TransactionListViewModel
 import com.joshdev.smartpocket.ui.activities.ledger.subcomponents.LedgerResume
 import com.joshdev.smartpocket.ui.components.TransactionCard
+import com.joshdev.smartpocket.ui.utils.UiUtils.SCREEN_FLOATING_PADDING
+import com.joshdev.smartpocket.ui.utils.UiUtils.SCREEN_PADDING
 
 @Composable
 fun TransactionScreen(
@@ -32,14 +34,14 @@ fun TransactionScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.inverseOnSurface)
             .padding(innerPadding)
-            .padding(horizontal = 10.dp)
+            .padding(horizontal = SCREEN_PADDING)
     ) {
         LazyColumn {
             item {
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(15.dp)
+                        .height(SCREEN_PADDING)
                 )
             }
 
@@ -53,7 +55,7 @@ fun TransactionScreen(
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(if (idx == 0) 15.dp else 0.dp)
+                        .height(if (idx == 0) SCREEN_PADDING else 0.dp)
                 )
 
                 TransactionCard(
@@ -67,7 +69,7 @@ fun TransactionScreen(
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(75.dp)
+                        .height(SCREEN_FLOATING_PADDING)
                 )
             }
         }

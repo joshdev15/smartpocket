@@ -29,7 +29,6 @@ fun AppTopBarBasic(section: String) {
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.background,
             titleContentColor = MaterialTheme.colorScheme.onBackground,
-        ),
-        modifier = Modifier.clip(RoundedCornerShape(10.dp))
+        )
     )
 }

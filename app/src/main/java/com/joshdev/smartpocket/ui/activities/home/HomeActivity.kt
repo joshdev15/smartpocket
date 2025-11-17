@@ -1,12 +1,16 @@
 package com.joshdev.smartpocket.ui.activities.home
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.Scaffold
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.joshdev.smartpocket.ui.activities.arching.ArchingActivity
 import com.joshdev.smartpocket.ui.activities.currency.CurrencyActivity
@@ -22,11 +26,18 @@ import kotlinx.coroutines.launch
 
 class HomeActivity : ComponentActivity() {
     private var allowExit = false
+    private var cameraAllowed = false
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            cameraAllowed = isGranted
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+        checkCameraPermissionAndLaunch()
+        
         val options = UiUtils.getHomeOptions()
 
         setContent {
@@ -74,5 +85,16 @@ class HomeActivity : ComponentActivity() {
         }
 
         startActivity(goTo)
+    }
+
+    private fun checkCameraPermissionAndLaunch() {
+        when {
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED -> {
+                requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+            }
+        }
     }
 }

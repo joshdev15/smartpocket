@@ -15,24 +15,43 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.joshdev.smartpocket.ui.activities.ledger.LedgerViewModel
+import com.joshdev.smartpocket.ui.components.FastPanel
 import com.joshdev.smartpocket.ui.components.LedgerCard
+import com.joshdev.smartpocket.ui.models.FastPanelOption
+import com.joshdev.smartpocket.ui.utils.UiUtils.SCREEN_FLOATING_PADDING
+import com.joshdev.smartpocket.ui.utils.UiUtils.SCREEN_PADDING
 
 @Composable
 fun LedgerScreen(innerPadding: PaddingValues, viewModel: LedgerViewModel) {
+    val options = listOf(
+        FastPanelOption(
+            id = FastPanelOption.IDs.CURRENCIES,
+            name = "Divisas",
+        ),
+        FastPanelOption(
+            id = FastPanelOption.IDs.CATEGORIES_LEDGER,
+            name = "Categorías de Cuentas",
+        )
+    )
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.inverseOnSurface)
             .padding(innerPadding)
     ) {
+        FastPanel(options) {
+            viewModel.goTo(it)
+        }
+
         LazyColumn(
-            modifier = Modifier.padding(horizontal = 10.dp)
+            modifier = Modifier.padding(horizontal = SCREEN_PADDING)
         ) {
             itemsIndexed(viewModel.ledgers.value) { idx, it ->
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(if (idx == 0) 15.dp else 0.dp)
+                        .height(if (idx == 0) SCREEN_PADDING else 0.dp)
                 )
 
                 LedgerCard(
@@ -46,7 +65,7 @@ fun LedgerScreen(innerPadding: PaddingValues, viewModel: LedgerViewModel) {
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(70.dp)
+                        .height(SCREEN_FLOATING_PADDING)
                 )
             }
         }

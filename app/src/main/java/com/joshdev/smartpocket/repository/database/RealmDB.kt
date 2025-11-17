@@ -1,7 +1,8 @@
 package com.joshdev.smartpocket.repository.database
 
-import com.joshdev.smartpocket.domain.models.CategoryRealms
+import com.joshdev.smartpocket.repository.models.ArchingCategoryRealm
 import com.joshdev.smartpocket.repository.models.CurrencyRealm
+import com.joshdev.smartpocket.repository.models.LedgerCategoryRealm
 import com.joshdev.smartpocket.repository.models.LedgerRealm
 import com.joshdev.smartpocket.repository.models.ProductRealm
 import com.joshdev.smartpocket.repository.models.TransactionRealm
@@ -20,11 +21,17 @@ object RealmDatabase {
             val config = RealmConfiguration
                 .create(
                     schema = setOf(
+                        // Main Classes
                         LedgerRealm::class,
+                        CurrencyRealm::class,
+
+                        // Ledger Classes
+                        LedgerCategoryRealm::class,
                         TransactionRealm::class,
                         ProductRealm::class,
-                        CategoryRealms::class,
-                        CurrencyRealm::class,
+
+                        // Arching Classes
+                        ArchingCategoryRealm::class
                     ) as Set<KClass<out TypedRealmObject>>
                 )
 
