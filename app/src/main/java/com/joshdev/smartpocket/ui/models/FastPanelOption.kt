@@ -7,7 +7,8 @@ data class FastPanelOption(
     enum class IDs {
         CURRENCIES,
         CATEGORIES_LEDGER,
-        PRODUCTS,
-        CATEGORIES_ARCHING
+        PRODUCTS_LEDGER,
+        CATEGORIES_ARCHING,
+        PRODUCTS_ARCHING
     }
 }

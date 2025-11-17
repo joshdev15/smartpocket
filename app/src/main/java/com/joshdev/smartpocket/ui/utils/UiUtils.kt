@@ -7,9 +7,11 @@ import android.widget.Toast
 import androidx.compose.ui.unit.dp
 import com.joshdev.smartpocket.ui.models.HomeOption
 import com.joshdev.smartpocket.R
+import com.joshdev.smartpocket.ui.activities.archingProducts.ArchingProductsActivity
 import com.joshdev.smartpocket.ui.activities.categoryList.CategoryListActivity
 import com.joshdev.smartpocket.ui.activities.currency.CurrencyActivity
 import com.joshdev.smartpocket.ui.activities.ledger.LedgerActivity
+import com.joshdev.smartpocket.ui.activities.productList.ProductListActivity
 import com.joshdev.smartpocket.ui.models.FastPanelOption
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -77,12 +79,16 @@ object UiUtils {
                 Intent(context, CategoryListActivity::class.java)
             }
 
-            FastPanelOption.IDs.PRODUCTS -> {
-                Intent(context, LedgerActivity::class.java)
+            FastPanelOption.IDs.PRODUCTS_LEDGER -> {
+                Intent(context, ProductListActivity::class.java)
             }
 
             FastPanelOption.IDs.CATEGORIES_ARCHING -> {
                 Intent(context, CategoryListActivity::class.java)
+            }
+
+            FastPanelOption.IDs.PRODUCTS_ARCHING -> {
+                Intent(context, ArchingProductsActivity::class.java)
             }
         }
 

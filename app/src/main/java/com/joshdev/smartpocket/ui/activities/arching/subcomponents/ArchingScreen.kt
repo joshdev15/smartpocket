@@ -18,17 +18,17 @@ import com.joshdev.smartpocket.ui.models.FastPanelOption
 fun ArchingScreen(innerPadding: PaddingValues, viewModel: ArchingViewModel) {
     val options = listOf(
         FastPanelOption(
-            id = FastPanelOption.IDs.PRODUCTS,
+            id = FastPanelOption.IDs.PRODUCTS_ARCHING,
             name = "Productos",
+        ),
+        FastPanelOption(
+            id = FastPanelOption.IDs.CATEGORIES_ARCHING,
+            name = "Categorías",
         ),
         FastPanelOption(
             id = FastPanelOption.IDs.CURRENCIES,
             name = "Divisas",
-        ),
-        FastPanelOption(
-            id = FastPanelOption.IDs.CATEGORIES_ARCHING,
-            name = "Categorías de Cierre",
-        ),
+        )
     )
 
 
