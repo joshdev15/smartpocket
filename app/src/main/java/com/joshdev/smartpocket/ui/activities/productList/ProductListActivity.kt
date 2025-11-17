@@ -34,7 +34,7 @@ class ProductListActivity : ComponentActivity() {
 
             SmartPocketTheme {
                 Scaffold(
-                    topBar = { AppTopBarBasic("Productos de ${viewModel.transaction.value?.name ?: ""}") },
+                    topBar = { AppTopBarBasic("Productos de ${viewModel.ledgerTransaction.value?.name ?: ""}") },
                     floatingActionButton = {
                         FloatingPanel(
                             "Lectura con IA",

@@ -7,11 +7,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.joshdev.smartpocket.domain.models.Ledger
-import com.joshdev.smartpocket.domain.models.Transaction
+import com.joshdev.smartpocket.domain.models.LedgerTransaction
 import com.joshdev.smartpocket.repository.database.Operations
 import com.joshdev.smartpocket.repository.database.RealmDatabase
 import com.joshdev.smartpocket.repository.models.LedgerRealm
-import com.joshdev.smartpocket.repository.models.TransactionRealm
+import com.joshdev.smartpocket.repository.models.LedgerTransactionRealm
 import com.joshdev.smartpocket.ui.activities.productList.ProductListActivity
 import io.realm.kotlin.ext.query
 import kotlinx.coroutines.Dispatchers
@@ -32,14 +32,14 @@ class TransactionListViewModel : ViewModel() {
     private val _showTransactionOptionsDialog = mutableStateOf(false)
     val showTransactionOptionsDialog: State<Boolean> = _showTransactionOptionsDialog
 
-    private val _selectedTransaction = mutableStateOf<Transaction?>(null)
-    val selectedTransaction: State<Transaction?> = _selectedTransaction
+    private val _selectedLedgerTransaction = mutableStateOf<LedgerTransaction?>(null)
+    val selectedLedgerTransaction: State<LedgerTransaction?> = _selectedLedgerTransaction
 
     private val _ledger = mutableStateOf<Ledger?>(null)
     val ledger: State<Ledger?> = _ledger
 
-    private val _transactions = mutableStateOf<List<Transaction>>(listOf())
-    val transactions: State<List<Transaction>> = _transactions
+    private val _transactions = mutableStateOf<List<LedgerTransaction>>(listOf())
+    val transactions: State<List<LedgerTransaction>> = _transactions
 
     fun start(act: TransactionListActivity, ctx: Context, ledgerId: String) {
         activity.value = act
@@ -74,8 +74,8 @@ class TransactionListViewModel : ViewModel() {
         activity.value?.startActivity(goToProductList)
     }
 
-    fun toggleTransactionOptionsDialog(tx: Transaction?, value: Boolean) {
-        _selectedTransaction.value = tx
+    fun toggleTransactionOptionsDialog(tx: LedgerTransaction?, value: Boolean) {
+        _selectedLedgerTransaction.value = tx
         _showTransactionOptionsDialog.value = value
     }
 
@@ -92,14 +92,14 @@ class TransactionListViewModel : ViewModel() {
 
     fun observeTransactions() {
         viewModelScope.launch {
-            operations.observeItems<Transaction, TransactionRealm>().collect { transactionList ->
+            operations.observeItems<LedgerTransaction, LedgerTransactionRealm>().collect { transactionList ->
                 _transactions.value = transactionList
             }
         }
     }
 
-    fun addTransaction(transaction: Transaction) {
-        operations.addItem<Transaction, TransactionRealm>(transaction)
+    fun addTransaction(ledgerTransaction: LedgerTransaction) {
+        operations.addItem<LedgerTransaction, LedgerTransactionRealm>(ledgerTransaction)
         updateLedgerBalance()
     }
 
@@ -112,9 +112,9 @@ class TransactionListViewModel : ViewModel() {
     }
 
     fun deleteTransaction() {
-        selectedTransaction.value?.let { tx ->
+        selectedLedgerTransaction.value?.let { tx ->
             viewModelScope.launch(Dispatchers.IO) {
-                operations.deleteItem<Transaction, TransactionRealm>(tx.id)
+                operations.deleteItem<LedgerTransaction, LedgerTransactionRealm>(tx.id)
                 updateLedgerBalance()
             }
         }

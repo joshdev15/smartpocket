@@ -65,36 +65,38 @@ fun CurrencyOptionsDialog(viewModel: CurrencyViewModel) {
                             .fillMaxWidth()
                             .padding(top = 10.dp)
                     ) {
-                        Row(
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable(onClick = {})
-                        ) {
-                            AppText(
-                                text = "Editar",
-                                fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                                modifier = Modifier.padding(10.dp)
-                            )
-                        }
+//                        Row(
+//                            horizontalArrangement = Arrangement.Center,
+//                            verticalAlignment = Alignment.CenterVertically,
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .clickable(onClick = {})
+//                        ) {
+//                            AppText(
+//                                text = "Editar",
+//                                fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+//                                modifier = Modifier.padding(10.dp)
+//                            )
+//                        }
 
-                        Row(
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable(onClick = {
-                                    viewModel.deleteCurrency()
-                                    onClose()
-                                })
-                        ) {
-                            AppText(
-                                text = "Eliminar",
-                                fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                                color = Color.Red,
-                                modifier = Modifier.padding(10.dp)
-                            )
+                        if (it.name != "USD") {
+                            Row(
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable(onClick = {
+                                        viewModel.deleteCurrency()
+                                        onClose()
+                                    })
+                            ) {
+                                AppText(
+                                    text = "Eliminar",
+                                    fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                                    color = Color.Red,
+                                    modifier = Modifier.padding(10.dp)
+                                )
+                            }
                         }
                     }
                 }

@@ -48,7 +48,7 @@ class HomeActivity : ComponentActivity() {
                     }
 
                     else -> {
-                        showToast(this@HomeActivity, "Presione nuevamente para salir")
+                        showToast(this@HomeActivity, "Click nuevamente para salir")
                         allowExit = true
                         lifecycleScope.launch {
                             delay(2000)

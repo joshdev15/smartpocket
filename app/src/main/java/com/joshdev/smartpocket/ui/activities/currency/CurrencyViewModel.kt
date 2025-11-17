@@ -69,7 +69,9 @@ class CurrencyViewModel : ViewModel() {
     fun deleteCurrency() {
         selectedCurrency.value?.let { currency ->
             viewModelScope.launch(Dispatchers.IO) {
-                operations.deleteItem<Currency, CurrencyRealm>(currency.id)
+                if (currency.name != "USD") {
+                    operations.deleteItem<Currency, CurrencyRealm>(currency.id)
+                }
             }
         }
     }

@@ -19,12 +19,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.joshdev.smartpocket.domain.models.Product
+import com.joshdev.smartpocket.domain.models.LedgerProduct
 import com.joshdev.smartpocket.ui.components.AppText
 import com.joshdev.smartpocket.ui.utils.UiUtils.formatAmount
 
 @Composable
-fun ProductCard(product: Product) {
+fun ProductCard(ledgerProduct: LedgerProduct) {
     val panelIsActive = remember { mutableStateOf(false) }
     Row(
         modifier = Modifier
@@ -45,13 +45,13 @@ fun ProductCard(product: Product) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 AppText(
-                    text = product.name,
+                    text = ledgerProduct.name,
                     fontSize = 18.sp,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontWeight = FontWeight.Bold,
                 )
                 AppText(
-                    text = "$${formatAmount(product.cost)}",
+                    text = "$${formatAmount(ledgerProduct.cost)}",
                     fontSize = 16.sp,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontWeight = FontWeight.Medium,
@@ -64,7 +64,7 @@ fun ProductCard(product: Product) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 AppText(
-                    text = "Cant.: ${product.quantity}",
+                    text = "Cant.: ${ledgerProduct.quantity}",
                     color = MaterialTheme.colorScheme.secondary,
                     fontSize = 12.sp,
                 )
@@ -75,7 +75,7 @@ fun ProductCard(product: Product) {
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                val total = formatAmount(product.cost * product.quantity)
+                val total = formatAmount(ledgerProduct.cost * ledgerProduct.quantity)
                 AppText(
                     text = "Costo total: $total",
                     color = MaterialTheme.colorScheme.tertiary,

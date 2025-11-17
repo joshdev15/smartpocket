@@ -24,9 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.joshdev.smartpocket.domain.models.Currency
-import com.joshdev.smartpocket.domain.models.Transaction
 import com.joshdev.smartpocket.ui.activities.currency.CurrencyViewModel
-import com.joshdev.smartpocket.ui.components.AppSwitch
 import com.joshdev.smartpocket.ui.components.AppText
 
 @Composable

@@ -67,20 +67,16 @@
             </intent-filter>
         </activity>
 
-        <!-- Main Activities -->
-        <activity
-            android:name=".ui.activities.ledger.LedgerActivity"
-            android:exported="false" />
-
+        <!-- Currency Activities -->
         <activity
             android:name=".ui.activities.currency.CurrencyActivity"
             android:exported="false" />
 
+        <!-- Ledger Activities -->
         <activity
-            android:name=".ui.activities.arching.ArchingActivity"
+            android:name=".ui.activities.ledger.LedgerActivity"
             android:exported="false" />
 
-        <!-- Secondary Activities -->
         <activity
             android:name=".ui.activities.invoiceList.TransactionListActivity"
             android:exported="false" />
@@ -90,15 +86,21 @@
             android:exported="false" />
 
         <activity
-            android:name=".ui.activities.photoai.PhotoAIActivity"
-            android:exported="false" />
-
-        <activity
             android:name=".ui.activities.categoryList.CategoryListActivity"
             android:exported="false" />
 
         <activity
-            android:name=".ui.activities.currency.CurrencyActivity"
+            android:name=".ui.activities.photoai.PhotoAIActivity"
             android:exported="false" />
+
+        <!-- Arching Activities -->
+        <activity
+            android:name=".ui.activities.arching.ArchingActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activities.archingProducts.ArchingProductsActivity"
+            android:exported="false" />
+
     </application>
 </manifest>

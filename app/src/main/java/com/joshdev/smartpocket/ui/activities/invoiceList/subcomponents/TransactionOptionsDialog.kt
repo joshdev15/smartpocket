@@ -25,7 +25,7 @@ import com.joshdev.smartpocket.ui.utils.UiUtils.ellipsis
 fun TransactionOptionsDialog(viewModel: TransactionListViewModel) {
     val onClose = { viewModel.toggleTransactionOptionsDialog(null, false) }
 
-    viewModel.selectedTransaction.value?.let {
+    viewModel.selectedLedgerTransaction.value?.let {
         if (viewModel.showTransactionOptionsDialog.value) {
             Dialog(
                 onDismissRequest = { onClose() },

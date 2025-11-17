@@ -22,7 +22,7 @@ class ArchingActivity : ComponentActivity() {
         setContent {
             SmartPocketTheme {
                 Scaffold(
-                    topBar = { AppTopBarBasic("Arqueo") },
+                    topBar = { AppTopBarBasic("Cierre") },
                     content = { innerPadding ->
                         ArchingScreen(innerPadding, viewModel)
                     }

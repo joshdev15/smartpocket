@@ -1,11 +1,13 @@
 package com.joshdev.smartpocket.repository.database
 
 import com.joshdev.smartpocket.repository.models.ArchingCategoryRealm
+import com.joshdev.smartpocket.repository.models.ArchingProductRealm
+import com.joshdev.smartpocket.repository.models.ArchingRealm
 import com.joshdev.smartpocket.repository.models.CurrencyRealm
 import com.joshdev.smartpocket.repository.models.LedgerCategoryRealm
 import com.joshdev.smartpocket.repository.models.LedgerRealm
-import com.joshdev.smartpocket.repository.models.ProductRealm
-import com.joshdev.smartpocket.repository.models.TransactionRealm
+import com.joshdev.smartpocket.repository.models.LedgerProductRealm
+import com.joshdev.smartpocket.repository.models.LedgerTransactionRealm
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.ext.query
@@ -21,17 +23,19 @@ object RealmDatabase {
             val config = RealmConfiguration
                 .create(
                     schema = setOf(
-                        // Main Classes
-                        LedgerRealm::class,
+                        // Currency Classes
                         CurrencyRealm::class,
 
                         // Ledger Classes
+                        LedgerRealm::class,
                         LedgerCategoryRealm::class,
-                        TransactionRealm::class,
-                        ProductRealm::class,
+                        LedgerTransactionRealm::class,
+                        LedgerProductRealm::class,
 
                         // Arching Classes
-                        ArchingCategoryRealm::class
+                        ArchingRealm::class,
+                        ArchingCategoryRealm::class,
+                        ArchingProductRealm::class
                     ) as Set<KClass<out TypedRealmObject>>
                 )
 

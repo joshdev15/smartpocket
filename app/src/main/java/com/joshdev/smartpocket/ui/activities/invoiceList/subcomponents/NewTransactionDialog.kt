@@ -23,7 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.joshdev.smartpocket.domain.models.Transaction
+import com.joshdev.smartpocket.domain.models.LedgerTransaction
 import com.joshdev.smartpocket.ui.activities.invoiceList.TransactionListViewModel
 import com.joshdev.smartpocket.ui.components.AppSwitch
 import com.joshdev.smartpocket.ui.components.AppText
@@ -105,10 +105,10 @@ fun NewTransactionDialog(ledgerId: String, viewModel: TransactionListViewModel) 
                 ) {
                     Button(
                         onClick = {
-                            val tx = Transaction(
+                            val tx = LedgerTransaction(
                                 id = "",
                                 name = txName,
-                                type = if (txType) Transaction.TxType.INCOME else Transaction.TxType.EGRESS,
+                                type = if (txType) LedgerTransaction.TxType.INCOME else LedgerTransaction.TxType.EGRESS,
                                 amount = txAmount.toDouble(),
                                 date = System.currentTimeMillis(),
                                 description = "",
@@ -117,7 +117,7 @@ fun NewTransactionDialog(ledgerId: String, viewModel: TransactionListViewModel) 
                                 postBalance = viewModel.ledger.value?.totalBalance?.minus(txAmount.toDouble())
                                     ?: 0.0,
                                 hasProducts = false,
-                                products = emptyList()
+                                ledgerProducts = emptyList()
                             )
 
                             viewModel.addTransaction(tx)

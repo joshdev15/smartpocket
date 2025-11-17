@@ -22,6 +22,10 @@ fun ArchingScreen(innerPadding: PaddingValues, viewModel: ArchingViewModel) {
             name = "Productos",
         ),
         FastPanelOption(
+            id = FastPanelOption.IDs.CURRENCIES,
+            name = "Divisas",
+        ),
+        FastPanelOption(
             id = FastPanelOption.IDs.CATEGORIES_ARCHING,
             name = "Categorías de Cierre",
         ),

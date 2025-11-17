@@ -1,11 +1,11 @@
 package com.joshdev.smartpocket.repository.models
 
-import com.joshdev.smartpocket.domain.models.Product
+import com.joshdev.smartpocket.domain.models.LedgerProduct
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.ObjectId
 
-class ProductRealm : RealmObject {
+class LedgerProductRealm : RealmObject {
     @PrimaryKey
     var id: ObjectId = ObjectId.invoke()
     var invoiceId: String = ""
@@ -19,8 +19,8 @@ class ProductRealm : RealmObject {
     var subCategoryId: Int? = null
     var baseCost: Double = 0.0
 
-    fun toData(): Product {
-        return Product(
+    fun toData(): LedgerProduct {
+        return LedgerProduct(
             id = id.toHexString(),
             invoiceId = invoiceId,
             name = name,

@@ -20,8 +20,7 @@ class LedgerViewModel : ViewModel() {
     private val database = RealmDatabase.getInstance()
     private val activity = mutableStateOf<LedgerActivity?>(null)
     private val context = mutableStateOf<Context?>(null)
-
-    val operations = Operations(database)
+    private val operations = Operations(database)
 
     private val _showNewLedgerDialog = mutableStateOf(false)
     val showNewLedgerDialog: State<Boolean> = _showNewLedgerDialog

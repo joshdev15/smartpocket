@@ -1,6 +1,6 @@
 package com.joshdev.smartpocket.repository.models
 
-import com.joshdev.smartpocket.domain.models.Transaction
+import com.joshdev.smartpocket.domain.models.LedgerTransaction
 import com.joshdev.smartpocket.repository.interfaces.ToData
 import io.realm.kotlin.ext.realmListOf
 import io.realm.kotlin.types.RealmList
@@ -8,7 +8,7 @@ import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.ObjectId
 
-class TransactionRealm() : RealmObject, ToData<Transaction> {
+class LedgerTransactionRealm() : RealmObject, ToData<LedgerTransaction> {
     @PrimaryKey
     var id: ObjectId = ObjectId.invoke()
     var name: String = ""
@@ -20,13 +20,13 @@ class TransactionRealm() : RealmObject, ToData<Transaction> {
     var currencyId: Int = 0
     var postBalance: Double = 0.0
     var hasProducts: Boolean = false
-    var products: RealmList<ProductRealm> = realmListOf()
+    var products: RealmList<LedgerProductRealm> = realmListOf()
 
-    override fun toData(): Transaction {
-        return Transaction(
+    override fun toData(): LedgerTransaction {
+        return LedgerTransaction(
             id = id.toHexString(),
             name = name,
-            type = Transaction.TxType.valueOf(type),
+            type = LedgerTransaction.TxType.valueOf(type),
             amount = amount,
             date = date,
             description = description,
@@ -34,7 +34,7 @@ class TransactionRealm() : RealmObject, ToData<Transaction> {
             currencyId = currencyId,
             postBalance = postBalance,
             hasProducts = hasProducts,
-            products = products.map { it.toData() }
+            ledgerProducts = products.map { it.toData() }
         )
     }
 }

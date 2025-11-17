@@ -1,10 +1,10 @@
 package com.joshdev.smartpocket.repository.database
 
-import com.joshdev.smartpocket.domain.models.Transaction
+import com.joshdev.smartpocket.domain.models.LedgerTransaction
 import com.joshdev.smartpocket.repository.interfaces.ToData
 import com.joshdev.smartpocket.repository.interfaces.ToRealm
 import com.joshdev.smartpocket.repository.models.LedgerRealm
-import com.joshdev.smartpocket.repository.models.TransactionRealm
+import com.joshdev.smartpocket.repository.models.LedgerTransactionRealm
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.types.RealmObject
@@ -41,14 +41,14 @@ class Operations @Inject constructor(val db: Realm) {
         val objectId = ObjectId(itemId)
 
         val ledger = db.query<LedgerRealm>("id == $0", objectId).first().find()
-        val allTransactions = db.query<TransactionRealm>("ledgerId == $0", itemId).find()
+        val allTransactions = db.query<LedgerTransactionRealm>("ledgerId == $0", itemId).find()
 
         if (ledger != null) {
             var totalAmount = ledger.initialCapital
 
             allTransactions.forEach { transactionRealm ->
                 val transaction = transactionRealm.toData()
-                if (transaction.type == Transaction.TxType.INCOME) {
+                if (transaction.type == LedgerTransaction.TxType.INCOME) {
                     totalAmount += transaction.amount
                 } else {
                     totalAmount -= transaction.amount
