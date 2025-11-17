@@ -2,6 +2,7 @@ package com.joshdev.smartpocket.ui.activities.currency.subcomponents
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,13 +22,17 @@ import com.joshdev.smartpocket.ui.components.AppText
 import com.joshdev.smartpocket.ui.utils.UiUtils.SCREEN_PADDING
 
 @Composable
-fun CurrencyCard(currency: Currency) {
+fun CurrencyCard(currency: Currency, onLongClick: () -> Unit) {
     Row(
         modifier = Modifier
             .padding(bottom = SCREEN_PADDING)
             .fillMaxWidth()
             .clip(RoundedCornerShape(30.dp))
             .border(2.dp, MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(30.dp))
+            .combinedClickable(
+                onClick = {},
+                onLongClick = { onLongClick() }
+            )
             .background(MaterialTheme.colorScheme.background)
             .padding(20.dp)
     ) {

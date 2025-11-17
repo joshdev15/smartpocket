@@ -33,10 +33,14 @@ fun CurrencyScreen(innerPadding: PaddingValues, viewModel: CurrencyViewModel) {
                         .fillMaxSize()
                 )
 
-                CurrencyCard(it)
+                CurrencyCard(it) {
+                    viewModel.toggleCurrencyOptionsDialog(true, it)
+                }
             }
         }
     }
 
     NewCurrencyDialog(viewModel)
+
+    CurrencyOptionsDialog(viewModel)
 }
