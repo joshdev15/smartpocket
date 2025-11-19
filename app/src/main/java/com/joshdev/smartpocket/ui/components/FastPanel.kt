@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.joshdev.smartpocket.ui.models.FastPanelOption
 
 @Composable
@@ -57,6 +58,7 @@ fun FastPanel(buttons: List<FastPanelOption>, onClick: (FastPanelOption.IDs) -> 
                 AppText(
                     item.name,
                     fontWeight = FontWeight.Bold,
+                    fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.background
                 )
             }

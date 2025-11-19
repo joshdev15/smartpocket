@@ -9,7 +9,7 @@ import org.mongodb.kbson.ObjectId
 
 class ArchingProductRealm : RealmObject, ToData<ArchingProduct> {
     @PrimaryKey
-    var id: ObjectId = ObjectId.invoke()
+    var id: ObjectId = ObjectId()
     var invoiceId: String = ""
     var name: String = ""
     var quantity: Int = 0

@@ -20,7 +20,7 @@ data class LedgerTransaction(
 ) : ToRealm<LedgerTransactionRealm> {
     override fun toRealm(): LedgerTransactionRealm {
         val newLedgerLedgerTransactionRealm = LedgerTransactionRealm().apply {
-            id = ObjectId.invoke()
+            id = if (this@LedgerTransaction.id != "") ObjectId(this@LedgerTransaction.id) else ObjectId()
             name = this@LedgerTransaction.name
             type = this@LedgerTransaction.type.toString()
             amount = this@LedgerTransaction.amount

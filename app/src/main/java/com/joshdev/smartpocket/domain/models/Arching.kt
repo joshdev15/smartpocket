@@ -2,6 +2,7 @@ package com.joshdev.smartpocket.domain.models
 
 import com.joshdev.smartpocket.repository.interfaces.ToRealm
 import com.joshdev.smartpocket.repository.models.ArchingRealm
+import org.mongodb.kbson.ObjectId
 
 data class Arching(
     val id: String = "",
@@ -10,6 +11,7 @@ data class Arching(
 ) : ToRealm<ArchingRealm> {
     override fun toRealm(): ArchingRealm {
         return ArchingRealm().apply {
+            id = if (this@Arching.id != "") ObjectId(this@Arching.id) else ObjectId()
             name = this@Arching.name
             creationDate = this@Arching.creationDate
         }

@@ -1,5 +1,6 @@
 package com.joshdev.smartpocket.repository.database
 
+import android.util.Log
 import com.joshdev.smartpocket.repository.models.ArchingCategoryRealm
 import com.joshdev.smartpocket.repository.models.ArchingProductRealm
 import com.joshdev.smartpocket.repository.models.ArchingRealm
@@ -17,36 +18,52 @@ import kotlin.reflect.KClass
 object RealmDatabase {
     @Volatile
     private var INSTANCE: Realm? = null
+    private val config = RealmConfiguration
+        .create(
+            schema = setOf(
+                // Currency Classes
+                CurrencyRealm::class,
+
+                // Ledger Classes
+                LedgerRealm::class,
+                LedgerCategoryRealm::class,
+                LedgerTransactionRealm::class,
+                LedgerProductRealm::class,
+
+                // Arching Classes
+                ArchingRealm::class,
+                ArchingCategoryRealm::class,
+                ArchingProductRealm::class
+            ) as Set<KClass<out TypedRealmObject>>
+        )
+
+    fun createInstance() {
+        config.deleteRealmIfMigrationNeeded
+        INSTANCE = Realm.open(config)
+    }
 
     fun getInstance(): Realm {
         if (INSTANCE == null) {
-            val config = RealmConfiguration
-                .create(
-                    schema = setOf(
-                        // Currency Classes
-                        CurrencyRealm::class,
-
-                        // Ledger Classes
-                        LedgerRealm::class,
-                        LedgerCategoryRealm::class,
-                        LedgerTransactionRealm::class,
-                        LedgerProductRealm::class,
-
-                        // Arching Classes
-                        ArchingRealm::class,
-                        ArchingCategoryRealm::class,
-                        ArchingProductRealm::class
-                    ) as Set<KClass<out TypedRealmObject>>
-                )
-
-            config.deleteRealmIfMigrationNeeded
-
-            INSTANCE = Realm.open(config)
+            createInstance()
         }
 
         initializeDefaultData(INSTANCE!!)
 
         return INSTANCE!!
+    }
+
+    fun nuke() {
+        if (INSTANCE != null && !INSTANCE!!.isClosed()) {
+            INSTANCE!!.close()
+        }
+        INSTANCE = null
+
+        try {
+            Realm.deleteRealm(config)
+            println("☢️ BASE DE DATOS ELIMINADA FÍSICAMENTE ☢️")
+        } catch (e: Exception) {
+            println("Error al eliminar la base de datos: ${e.message}")
+        }
     }
 
     private fun initializeDefaultData(realm: Realm) {

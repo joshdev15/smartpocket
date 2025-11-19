@@ -7,7 +7,7 @@ import org.mongodb.kbson.ObjectId
 
 class LedgerProductRealm : RealmObject {
     @PrimaryKey
-    var id: ObjectId = ObjectId.invoke()
+    var id: ObjectId = ObjectId()
     var invoiceId: String = ""
     var name: String = ""
     var quantity: Int = 0

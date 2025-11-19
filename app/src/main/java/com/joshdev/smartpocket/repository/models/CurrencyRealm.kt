@@ -8,7 +8,7 @@ import org.mongodb.kbson.ObjectId
 
 class CurrencyRealm : RealmObject, ToData<Currency> {
     @PrimaryKey
-    var id: ObjectId = ObjectId.invoke()
+    var id: ObjectId = ObjectId()
     var name: String = ""
     var symbol: String = ""
     var rate: Double = 0.0

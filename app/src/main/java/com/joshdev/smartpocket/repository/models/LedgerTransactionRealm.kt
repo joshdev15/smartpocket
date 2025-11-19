@@ -10,7 +10,7 @@ import org.mongodb.kbson.ObjectId
 
 class LedgerTransactionRealm() : RealmObject, ToData<LedgerTransaction> {
     @PrimaryKey
-    var id: ObjectId = ObjectId.invoke()
+    var id: ObjectId = ObjectId()
     var name: String = ""
     var type: String = ""
     var amount: Double = 0.0

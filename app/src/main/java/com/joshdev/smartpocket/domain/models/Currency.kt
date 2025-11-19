@@ -14,6 +14,7 @@ data class Currency(
 ) : ToRealm<CurrencyRealm> {
     override fun toRealm(): CurrencyRealm {
         return CurrencyRealm().apply {
+            id = if (this@Currency.id != "") ObjectId(this@Currency.id) else ObjectId()
             name = this@Currency.name
             symbol = this@Currency.symbol
             rate = this@Currency.rate

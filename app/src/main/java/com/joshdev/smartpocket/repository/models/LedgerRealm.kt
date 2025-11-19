@@ -8,7 +8,7 @@ import org.mongodb.kbson.ObjectId
 
 class LedgerRealm() : RealmObject, ToData<Ledger> {
     @PrimaryKey
-    var id: ObjectId = ObjectId.invoke()
+    var id: ObjectId = ObjectId()
     var name: String = ""
     var initialCapital = 0.0
     var totalBalance = 0.0

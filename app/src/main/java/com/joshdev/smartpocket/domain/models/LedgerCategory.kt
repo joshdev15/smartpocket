@@ -3,6 +3,7 @@ package com.joshdev.smartpocket.domain.models
 import com.joshdev.smartpocket.repository.interfaces.ToRealm
 import com.joshdev.smartpocket.repository.models.LedgerCategoryRealm
 import io.realm.kotlin.types.annotations.PrimaryKey
+import org.mongodb.kbson.ObjectId
 
 data class LedgerCategory(
     @PrimaryKey
@@ -14,6 +15,7 @@ data class LedgerCategory(
 ) : ToRealm<LedgerCategoryRealm> {
     override fun toRealm(): LedgerCategoryRealm {
         return LedgerCategoryRealm().apply {
+            id = if (this@LedgerCategory.id != "") ObjectId(this@LedgerCategory.id) else ObjectId()
             name = this@LedgerCategory.name
             level = this@LedgerCategory.level
             description = this@LedgerCategory.description

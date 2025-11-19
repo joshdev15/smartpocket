@@ -54,7 +54,7 @@ object UiUtils {
             ),
             HomeOption(
                 id = HomeOption.IDs.ARCHING,
-                name = "Cierre",
+                name = "Cierres",
                 icon = R.drawable.arching,
             ),
             HomeOption(

@@ -8,10 +8,11 @@ import androidx.activity.viewModels
 import androidx.compose.material3.Scaffold
 import com.joshdev.smartpocket.ui.activities.arching.subcomponents.ArchingScreen
 import com.joshdev.smartpocket.ui.components.AppTopBarBasic
+import com.joshdev.smartpocket.ui.components.FloatingButton
 import com.joshdev.smartpocket.ui.theme.SmartPocketTheme
 
 class ArchingActivity : ComponentActivity() {
-    val viewModel by viewModels<ArchingViewModel>()
+    private val viewModel by viewModels<ArchingViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +23,16 @@ class ArchingActivity : ComponentActivity() {
         setContent {
             SmartPocketTheme {
                 Scaffold(
-                    topBar = { AppTopBarBasic("Cierre") },
+                    topBar = {
+                        AppTopBarBasic("Cierres")
+                    },
+                    floatingActionButton = {
+                        FloatingButton("Nuevo Cierre") {
+                            viewModel.toggleNewArchingDialog(
+                                true
+                            )
+                        }
+                    },
                     content = { innerPadding ->
                         ArchingScreen(innerPadding, viewModel)
                     }

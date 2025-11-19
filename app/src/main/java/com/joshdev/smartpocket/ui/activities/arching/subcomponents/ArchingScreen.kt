@@ -3,16 +3,22 @@ package com.joshdev.smartpocket.ui.activities.arching.subcomponents
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.joshdev.smartpocket.ui.activities.arching.ArchingViewModel
-import com.joshdev.smartpocket.ui.components.AppText
+import com.joshdev.smartpocket.ui.components.ArchingCard
 import com.joshdev.smartpocket.ui.components.FastPanel
 import com.joshdev.smartpocket.ui.models.FastPanelOption
+import com.joshdev.smartpocket.ui.utils.UiUtils
 
 @Composable
 fun ArchingScreen(innerPadding: PaddingValues, viewModel: ArchingViewModel) {
@@ -42,10 +48,34 @@ fun ArchingScreen(innerPadding: PaddingValues, viewModel: ArchingViewModel) {
             viewModel.goTo(id)
         }
 
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier.padding(horizontal = UiUtils.SCREEN_PADDING)
+        ) {
+            itemsIndexed(viewModel.archings.value) { idx, it ->
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(if (idx == 0) UiUtils.SCREEN_PADDING else 0.dp)
+                )
+
+                ArchingCard(
+                    it,
+                    onClick = { viewModel.goToArchingProducts(it.id) },
+                    onLongClick = { viewModel.toggleArchingOptionsDialog(it, true) }
+                )
+            }
+
             item {
-                AppText("Arqueo")
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(UiUtils.SCREEN_FLOATING_PADDING)
+                )
             }
         }
     }
+
+    NewArchingDialog(viewModel)
+
+    ArchingOptionsDialog(viewModel)
 }

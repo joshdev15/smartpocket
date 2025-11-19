@@ -8,7 +8,7 @@ import org.mongodb.kbson.ObjectId
 
 class ArchingRealm() : RealmObject, ToData<Arching> {
     @PrimaryKey
-    var id: ObjectId = ObjectId.invoke()
+    var id: ObjectId = ObjectId()
     var name: String = ""
     var creationDate: Long = 0L
 

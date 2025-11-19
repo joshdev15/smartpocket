@@ -1,9 +1,7 @@
 package com.joshdev.smartpocket.domain.models
 
-import com.joshdev.smartpocket.repository.interfaces.ToData
 import com.joshdev.smartpocket.repository.interfaces.ToRealm
 import com.joshdev.smartpocket.repository.models.ArchingProductRealm
-import com.joshdev.smartpocket.repository.models.LedgerProductRealm
 import org.mongodb.kbson.ObjectId
 
 data class ArchingProduct(
@@ -20,8 +18,8 @@ data class ArchingProduct(
     val baseCost: Double,
 ) : ToRealm<ArchingProductRealm> {
     override fun toRealm(): ArchingProductRealm {
-        val archingProductRealm = ArchingProductRealm().apply {
-            id = ObjectId(this@ArchingProduct.id)
+        return ArchingProductRealm().apply {
+            id = if (this@ArchingProduct.id != "") ObjectId(this@ArchingProduct.id) else ObjectId()
             invoiceId = this@ArchingProduct.invoiceId
             name = this@ArchingProduct.name
             quantity = this@ArchingProduct.quantity
@@ -33,7 +31,5 @@ data class ArchingProduct(
             subCategoryId = this@ArchingProduct.subCategoryId
             baseCost = this@ArchingProduct.baseCost
         }
-
-        return archingProductRealm
     }
 }

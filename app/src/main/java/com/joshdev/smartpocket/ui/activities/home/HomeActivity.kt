@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.Scaffold
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.joshdev.smartpocket.repository.database.RealmDatabase
 import com.joshdev.smartpocket.ui.activities.arching.ArchingActivity
 import com.joshdev.smartpocket.ui.activities.currency.CurrencyActivity
 import com.joshdev.smartpocket.ui.activities.home.subcomponents.HomeScreen
@@ -37,7 +38,7 @@ class HomeActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         checkCameraPermissionAndLaunch()
-        
+
         val options = UiUtils.getHomeOptions()
 
         setContent {

@@ -18,7 +18,7 @@ data class LedgerProduct(
 ) {
     fun toRealm(): LedgerProductRealm {
         val ledgerProductRealm = LedgerProductRealm().apply {
-            id = ObjectId(this@LedgerProduct.id)
+            id = if (this@LedgerProduct.id != "") ObjectId(this@LedgerProduct.id) else ObjectId()
             invoiceId = this@LedgerProduct.invoiceId
             name = this@LedgerProduct.name
             quantity = this@LedgerProduct.quantity
