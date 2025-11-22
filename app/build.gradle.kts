@@ -21,11 +21,17 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+
+        debug {
+            isMinifyEnabled = false
+            applicationIdSuffix = ".debug"
         }
     }
 
@@ -59,8 +65,10 @@ dependencies {
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.androidx.startup.runtime)
     implementation(libs.androidx.ui.text.google.fonts)
-    implementation(libs.google.mlkit)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.google.mlkit)
+    implementation(libs.google.gson)
     implementation(libs.realm)
 
     testImplementation(libs.junit)
