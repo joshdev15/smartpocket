@@ -18,27 +18,33 @@ import kotlin.reflect.KClass
 object RealmDatabase {
     @Volatile
     private var INSTANCE: Realm? = null
-    private val config = RealmConfiguration
-        .create(
-            schema = setOf(
-                // Currency Classes
-                CurrencyRealm::class,
+    private val config = generateConfig()
 
-                // Ledger Classes
-                LedgerRealm::class,
-                LedgerCategoryRealm::class,
-                LedgerTransactionRealm::class,
-                LedgerProductRealm::class,
+    fun generateConfig(): RealmConfiguration {
+        val schema = setOf(
+            // Currency Classes
+            CurrencyRealm::class,
 
-                // Arching Classes
-                ArchingRealm::class,
-                ArchingCategoryRealm::class,
-                ArchingProductRealm::class
-            ) as Set<KClass<out TypedRealmObject>>
-        )
+            // Ledger Classes
+            LedgerRealm::class,
+            LedgerCategoryRealm::class,
+            LedgerTransactionRealm::class,
+            LedgerProductRealm::class,
+
+            // Arching Classes
+            ArchingRealm::class,
+            ArchingCategoryRealm::class,
+            ArchingProductRealm::class
+        ) as Set<KClass<out TypedRealmObject>>
+
+        return RealmConfiguration.Builder(schema)
+            .name("smartpocket.realm")
+            .deleteRealmIfMigrationNeeded()
+            .schemaVersion(1)
+            .build()
+    }
 
     fun createInstance() {
-        config.deleteRealmIfMigrationNeeded
         INSTANCE = Realm.open(config)
     }
 
