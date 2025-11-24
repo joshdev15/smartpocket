@@ -4,6 +4,7 @@ import android.util.Log
 import com.joshdev.smartpocket.repository.models.ArchingCategoryRealm
 import com.joshdev.smartpocket.repository.models.ArchingProductRealm
 import com.joshdev.smartpocket.repository.models.ArchingRealm
+import com.joshdev.smartpocket.repository.models.ArchingRecordRealm
 import com.joshdev.smartpocket.repository.models.CurrencyRealm
 import com.joshdev.smartpocket.repository.models.LedgerCategoryRealm
 import com.joshdev.smartpocket.repository.models.LedgerRealm
@@ -33,6 +34,7 @@ object RealmDatabase {
 
             // Arching Classes
             ArchingRealm::class,
+            ArchingRecordRealm::class,
             ArchingCategoryRealm::class,
             ArchingProductRealm::class
         ) as Set<KClass<out TypedRealmObject>>

@@ -6,6 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.material3.Scaffold
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.joshdev.smartpocket.ui.activities.arching.subcomponents.ArchingRecordsScreen
 import com.joshdev.smartpocket.ui.activities.arching.subcomponents.ArchingScreen
 import com.joshdev.smartpocket.ui.components.AppTopBarBasic
 import com.joshdev.smartpocket.ui.components.FloatingButton
@@ -22,21 +26,55 @@ class ArchingActivity : ComponentActivity() {
 
         setContent {
             SmartPocketTheme {
-                Scaffold(
-                    topBar = {
-                        AppTopBarBasic("Cierres")
-                    },
-                    floatingActionButton = {
-                        FloatingButton("Nuevo Cierre") {
-                            viewModel.toggleNewArchingDialog(
-                                true
+                val navController = rememberNavController()
+                viewModel.setNavController(navController)
+
+                NavHost(navController = navController, startDestination = "archings") {
+                    composable("archings") {
+                        Scaffold(
+                            topBar = {
+                                AppTopBarBasic("Cierres")
+                            },
+                            floatingActionButton = {
+                                FloatingButton("Nuevo Cierre") {
+                                    viewModel.toggleNewArchingDialog(
+                                        true
+                                    )
+                                }
+                            },
+                            content = { innerPadding ->
+                                ArchingScreen(innerPadding, viewModel)
+                            }
+                        )
+                    }
+
+                    composable("records/{archingId}") { backStackEntry ->
+                        val archingId = backStackEntry.arguments?.getString("archingId")
+                        val currentArching = viewModel.archings.value.find { it.id == archingId }
+
+                        currentArching?.let { current ->
+                            Scaffold(
+                                topBar = {
+                                    AppTopBarBasic(current.name)
+                                },
+                                floatingActionButton = {
+                                    FloatingButton("Nuevo Registro") {
+                                        viewModel.toggleNewArchingRecordDialog(
+                                            true
+                                        )
+                                    }
+                                },
+                                content = {
+                                    ArchingRecordsScreen(
+                                        it,
+                                        archingId = archingId,
+                                        viewModel = viewModel
+                                    )
+                                }
                             )
                         }
-                    },
-                    content = { innerPadding ->
-                        ArchingScreen(innerPadding, viewModel)
                     }
-                )
+                }
             }
         }
     }

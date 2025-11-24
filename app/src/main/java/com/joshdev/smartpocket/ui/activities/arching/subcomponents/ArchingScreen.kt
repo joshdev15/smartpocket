@@ -60,7 +60,7 @@ fun ArchingScreen(innerPadding: PaddingValues, viewModel: ArchingViewModel) {
 
                 ArchingCard(
                     it,
-                    onClick = { viewModel.goToArchingProducts(it.id) },
+                    onClick = { viewModel.navigateToRecords(it.id) },
                     onLongClick = { viewModel.toggleArchingOptionsDialog(it, true) }
                 )
             }

@@ -6,7 +6,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.joshdev.smartpocket.domain.models.Arching
+import com.joshdev.smartpocket.domain.models.ArchingRecord
 import com.joshdev.smartpocket.repository.database.Operations
 import com.joshdev.smartpocket.repository.database.RealmDatabase
 import com.joshdev.smartpocket.repository.models.ArchingRealm
@@ -15,18 +17,24 @@ import com.joshdev.smartpocket.ui.models.FastPanelOption
 import com.joshdev.smartpocket.ui.utils.UiUtils.getIntentByFastOptionID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Calendar
+import java.util.Locale
 
 class ArchingViewModel : ViewModel() {
     private val database = RealmDatabase.getInstance()
     private val activity = mutableStateOf<ArchingActivity?>(null)
     private val context = mutableStateOf<Context?>(null)
     private val operations = Operations(database)
+    private var navController: NavController? = null
 
     private val _showNewArchingDialog = mutableStateOf(false)
     val showNewArchingDialog: State<Boolean> = _showNewArchingDialog
 
     private val _showArchingOptionsDialog = mutableStateOf(false)
     val showArchingOptionsDialog: State<Boolean> = _showArchingOptionsDialog
+
+    private val _showNewArchingRecordDialog = mutableStateOf(false)
+    val showNewArchingRecordDialog: State<Boolean> = _showNewArchingRecordDialog
 
     private val _archings = mutableStateOf<List<Arching>>(listOf())
     val archings: State<List<Arching>> = _archings
@@ -40,6 +48,18 @@ class ArchingViewModel : ViewModel() {
         observeArchings()
     }
 
+    fun setNavController(navController: NavController) {
+        this.navController = navController
+    }
+
+    fun navigateToRecords(archingId: String) {
+        navController?.navigate("records/$archingId")
+    }
+
+    fun findArchingById(id: String) {
+        _selectedArching.value = _archings.value.find { it.id == id }
+    }
+
     // UI Actions
     fun toggleNewArchingDialog(value: Boolean? = null) {
         _showNewArchingDialog.value = value ?: !_showNewArchingDialog.value
@@ -48,6 +68,10 @@ class ArchingViewModel : ViewModel() {
     fun toggleArchingOptionsDialog(arching: Arching?, value: Boolean? = null) {
         _selectedArching.value = arching
         _showArchingOptionsDialog.value = value ?: false
+    }
+
+    fun toggleNewArchingRecordDialog(value: Boolean? = null) {
+        _showNewArchingRecordDialog.value = value ?: !_showNewArchingRecordDialog.value
     }
 
     fun goToArchingProducts(archingId: String) {
@@ -68,6 +92,27 @@ class ArchingViewModel : ViewModel() {
     fun addArching(arching: Arching) {
         viewModelScope.launch(Dispatchers.IO) {
             operations.addItem<Arching, ArchingRealm>(arching)
+        }
+    }
+
+    fun addArchingRecord(name: String) {
+        val calendar = Calendar.getInstance()
+        val dayName = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()) ?: ""
+        val weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR)
+        val monthOfYear = calendar.get(Calendar.MONTH)
+
+        val record = ArchingRecord(
+            dayName = dayName,
+            weekOfYear = weekOfYear,
+            monthOfYear = monthOfYear
+        )
+
+        _selectedArching.value?.let { arching ->
+            val updatedRecords = arching.records.toMutableList().apply { add(record) }
+            val updatedArching = arching.copy(records = updatedRecords)
+            viewModelScope.launch(Dispatchers.IO) {
+                operations.addItem<Arching, ArchingRealm>(updatedArching) // Assuming addItem also handles updates
+            }
         }
     }
 

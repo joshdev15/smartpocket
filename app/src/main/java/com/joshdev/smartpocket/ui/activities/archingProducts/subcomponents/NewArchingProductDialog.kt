@@ -9,8 +9,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,8 +29,10 @@ import com.joshdev.smartpocket.domain.models.ArchingProduct
 import com.joshdev.smartpocket.ui.activities.archingProducts.ArchingProductViewModel
 import com.joshdev.smartpocket.ui.components.AppText
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewArchingProductDialog(viewModel: ArchingProductViewModel) {
+    val sheetState = rememberModalBottomSheetState()
     var proName by remember { mutableStateOf("") }
     var proCost by remember { mutableStateOf("") }
     var proQty by remember { mutableStateOf("") }
@@ -37,18 +42,12 @@ fun NewArchingProductDialog(viewModel: ArchingProductViewModel) {
     }
 
     if (viewModel.showNewProductDialog.value) {
-        Dialog(
+        ModalBottomSheet(
             onDismissRequest = { onClose() },
-            properties = DialogProperties(
-                dismissOnBackPress = true,
-                dismissOnClickOutside = true,
-            )
+            sheetState = sheetState
         ) {
             Column(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(20.dp))
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surfaceBright)
                     .padding(20.dp)
             ) {
                 AppText(

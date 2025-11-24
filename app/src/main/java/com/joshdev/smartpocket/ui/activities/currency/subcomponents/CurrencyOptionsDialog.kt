@@ -8,7 +8,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,24 +25,21 @@ import com.joshdev.smartpocket.ui.activities.invoiceList.TransactionListViewMode
 import com.joshdev.smartpocket.ui.components.AppText
 import com.joshdev.smartpocket.ui.utils.UiUtils.ellipsis
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CurrencyOptionsDialog(viewModel: CurrencyViewModel) {
+    val sheetState = rememberModalBottomSheetState()
     val onClose = { viewModel.toggleCurrencyOptionsDialog(null) }
 
     viewModel.selectedCurrency.value?.let {
         if (viewModel.showCurrencyOptionsDialog.value) {
-            Dialog(
+            ModalBottomSheet(
                 onDismissRequest = { onClose() },
-                properties = DialogProperties(
-                    dismissOnBackPress = true,
-                    dismissOnClickOutside = true,
-                )
+                sheetState = sheetState,
             ) {
                 Column(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(20.dp))
                         .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.surfaceBright)
                         .padding(20.dp)
                 ) {
                     Row(

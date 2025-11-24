@@ -1,17 +1,18 @@
 package com.joshdev.smartpocket.ui.activities.currency.subcomponents
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,16 +20,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import com.joshdev.smartpocket.domain.models.Currency
 import com.joshdev.smartpocket.ui.activities.currency.CurrencyViewModel
 import com.joshdev.smartpocket.ui.components.AppText
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCurrencyDialog(viewModel: CurrencyViewModel) {
+    val sheetState = rememberModalBottomSheetState()
     var currName by remember { mutableStateOf("") }
     var currSymbol by remember { mutableStateOf("") }
     var currExRate by remember { mutableStateOf("") }
@@ -38,18 +38,12 @@ fun NewCurrencyDialog(viewModel: CurrencyViewModel) {
     }
 
     if (viewModel.showNewCurrencyDialog.value) {
-        Dialog(
+        ModalBottomSheet(
             onDismissRequest = { onClose() },
-            properties = DialogProperties(
-                dismissOnBackPress = true,
-                dismissOnClickOutside = true,
-            )
+            sheetState = sheetState,
         ) {
             Column(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(20.dp))
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surfaceBright)
                     .padding(20.dp)
             ) {
                 AppText(
