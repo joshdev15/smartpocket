@@ -9,8 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.joshdev.smartpocket.domain.models.LedgerProduct
 import com.joshdev.smartpocket.domain.models.LedgerTransaction
 import com.joshdev.smartpocket.repository.database.RealmDatabase
-import com.joshdev.smartpocket.repository.models.LedgerProductRealm
-import com.joshdev.smartpocket.repository.models.LedgerTransactionRealm
+import com.joshdev.smartpocket.repository.database.entities.LedgerProductRealm
+import com.joshdev.smartpocket.repository.database.entities.LedgerTransactionRealm
 import com.joshdev.smartpocket.ui.activities.photoai.PhotoAIActivity
 import io.realm.kotlin.ext.query
 import kotlinx.coroutines.Dispatchers

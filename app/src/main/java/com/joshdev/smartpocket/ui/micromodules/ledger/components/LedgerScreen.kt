@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.ui.activities.invoiceList.subcomponents
+package com.joshdev.smartpocket.ui.micromodules.ledger.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -14,54 +14,50 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.joshdev.smartpocket.ui.activities.invoiceList.TransactionListViewModel
-import com.joshdev.smartpocket.ui.micromodules.ledger.components.LedgerResume
-import com.joshdev.smartpocket.ui.components.TransactionCard
+import com.joshdev.smartpocket.ui.micromodules.ledger.activity.LedgerViewModel
+import com.joshdev.smartpocket.ui.components.FastPanel
+import com.joshdev.smartpocket.ui.components.LedgerCard
+import com.joshdev.smartpocket.ui.models.FastPanelOption
 import com.joshdev.smartpocket.ui.utils.UiUtils.SCREEN_FLOATING_PADDING
 import com.joshdev.smartpocket.ui.utils.UiUtils.SCREEN_PADDING
 
 @Composable
-fun TransactionScreen(
-    innerPadding: PaddingValues,
-    viewModel: TransactionListViewModel,
-    ledgerId: String,
-) {
-    val transactions = viewModel.transactions.value
-    val filteredTransactions = transactions.filter { it.ledgerId == ledgerId }
+fun LedgerScreen(innerPadding: PaddingValues, viewModel: LedgerViewModel) {
+    val options = listOf(
+        FastPanelOption(
+            id = FastPanelOption.IDs.CURRENCIES,
+            name = "Divisas",
+        ),
+        FastPanelOption(
+            id = FastPanelOption.IDs.CATEGORIES_LEDGER,
+            name = "Categorías de Cuentas",
+        )
+    )
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.inverseOnSurface)
             .padding(innerPadding)
-            .padding(horizontal = SCREEN_PADDING)
     ) {
-        LazyColumn {
-            item {
-                Spacer(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(SCREEN_PADDING)
-                )
-            }
+        FastPanel(options) {
+            viewModel.goTo(it)
+        }
 
-            item {
-                viewModel.ledger.value?.let {
-                    LedgerResume(it, filteredTransactions)
-                }
-            }
-
-            itemsIndexed(filteredTransactions) { idx, it ->
+        LazyColumn(
+            modifier = Modifier.padding(horizontal = SCREEN_PADDING)
+        ) {
+            itemsIndexed(viewModel.ledgers.value) { idx, it ->
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(if (idx == 0) SCREEN_PADDING else 0.dp)
                 )
 
-                TransactionCard(
-                    tx = it,
-                    onClick = { viewModel.goToTransaction(it.id) },
-                    onLongClick = { tx -> viewModel.toggleTransactionOptionsDialog(tx, true) }
+                LedgerCard(
+                    it,
+                    onClick = { viewModel.goToLedger(it.id) },
+                    onLongClick = { viewModel.toggleLedgerOptionsDialog(it, true) }
                 )
             }
 
@@ -75,7 +71,7 @@ fun TransactionScreen(
         }
     }
 
-    NewTransactionDialog(ledgerId, viewModel)
+    NewLedgerDialog(viewModel)
 
-    TransactionOptionsDialog(viewModel)
+    LedgerOptionsDialog(viewModel)
 }

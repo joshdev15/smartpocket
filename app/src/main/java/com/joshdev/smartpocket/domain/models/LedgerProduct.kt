@@ -1,6 +1,6 @@
 package com.joshdev.smartpocket.domain.models
 
-import com.joshdev.smartpocket.repository.models.LedgerProductRealm
+import com.joshdev.smartpocket.repository.database.entities.LedgerProductRealm
 import org.mongodb.kbson.ObjectId
 
 data class LedgerProduct(

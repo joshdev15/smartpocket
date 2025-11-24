@@ -11,7 +11,7 @@ import com.joshdev.smartpocket.domain.models.Arching
 import com.joshdev.smartpocket.domain.models.ArchingRecord
 import com.joshdev.smartpocket.repository.database.Operations
 import com.joshdev.smartpocket.repository.database.RealmDatabase
-import com.joshdev.smartpocket.repository.models.ArchingRealm
+import com.joshdev.smartpocket.repository.database.entities.ArchingRealm
 import com.joshdev.smartpocket.ui.activities.archingProducts.ArchingProductsActivity
 import com.joshdev.smartpocket.ui.models.FastPanelOption
 import com.joshdev.smartpocket.ui.utils.UiUtils.getIntentByFastOptionID

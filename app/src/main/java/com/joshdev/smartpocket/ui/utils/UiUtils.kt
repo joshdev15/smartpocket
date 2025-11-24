@@ -4,18 +4,27 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavGraphBuilder
 import com.joshdev.smartpocket.ui.models.HomeOption
 import com.joshdev.smartpocket.R
 import com.joshdev.smartpocket.ui.activities.archingProducts.ArchingProductsActivity
 import com.joshdev.smartpocket.ui.activities.categoryList.CategoryListActivity
-import com.joshdev.smartpocket.ui.activities.currency.CurrencyActivity
-import com.joshdev.smartpocket.ui.activities.ledger.LedgerActivity
+import com.joshdev.smartpocket.ui.micromodules.currency.activity.CurrencyActivity
 import com.joshdev.smartpocket.ui.activities.productList.ProductListActivity
 import com.joshdev.smartpocket.ui.models.FastPanelOption
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import androidx.compose.runtime.Composable
+import androidx.navigation.compose.composable
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 
 object UiUtils {
     val SCREEN_PADDING = 10.dp
@@ -94,4 +103,40 @@ object UiUtils {
 
         return goTo
     }
+}
+
+fun NavGraphBuilder.appComposable(
+    route: String,
+    content: @Composable (AnimatedContentScope.(NavBackStackEntry) -> Unit)
+) {
+    val timing = 500
+    val scale = 0.80f
+    composable(
+        route = route,
+        enterTransition = {
+            scaleIn(
+                initialScale = scale,
+                animationSpec = tween(timing)
+            ) + fadeIn(animationSpec = tween(timing))
+        },
+        exitTransition = {
+            scaleOut(
+                targetScale = scale,
+                animationSpec = tween(timing)
+            ) + fadeOut(animationSpec = tween(timing))
+        },
+        popEnterTransition = {
+            scaleIn(
+                initialScale = scale,
+                animationSpec = tween(timing)
+            ) + fadeIn(animationSpec = tween(timing))
+        },
+        popExitTransition = {
+            scaleOut(
+                targetScale = scale,
+                animationSpec = tween(timing)
+            ) + fadeOut(animationSpec = tween(timing))
+        },
+        content = content
+    )
 }

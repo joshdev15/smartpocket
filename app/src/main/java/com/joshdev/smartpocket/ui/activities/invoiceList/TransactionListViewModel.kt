@@ -10,8 +10,8 @@ import com.joshdev.smartpocket.domain.models.Ledger
 import com.joshdev.smartpocket.domain.models.LedgerTransaction
 import com.joshdev.smartpocket.repository.database.Operations
 import com.joshdev.smartpocket.repository.database.RealmDatabase
-import com.joshdev.smartpocket.repository.models.LedgerRealm
-import com.joshdev.smartpocket.repository.models.LedgerTransactionRealm
+import com.joshdev.smartpocket.repository.database.entities.LedgerRealm
+import com.joshdev.smartpocket.repository.database.entities.LedgerTransactionRealm
 import com.joshdev.smartpocket.ui.activities.productList.ProductListActivity
 import io.realm.kotlin.ext.query
 import kotlinx.coroutines.Dispatchers

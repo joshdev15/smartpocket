@@ -1,10 +1,10 @@
 package com.joshdev.smartpocket.repository.database
 
 import com.joshdev.smartpocket.domain.models.LedgerTransaction
-import com.joshdev.smartpocket.repository.interfaces.ToData
-import com.joshdev.smartpocket.repository.interfaces.ToRealm
-import com.joshdev.smartpocket.repository.models.LedgerRealm
-import com.joshdev.smartpocket.repository.models.LedgerTransactionRealm
+import com.joshdev.smartpocket.repository.mappers.ToData
+import com.joshdev.smartpocket.repository.mappers.ToRealm
+import com.joshdev.smartpocket.repository.database.entities.LedgerRealm
+import com.joshdev.smartpocket.repository.database.entities.LedgerTransactionRealm
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.types.RealmObject

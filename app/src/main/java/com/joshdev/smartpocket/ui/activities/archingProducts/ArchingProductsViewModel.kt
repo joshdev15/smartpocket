@@ -5,11 +5,10 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.joshdev.smartpocket.domain.models.Arching
 import com.joshdev.smartpocket.domain.models.ArchingProduct
 import com.joshdev.smartpocket.repository.database.Operations
 import com.joshdev.smartpocket.repository.database.RealmDatabase
-import com.joshdev.smartpocket.repository.models.ArchingProductRealm
+import com.joshdev.smartpocket.repository.database.entities.ArchingProductRealm
 import kotlinx.coroutines.launch
 
 class ArchingProductsViewModel: ViewModel() {
