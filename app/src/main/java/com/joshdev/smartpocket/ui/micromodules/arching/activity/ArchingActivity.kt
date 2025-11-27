@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.ui.activities.arching
+package com.joshdev.smartpocket.ui.micromodules.arching.activity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -12,8 +12,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.joshdev.smartpocket.ui.activities.arching.subcomponents.ArchingRecordsScreen
-import com.joshdev.smartpocket.ui.activities.arching.subcomponents.ArchingScreen
+import com.joshdev.smartpocket.ui.micromodules.arching.components.ArchingRecordsScreen
+import com.joshdev.smartpocket.ui.micromodules.arching.components.ArchingScreen
 import com.joshdev.smartpocket.ui.components.AppTopBarBasic
 import com.joshdev.smartpocket.ui.components.FloatingButton
 import com.joshdev.smartpocket.ui.theme.SmartPocketTheme

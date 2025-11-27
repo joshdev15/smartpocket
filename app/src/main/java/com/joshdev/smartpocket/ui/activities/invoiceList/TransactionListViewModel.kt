@@ -105,6 +105,17 @@ class TransactionListViewModel : ViewModel() {
 
     fun updateLedgerBalance() {
         ledger.value?.let {
+//            var totalAmount = it.initialCapital
+//
+//            allTransactions.forEach { transactionRealm ->
+//                val transaction = transactionRealm.toData()
+//                if (transaction.type == LedgerTransaction.TxType.INCOME) {
+//                    totalAmount += transaction.amount
+//                } else {
+//                    totalAmount -= transaction.amount
+//                }
+//            }
+
             viewModelScope.launch(Dispatchers.IO) {
                 operations.updateItem(it.id)
             }

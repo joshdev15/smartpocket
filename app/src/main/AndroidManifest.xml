@@ -95,7 +95,7 @@
 
         <!-- Arching Activities -->
         <activity
-            android:name=".ui.activities.arching.ArchingActivity"
+            android:name=".ui.micromodules.arching.activity.ArchingActivity"
             android:exported="false" />
 
         <activity

@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.ui.activities.arching.subcomponents
+package com.joshdev.smartpocket.ui.micromodules.arching.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.joshdev.smartpocket.ui.activities.arching.ArchingViewModel
+import com.joshdev.smartpocket.ui.micromodules.arching.activity.ArchingViewModel
 import com.joshdev.smartpocket.ui.components.AppText
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -28,7 +28,8 @@ fun ArchingOptionsDialog(viewModel: ArchingViewModel) {
         if (viewModel.showArchingOptionsDialog.value) {
             ModalBottomSheet(
                 onDismissRequest = { onClose() },
-                sheetState = sheetState
+                sheetState = sheetState,
+                containerColor = MaterialTheme.colorScheme.surfaceBright
             ) {
                 Column(
                     modifier = Modifier

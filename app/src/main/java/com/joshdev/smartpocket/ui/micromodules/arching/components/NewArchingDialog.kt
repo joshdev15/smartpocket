@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.ui.activities.arching.subcomponents
+package com.joshdev.smartpocket.ui.micromodules.arching.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,7 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.joshdev.smartpocket.domain.models.Arching
-import com.joshdev.smartpocket.ui.activities.arching.ArchingViewModel
+import com.joshdev.smartpocket.ui.micromodules.arching.activity.ArchingViewModel
 import com.joshdev.smartpocket.ui.components.AppText
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.ui.activities.arching.subcomponents
+package com.joshdev.smartpocket.ui.micromodules.arching.components
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.joshdev.smartpocket.ui.activities.arching.ArchingViewModel
+import com.joshdev.smartpocket.ui.micromodules.arching.activity.ArchingViewModel
 
 @Composable
 fun ArchingRecordsScreen(

@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.ui.activities.arching.subcomponents
+package com.joshdev.smartpocket.ui.micromodules.arching.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -14,7 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.joshdev.smartpocket.ui.activities.arching.ArchingViewModel
+import com.joshdev.smartpocket.ui.micromodules.arching.activity.ArchingViewModel
 import com.joshdev.smartpocket.ui.components.ArchingCard
 import com.joshdev.smartpocket.ui.components.FastPanel
 import com.joshdev.smartpocket.ui.models.FastPanelOption

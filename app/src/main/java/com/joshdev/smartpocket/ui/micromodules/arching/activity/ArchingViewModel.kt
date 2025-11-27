@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.ui.activities.arching
+package com.joshdev.smartpocket.ui.micromodules.arching.activity
 
 import android.content.Context
 import android.content.Intent

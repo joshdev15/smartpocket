@@ -12,7 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.Scaffold
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import com.joshdev.smartpocket.ui.activities.arching.ArchingActivity
+import com.joshdev.smartpocket.ui.micromodules.arching.activity.ArchingActivity
 import com.joshdev.smartpocket.ui.micromodules.currency.activity.CurrencyActivity
 import com.joshdev.smartpocket.ui.micromodules.home.components.HomeScreen
 import com.joshdev.smartpocket.ui.components.AppTopBarBasic
