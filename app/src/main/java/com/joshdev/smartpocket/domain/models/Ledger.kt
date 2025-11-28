@@ -1,7 +1,7 @@
 package com.joshdev.smartpocket.domain.models
 
 import com.joshdev.smartpocket.repository.mappers.ToRealm
-import com.joshdev.smartpocket.repository.database.entities.LedgerRealm
+import com.joshdev.smartpocket.repository.entities.LedgerRealm
 import org.mongodb.kbson.ObjectId
 
 data class Ledger(

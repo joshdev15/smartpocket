@@ -1,7 +1,7 @@
 package com.joshdev.smartpocket.domain.models
 
 import com.joshdev.smartpocket.repository.mappers.ToRealm
-import com.joshdev.smartpocket.repository.database.entities.LedgerCategoryRealm
+import com.joshdev.smartpocket.repository.entities.LedgerCategoryRealm
 import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.ObjectId
 

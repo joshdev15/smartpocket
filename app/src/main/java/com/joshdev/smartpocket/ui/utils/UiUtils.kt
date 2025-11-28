@@ -12,7 +12,7 @@ import com.joshdev.smartpocket.ui.models.HomeOption
 import com.joshdev.smartpocket.R
 import com.joshdev.smartpocket.ui.activities.archingProducts.ArchingProductsActivity
 import com.joshdev.smartpocket.ui.activities.categoryList.CategoryListActivity
-import com.joshdev.smartpocket.ui.micromodules.currency.activity.CurrencyActivity
+import com.joshdev.smartpocket.ui.modules.currency.activity.CurrencyActivity
 import com.joshdev.smartpocket.ui.activities.productList.ProductListActivity
 import com.joshdev.smartpocket.ui.models.FastPanelOption
 import java.text.SimpleDateFormat
@@ -25,6 +25,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.navigation.NamedNavArgument
 
 object UiUtils {
     val SCREEN_PADDING = 10.dp
@@ -107,12 +108,14 @@ object UiUtils {
 
 fun NavGraphBuilder.appComposable(
     route: String,
+    arguments: List<NamedNavArgument> = emptyList(),
     content: @Composable (AnimatedContentScope.(NavBackStackEntry) -> Unit)
 ) {
     val timing = 500
     val scale = 0.80f
     composable(
         route = route,
+        arguments = arguments,
         enterTransition = {
             scaleIn(
                 initialScale = scale,

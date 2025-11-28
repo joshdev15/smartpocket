@@ -59,7 +59,7 @@
 
         <!-- Activities-->
         <activity
-            android:name=".ui.micromodules.home.activity.HomeActivity"
+            android:name=".ui.modules.home.activity.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -69,12 +69,12 @@
 
         <!-- Currency Activities -->
         <activity
-            android:name=".ui.micromodules.currency.activity.CurrencyActivity"
+            android:name=".ui.modules.currency.activity.CurrencyActivity"
             android:exported="false" />
 
         <!-- Ledger Activities -->
         <activity
-            android:name=".ui.micromodules.ledger.activity.LedgerActivity"
+            android:name=".ui.modules.ledger.activity.LedgerActivity"
             android:exported="false" />
 
         <activity
@@ -95,7 +95,7 @@
 
         <!-- Arching Activities -->
         <activity
-            android:name=".ui.micromodules.arching.activity.ArchingActivity"
+            android:name=".ui.modules.arching.activity.ArchingActivity"
             android:exported="false" />
 
         <activity

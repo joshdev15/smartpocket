@@ -1,14 +1,14 @@
 package com.joshdev.smartpocket.repository.database
 
-import com.joshdev.smartpocket.repository.database.entities.ArchingCategoryRealm
-import com.joshdev.smartpocket.repository.database.entities.ArchingProductRealm
-import com.joshdev.smartpocket.repository.database.entities.ArchingRealm
-import com.joshdev.smartpocket.repository.database.entities.ArchingRecordRealm
-import com.joshdev.smartpocket.repository.database.entities.CurrencyRealm
-import com.joshdev.smartpocket.repository.database.entities.LedgerCategoryRealm
-import com.joshdev.smartpocket.repository.database.entities.LedgerRealm
-import com.joshdev.smartpocket.repository.database.entities.LedgerProductRealm
-import com.joshdev.smartpocket.repository.database.entities.LedgerTransactionRealm
+import com.joshdev.smartpocket.repository.entities.ArchingCategoryRealm
+import com.joshdev.smartpocket.repository.entities.ArchingProductRealm
+import com.joshdev.smartpocket.repository.entities.ArchingRealm
+import com.joshdev.smartpocket.repository.entities.ArchingRecordRealm
+import com.joshdev.smartpocket.repository.entities.CurrencyRealm
+import com.joshdev.smartpocket.repository.entities.LedgerCategoryRealm
+import com.joshdev.smartpocket.repository.entities.LedgerRealm
+import com.joshdev.smartpocket.repository.entities.LedgerProductRealm
+import com.joshdev.smartpocket.repository.entities.LedgerTransactionRealm
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.ext.query

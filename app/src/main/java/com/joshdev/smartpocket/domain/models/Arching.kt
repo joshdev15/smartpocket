@@ -1,8 +1,8 @@
 package com.joshdev.smartpocket.domain.models
 
 import com.joshdev.smartpocket.repository.mappers.ToRealm
-import com.joshdev.smartpocket.repository.database.entities.ArchingRealm
-import com.joshdev.smartpocket.repository.database.entities.ArchingRecordRealm
+import com.joshdev.smartpocket.repository.entities.ArchingRealm
+import com.joshdev.smartpocket.repository.entities.ArchingRecordRealm
 import io.realm.kotlin.ext.toRealmList
 import org.mongodb.kbson.ObjectId
 
