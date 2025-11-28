@@ -9,6 +9,7 @@ import org.mongodb.kbson.ObjectId
 class ArchingRecordRealm : RealmObject, ToData<ArchingRecord> {
     @PrimaryKey
     var id: ObjectId = ObjectId()
+    var archingId: ObjectId = ObjectId()
     var dayName: String = ""
     var weekOfYear: Int = 0
     var monthOfYear: Int = 0
@@ -16,6 +17,7 @@ class ArchingRecordRealm : RealmObject, ToData<ArchingRecord> {
     override fun toData(): ArchingRecord {
         return ArchingRecord(
             id = id.toHexString(),
+            archingId = archingId.toHexString(),
             dayName = dayName,
             weekOfYear = weekOfYear,
             monthOfYear = monthOfYear

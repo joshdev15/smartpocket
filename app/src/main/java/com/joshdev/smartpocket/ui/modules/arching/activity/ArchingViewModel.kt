@@ -12,6 +12,7 @@ import com.joshdev.smartpocket.domain.models.ArchingRecord
 import com.joshdev.smartpocket.repository.database.Operations
 import com.joshdev.smartpocket.repository.database.RealmDatabase
 import com.joshdev.smartpocket.repository.entities.ArchingRealm
+import com.joshdev.smartpocket.repository.entities.ArchingRecordRealm
 import com.joshdev.smartpocket.ui.activities.archingProducts.ArchingProductsActivity
 import com.joshdev.smartpocket.ui.models.FastPanelOption
 import com.joshdev.smartpocket.ui.utils.UiUtils.getIntentByFastOptionID
@@ -24,8 +25,17 @@ class ArchingViewModel : ViewModel() {
     private val database = RealmDatabase.getInstance()
     private val activity = mutableStateOf<ArchingActivity?>(null)
     private val context = mutableStateOf<Context?>(null)
+    private var navController = mutableStateOf<NavController?>(null)
     private val operations = Operations(database)
-    private var navController: NavController? = null
+
+    private val _archingList = mutableStateOf<List<Arching>>(listOf())
+    val archingList: State<List<Arching>> = _archingList
+
+    private val _selectedArching = mutableStateOf<Arching?>(null)
+    val selectedArching: State<Arching?> = _selectedArching
+
+    private val _records = mutableStateOf<List<ArchingRecord>>(listOf())
+    val records: State<List<ArchingRecord>> = _records
 
     private val _showNewArchingDialog = mutableStateOf(false)
     val showNewArchingDialog: State<Boolean> = _showNewArchingDialog
@@ -33,34 +43,32 @@ class ArchingViewModel : ViewModel() {
     private val _showArchingOptionsDialog = mutableStateOf(false)
     val showArchingOptionsDialog: State<Boolean> = _showArchingOptionsDialog
 
+    private val _selectedRecord = mutableStateOf<ArchingRecord?>(null)
+    val selectedRecord: State<ArchingRecord?> = _selectedRecord
+
     private val _showNewArchingRecordDialog = mutableStateOf(false)
     val showNewArchingRecordDialog: State<Boolean> = _showNewArchingRecordDialog
 
-    private val _archings = mutableStateOf<List<Arching>>(listOf())
-    val archings: State<List<Arching>> = _archings
+    private val _showArchingRecordOptionsDialog = mutableStateOf(false)
+    val showArchingRecordOptionsDialog: State<Boolean> = _showArchingRecordOptionsDialog
 
-    private val _selectedArching = mutableStateOf<Arching?>(null)
-    val selectedArching: State<Arching?> = _selectedArching
-
-    fun start(act: ArchingActivity, ctx: Context) {
+    fun start(act: ArchingActivity, ctx: Context, nav: NavController) {
         activity.value = act
         context.value = ctx
+        navController.value = nav
         observeArchings()
+        observeArchingRecords()
     }
 
-    fun setNavController(navController: NavController) {
-        this.navController = navController
-    }
-
-    fun navigateToRecords(archingId: String) {
-        navController?.navigate("records/$archingId")
+    fun navToRecords(archingId: String) {
+        navController.value?.navigate("records/$archingId")
     }
 
     fun findArchingById(id: String) {
-        _selectedArching.value = _archings.value.find { it.id == id }
+        _selectedArching.value = _archingList.value.find { it.id == id }
     }
 
-    // UI Actions
+    // Arching UI Actions
     fun toggleNewArchingDialog(value: Boolean? = null) {
         _showNewArchingDialog.value = value ?: !_showNewArchingDialog.value
     }
@@ -68,6 +76,11 @@ class ArchingViewModel : ViewModel() {
     fun toggleArchingOptionsDialog(arching: Arching?, value: Boolean? = null) {
         _selectedArching.value = arching
         _showArchingOptionsDialog.value = value ?: false
+    }
+
+    fun toggleArchingRecordOptionsDialog(record: ArchingRecord?, value: Boolean? = null) {
+        _selectedRecord.value = record
+        _showArchingRecordOptionsDialog.value = value ?: false
     }
 
     fun toggleNewArchingRecordDialog(value: Boolean? = null) {
@@ -80,11 +93,11 @@ class ArchingViewModel : ViewModel() {
         activity.value?.startActivity(goToProductList)
     }
 
-    // Operations
+    // Arching Operations
     private fun observeArchings() {
         viewModelScope.launch {
             operations.observeItems<Arching, ArchingRealm>().collect { archingList ->
-                _archings.value = archingList
+                _archingList.value = archingList
             }
         }
     }
@@ -95,24 +108,30 @@ class ArchingViewModel : ViewModel() {
         }
     }
 
-    fun addArchingRecord(name: String) {
+    private fun observeArchingRecords() {
+        viewModelScope.launch {
+            operations.observeItems<ArchingRecord, ArchingRecordRealm>().collect { records ->
+                _records.value = records
+            }
+        }
+    }
+
+    fun addArchingRecord(archingId: String) {
         val calendar = Calendar.getInstance()
-        val dayName = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()) ?: ""
+        val dayName =
+            calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()) ?: ""
         val weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR)
         val monthOfYear = calendar.get(Calendar.MONTH)
 
         val record = ArchingRecord(
+            archingId = archingId,
             dayName = dayName,
             weekOfYear = weekOfYear,
             monthOfYear = monthOfYear
         )
 
-        _selectedArching.value?.let { arching ->
-            val updatedRecords = arching.records.toMutableList().apply { add(record) }
-            val updatedArching = arching.copy(records = updatedRecords)
-            viewModelScope.launch(Dispatchers.IO) {
-                operations.addItem<Arching, ArchingRealm>(updatedArching) // Assuming addItem also handles updates
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            operations.addItem<ArchingRecord, ArchingRecordRealm>(record)
         }
     }
 
@@ -120,6 +139,14 @@ class ArchingViewModel : ViewModel() {
         selectedArching.value?.let { arching ->
             viewModelScope.launch(Dispatchers.IO) {
                 operations.deleteItem<Arching, ArchingRealm>(arching.id)
+            }
+        }
+    }
+
+    fun deleteArchingRecord() {
+        selectedRecord.value?.let { archingRecord ->
+            viewModelScope.launch(Dispatchers.IO) {
+                operations.deleteItem<ArchingRecord, ArchingRecordRealm>(archingRecord.id)
             }
         }
     }

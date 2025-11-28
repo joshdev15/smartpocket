@@ -23,7 +23,7 @@ import com.joshdev.smartpocket.ui.modules.arching.activity.ArchingViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewArchingRecordDialog(viewModel: ArchingViewModel) {
+fun NewArchingRecordDialog(viewModel: ArchingViewModel, archingId: String) {
     val sheetState = rememberModalBottomSheetState()
 
     if (viewModel.showNewArchingRecordDialog.value) {
@@ -45,7 +45,7 @@ fun NewArchingRecordDialog(viewModel: ArchingViewModel) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(
                     onClick = {
-                        viewModel.addArchingRecord(recordName)
+                        viewModel.addArchingRecord(archingId)
                         viewModel.toggleNewArchingRecordDialog(false)
                     },
                     modifier = Modifier.fillMaxWidth()

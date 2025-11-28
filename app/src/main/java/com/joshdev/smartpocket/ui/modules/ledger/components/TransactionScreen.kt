@@ -41,15 +41,8 @@ fun TransactionScreen(
                     .background(MaterialTheme.colorScheme.inverseOnSurface)
                     .padding(innerPadding)
                     .padding(horizontal = SCREEN_PADDING)
+                    .padding(top = SCREEN_PADDING, bottom = SCREEN_FLOATING_PADDING)
             ) {
-                item {
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(SCREEN_PADDING)
-                    )
-                }
-
                 item {
                     viewModel.ledger.value?.let {
                         LedgerResume(it, filteredTransactions)
@@ -71,14 +64,6 @@ fun TransactionScreen(
                                 true
                             )
                         }
-                    )
-                }
-
-                item {
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(SCREEN_FLOATING_PADDING)
                     )
                 }
             }

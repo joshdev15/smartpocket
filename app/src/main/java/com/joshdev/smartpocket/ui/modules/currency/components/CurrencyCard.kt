@@ -37,27 +37,23 @@ fun CurrencyCard(currency: Currency, onLongClick: () -> Unit) {
             .padding(20.dp)
     ) {
         Column {
-            AppText(
-                text = currency.name,
-                fontSize = 18.sp,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier.padding(bottom = 10.dp)
-            )
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 AppText(
-                    text = "Simbolo: ${currency.symbol}",
-                    color = MaterialTheme.colorScheme.tertiary,
-                    fontSize = 12.sp,
+                    text = "${currency.name} (${currency.symbol})",
+                    fontSize = 18.sp,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    fontWeight = FontWeight.Medium,
                 )
+
                 AppText(
-                    text = "Taza: ${currency.rate}",
-                    color = MaterialTheme.colorScheme.tertiary,
-                    fontSize = 12.sp,
+                    text = "${currency.rate}",
+                    fontSize = 18.sp,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    fontWeight = FontWeight.Medium,
                 )
             }
         }
