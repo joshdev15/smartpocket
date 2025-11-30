@@ -6,10 +6,10 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.joshdev.smartpocket.domain.models.ArchingProduct
+import com.joshdev.smartpocket.domain.arching.Product
 import com.joshdev.smartpocket.repository.database.Operations
 import com.joshdev.smartpocket.repository.database.RealmDatabase
-import com.joshdev.smartpocket.repository.entities.ArchingProductRealm
+import com.joshdev.smartpocket.repository.entities.arching.ArchingProductRealm
 import kotlinx.coroutines.launch
 
 class ArchingProductViewModel : ViewModel() {
@@ -18,8 +18,8 @@ class ArchingProductViewModel : ViewModel() {
     private val activity = mutableStateOf<ArchingProductsActivity?>(null)
     private val context = mutableStateOf<Context?>(null)
 
-    private val _products = mutableStateOf<List<ArchingProduct>>(emptyList())
-    val products: State<List<ArchingProduct>> = _products
+    private val _products = mutableStateOf<List<Product>>(emptyList())
+    val products: State<List<Product>> = _products
 
     private val _showNewProductDialog = mutableStateOf(false)
     val showNewProductDialog: State<Boolean> = _showNewProductDialog
@@ -32,7 +32,7 @@ class ArchingProductViewModel : ViewModel() {
 
     private fun observeProducts() {
         viewModelScope.launch {
-            operations.observeItems<ArchingProduct, ArchingProductRealm>().collect { productList ->
+            operations.observeItems<Product, ArchingProductRealm>().collect { productList ->
                 _products.value = productList
             }
         }
@@ -42,11 +42,11 @@ class ArchingProductViewModel : ViewModel() {
         _showNewProductDialog.value = value ?: !_showNewProductDialog.value
     }
 
-    fun addProduct(archingProduct: ArchingProduct) {
+    fun addProduct(archingProduct: Product) {
         try {
             Log.i("--> Arching Product", archingProduct.toString())
             viewModelScope.launch {
-                operations.addItem<ArchingProduct, ArchingProductRealm>(archingProduct)
+                operations.addItem<Product, ArchingProductRealm>(archingProduct)
             }
         } catch (e: Exception) {
             Log.i("--> Arching Product", e.message.toString())

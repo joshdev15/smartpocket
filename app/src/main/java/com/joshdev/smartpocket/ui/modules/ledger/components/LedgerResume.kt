@@ -17,19 +17,19 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.joshdev.smartpocket.R
-import com.joshdev.smartpocket.domain.models.Ledger
-import com.joshdev.smartpocket.domain.models.LedgerTransaction
+import com.joshdev.smartpocket.domain.ledger.Ledger
+import com.joshdev.smartpocket.domain.ledger.Transaction
 import com.joshdev.smartpocket.ui.components.AppText
 
 @SuppressLint("ResourceAsColor")
 @Composable
-fun LedgerResume(ledger: Ledger, ledgerTransactions: List<LedgerTransaction>) {
+fun LedgerResume(ledger: Ledger, ledgerTransactions: List<Transaction>) {
     val capitalColor = MaterialTheme.colorScheme.background.copy(0.3f)
     val incomeColor = colorResource(id = R.color.income)
     val egressColor = colorResource(id = R.color.egress)
 
-    val income = ledgerTransactions.filter { it.type == LedgerTransaction.TxType.INCOME }.sumOf { it.amount }
-    val egress = ledgerTransactions.filter { it.type == LedgerTransaction.TxType.EGRESS }.sumOf { it.amount }
+    val income = ledgerTransactions.filter { it.type == Transaction.TxType.INCOME }.sumOf { it.amount }
+    val egress = ledgerTransactions.filter { it.type == Transaction.TxType.EGRESS }.sumOf { it.amount }
 
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,

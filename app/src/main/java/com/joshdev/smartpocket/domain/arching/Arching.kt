@@ -1,7 +1,7 @@
-package com.joshdev.smartpocket.domain.models
+package com.joshdev.smartpocket.domain.arching
 
 import com.joshdev.smartpocket.repository.mappers.ToRealm
-import com.joshdev.smartpocket.repository.entities.ArchingRealm
+import com.joshdev.smartpocket.repository.entities.arching.ArchingRealm
 import org.mongodb.kbson.ObjectId
 
 data class Arching(

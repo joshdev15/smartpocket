@@ -1,11 +1,11 @@
-package com.joshdev.smartpocket.domain.models
+package com.joshdev.smartpocket.domain.arching
 
 import com.joshdev.smartpocket.repository.mappers.ToRealm
-import com.joshdev.smartpocket.repository.entities.ArchingCategoryRealm
+import com.joshdev.smartpocket.repository.entities.arching.ArchingCategoryRealm
 import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.ObjectId
 
-class ArchingCategory(
+class Category(
     @PrimaryKey
     val id: String = "",
     val name: String,
@@ -15,16 +15,16 @@ class ArchingCategory(
 ) : ToRealm<ArchingCategoryRealm> {
     override fun toRealm(): ArchingCategoryRealm {
         return ArchingCategoryRealm().apply {
-            id = if (this@ArchingCategory.id != "") {
-                ObjectId(this@ArchingCategory.id)
+            id = if (this@Category.id != "") {
+                ObjectId(this@Category.id)
             } else {
                 ObjectId()
             }
 
-            name = this@ArchingCategory.name
-            level = this@ArchingCategory.level
-            description = this@ArchingCategory.description
-            color = this@ArchingCategory.color
+            name = this@Category.name
+            level = this@Category.level
+            description = this@Category.description
+            color = this@Category.color
         }
     }
 }

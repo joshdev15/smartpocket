@@ -17,13 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.joshdev.smartpocket.domain.models.ArchingRecord
+import com.joshdev.smartpocket.domain.arching.Record
 import com.joshdev.smartpocket.ui.components.AppText
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ArchingRecordCard(
-    record: ArchingRecord,
+    record: Record,
     onClick: () -> Unit,
     onLongClick: () -> Unit
 ) {

@@ -21,7 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.joshdev.smartpocket.domain.models.Ledger
+import com.joshdev.smartpocket.domain.ledger.Ledger
 import com.joshdev.smartpocket.ui.modules.ledger.activity.LedgerViewModel
 import com.joshdev.smartpocket.ui.components.AppText
 

@@ -21,7 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.joshdev.smartpocket.domain.models.Currency
+import com.joshdev.smartpocket.domain.currency.Currency
 import com.joshdev.smartpocket.ui.modules.currency.activity.CurrencyViewModel
 import com.joshdev.smartpocket.ui.components.AppText
 

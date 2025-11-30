@@ -23,7 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.joshdev.smartpocket.domain.models.LedgerProduct
+import com.joshdev.smartpocket.domain.ledger.Product
 import com.joshdev.smartpocket.ui.activities.productList.ProductListViewModel
 import com.joshdev.smartpocket.ui.components.AppText
 
@@ -89,7 +89,7 @@ fun NewProductDialog(invoiceId: String, viewModel: ProductListViewModel) {
                 ) {
                     Button(
                         onClick = {
-                            val pro = LedgerProduct(
+                            val pro = Product(
                                 invoiceId = invoiceId,
                                 name = proName,
                                 quantity = proQty.toInt(),

@@ -1,12 +1,11 @@
-package com.joshdev.smartpocket.repository.entities
+package com.joshdev.smartpocket.repository.entities.ledger
 
-import com.joshdev.smartpocket.domain.models.ArchingProduct
-import com.joshdev.smartpocket.repository.mappers.ToData
+import com.joshdev.smartpocket.domain.ledger.Product
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.ObjectId
 
-class ArchingProductRealm : RealmObject, ToData<ArchingProduct> {
+class LedgerProductRealm : RealmObject {
     @PrimaryKey
     var id: ObjectId = ObjectId()
     var invoiceId: String = ""
@@ -20,8 +19,8 @@ class ArchingProductRealm : RealmObject, ToData<ArchingProduct> {
     var subCategoryId: Int? = null
     var baseCost: Double = 0.0
 
-    override fun toData(): ArchingProduct {
-        return ArchingProduct(
+    fun toData(): Product {
+        return Product(
             id = id.toHexString(),
             invoiceId = invoiceId,
             name = name,

@@ -17,7 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.joshdev.smartpocket.domain.models.Currency
+import com.joshdev.smartpocket.domain.currency.Currency
 import com.joshdev.smartpocket.ui.components.AppText
 import com.joshdev.smartpocket.ui.utils.UiUtils.SCREEN_PADDING
 

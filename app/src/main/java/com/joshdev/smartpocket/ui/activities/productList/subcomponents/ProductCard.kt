@@ -19,12 +19,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.joshdev.smartpocket.domain.models.LedgerProduct
+import com.joshdev.smartpocket.domain.ledger.Product
 import com.joshdev.smartpocket.ui.components.AppText
 import com.joshdev.smartpocket.ui.utils.UiUtils.formatAmount
 
 @Composable
-fun ProductCard(ledgerProduct: LedgerProduct) {
+fun ProductCard(product: Product) {
     val panelIsActive = remember { mutableStateOf(false) }
     Row(
         modifier = Modifier
@@ -45,13 +45,13 @@ fun ProductCard(ledgerProduct: LedgerProduct) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 AppText(
-                    text = ledgerProduct.name,
+                    text = product.name,
                     fontSize = 18.sp,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontWeight = FontWeight.Bold,
                 )
                 AppText(
-                    text = "$${formatAmount(ledgerProduct.cost)}",
+                    text = "$${formatAmount(product.cost)}",
                     fontSize = 16.sp,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontWeight = FontWeight.Medium,
@@ -64,7 +64,7 @@ fun ProductCard(ledgerProduct: LedgerProduct) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 AppText(
-                    text = "Cant.: ${ledgerProduct.quantity}",
+                    text = "Cant.: ${product.quantity}",
                     color = MaterialTheme.colorScheme.secondary,
                     fontSize = 12.sp,
                 )
@@ -75,7 +75,7 @@ fun ProductCard(ledgerProduct: LedgerProduct) {
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                val total = formatAmount(ledgerProduct.cost * ledgerProduct.quantity)
+                val total = formatAmount(product.cost * product.quantity)
                 AppText(
                     text = "Costo total: $total",
                     color = MaterialTheme.colorScheme.tertiary,

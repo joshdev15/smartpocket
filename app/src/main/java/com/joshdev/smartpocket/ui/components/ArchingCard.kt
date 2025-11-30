@@ -17,7 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.joshdev.smartpocket.domain.models.Arching
+import com.joshdev.smartpocket.domain.arching.Arching
 import com.joshdev.smartpocket.ui.utils.UiUtils.formatDate
 
 @Composable

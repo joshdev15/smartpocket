@@ -1,8 +1,8 @@
-package com.joshdev.smartpocket.domain.models
+package com.joshdev.smartpocket.domain.currency
 
+import com.joshdev.smartpocket.repository.entities.currency.CurrencyRealm
 import com.joshdev.smartpocket.repository.mappers.ToRealm
-import com.joshdev.smartpocket.repository.entities.CurrencyRealm
-import org.mongodb.kbson.ObjectId
+import org.mongodb.kbson.BsonObjectId
 
 data class Currency(
     val id: String = "",
@@ -12,7 +12,7 @@ data class Currency(
 ) : ToRealm<CurrencyRealm> {
     override fun toRealm(): CurrencyRealm {
         return CurrencyRealm().apply {
-            id = if (this@Currency.id != "") ObjectId(this@Currency.id) else ObjectId()
+            id = if (this@Currency.id != "") BsonObjectId.Companion(this@Currency.id) else BsonObjectId.Companion()
             name = this@Currency.name
             symbol = this@Currency.symbol
             rate = this@Currency.rate

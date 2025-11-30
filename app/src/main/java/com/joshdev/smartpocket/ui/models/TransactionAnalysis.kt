@@ -1,8 +1,8 @@
 package com.joshdev.smartpocket.ui.models
 
-import com.joshdev.smartpocket.domain.models.LedgerTransaction
+import com.joshdev.smartpocket.domain.ledger.Transaction
 
 data class TransactionAnalysis(
     val value: Double,
-    val type: LedgerTransaction.TxType
+    val type: Transaction.TxType
 )

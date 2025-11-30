@@ -1,6 +1,6 @@
-package com.joshdev.smartpocket.repository.entities
+package com.joshdev.smartpocket.repository.entities.ledger
 
-import com.joshdev.smartpocket.domain.models.Ledger
+import com.joshdev.smartpocket.domain.ledger.Ledger
 import com.joshdev.smartpocket.repository.mappers.ToData
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey

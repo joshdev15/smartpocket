@@ -1,19 +1,18 @@
 package com.joshdev.smartpocket.repository.database
 
-import com.joshdev.smartpocket.repository.entities.ArchingCategoryRealm
-import com.joshdev.smartpocket.repository.entities.ArchingProductRealm
-import com.joshdev.smartpocket.repository.entities.ArchingRealm
-import com.joshdev.smartpocket.repository.entities.ArchingRecordRealm
-import com.joshdev.smartpocket.repository.entities.CurrencyRealm
-import com.joshdev.smartpocket.repository.entities.LedgerCategoryRealm
-import com.joshdev.smartpocket.repository.entities.LedgerRealm
-import com.joshdev.smartpocket.repository.entities.LedgerProductRealm
-import com.joshdev.smartpocket.repository.entities.LedgerTransactionRealm
+import com.joshdev.smartpocket.repository.entities.arching.ArchingCategoryRealm
+import com.joshdev.smartpocket.repository.entities.arching.ArchingProductRealm
+import com.joshdev.smartpocket.repository.entities.arching.ArchingRealm
+import com.joshdev.smartpocket.repository.entities.arching.ArchingRecordItemRealm
+import com.joshdev.smartpocket.repository.entities.arching.ArchingRecordRealm
+import com.joshdev.smartpocket.repository.entities.currency.CurrencyRealm
+import com.joshdev.smartpocket.repository.entities.ledger.LedgerCategoryRealm
+import com.joshdev.smartpocket.repository.entities.ledger.LedgerRealm
+import com.joshdev.smartpocket.repository.entities.ledger.LedgerProductRealm
+import com.joshdev.smartpocket.repository.entities.ledger.LedgerTransactionRealm
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.ext.query
-import io.realm.kotlin.types.TypedRealmObject
-import kotlin.reflect.KClass
 
 object RealmDatabase {
     @Volatile
@@ -34,9 +33,10 @@ object RealmDatabase {
             // Arching Classes
             ArchingRealm::class,
             ArchingRecordRealm::class,
+            ArchingRecordItemRealm::class,
             ArchingCategoryRealm::class,
             ArchingProductRealm::class
-        ) as Set<KClass<out TypedRealmObject>>
+        )
 
         return RealmConfiguration.Builder(schema)
             .name("smartpocket.realm")

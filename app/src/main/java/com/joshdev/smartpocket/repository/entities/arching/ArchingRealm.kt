@@ -1,24 +1,22 @@
-package com.joshdev.smartpocket.repository.entities
+package com.joshdev.smartpocket.repository.entities.arching
 
-import com.joshdev.smartpocket.domain.models.Currency
+import com.joshdev.smartpocket.domain.arching.Arching
 import com.joshdev.smartpocket.repository.mappers.ToData
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.ObjectId
 
-class CurrencyRealm : RealmObject, ToData<Currency> {
+class ArchingRealm() : RealmObject, ToData<Arching> {
     @PrimaryKey
     var id: ObjectId = ObjectId()
     var name: String = ""
-    var symbol: String = ""
-    var rate: Double = 0.0
+    var creationDate: Long = 0L
 
-    override fun toData(): Currency {
-        return Currency(
+    override fun toData(): Arching {
+        return Arching(
             id = id.toHexString(),
             name = name,
-            symbol = symbol,
-            rate = rate
+            creationDate = creationDate,
         )
     }
 }

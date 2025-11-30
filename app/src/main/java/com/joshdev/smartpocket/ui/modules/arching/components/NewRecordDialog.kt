@@ -23,14 +23,14 @@ import com.joshdev.smartpocket.ui.modules.arching.activity.ArchingViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewArchingRecordDialog(viewModel: ArchingViewModel, archingId: String) {
+fun NewRecordDialog(viewModel: ArchingViewModel, archingId: String) {
     val sheetState = rememberModalBottomSheetState()
 
-    if (viewModel.showNewArchingRecordDialog.value) {
+    if (viewModel.showNewRecordDialog.value) {
         var recordName by remember { mutableStateOf("") }
 
         ModalBottomSheet(
-            onDismissRequest = { viewModel.toggleNewArchingRecordDialog(false) },
+            onDismissRequest = { viewModel.toggleNewRecordDialog(false) },
             sheetState = sheetState
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
@@ -46,7 +46,7 @@ fun NewArchingRecordDialog(viewModel: ArchingViewModel, archingId: String) {
                 Button(
                     onClick = {
                         viewModel.addArchingRecord(archingId)
-                        viewModel.toggleNewArchingRecordDialog(false)
+                        viewModel.toggleNewRecordDialog(false)
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {

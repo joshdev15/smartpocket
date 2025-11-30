@@ -5,10 +5,10 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.joshdev.smartpocket.domain.models.Currency
+import com.joshdev.smartpocket.domain.currency.Currency
 import com.joshdev.smartpocket.repository.database.Operations
 import com.joshdev.smartpocket.repository.database.RealmDatabase
-import com.joshdev.smartpocket.repository.entities.CurrencyRealm
+import com.joshdev.smartpocket.repository.entities.currency.CurrencyRealm
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

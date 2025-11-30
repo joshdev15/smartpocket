@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.ui.modules.arching.components
+package com.joshdev.smartpocket.ui.modules.arching.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -8,10 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -24,6 +20,8 @@ import com.joshdev.smartpocket.ui.components.ArchingCard
 import com.joshdev.smartpocket.ui.components.FastPanel
 import com.joshdev.smartpocket.ui.components.FloatingButton
 import com.joshdev.smartpocket.ui.models.FastPanelOption
+import com.joshdev.smartpocket.ui.modules.arching.components.ArchingOptionsDialog
+import com.joshdev.smartpocket.ui.modules.arching.components.NewArchingDialog
 import com.joshdev.smartpocket.ui.utils.UiUtils.SCREEN_FLOATING_PADDING
 import com.joshdev.smartpocket.ui.utils.UiUtils.SCREEN_PADDING
 

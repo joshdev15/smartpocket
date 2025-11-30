@@ -19,12 +19,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.joshdev.smartpocket.domain.models.ArchingProduct
+import com.joshdev.smartpocket.domain.arching.Product
 import com.joshdev.smartpocket.ui.components.AppText
 import com.joshdev.smartpocket.ui.utils.UiUtils.formatAmount
 
 @Composable
-fun ArchingProductCard(archingProduct: ArchingProduct) {
+fun ArchingProductCard(archingProduct: Product) {
     val panelIsActive = remember { mutableStateOf(false) }
     Row(
         modifier = Modifier
@@ -51,7 +51,7 @@ fun ArchingProductCard(archingProduct: ArchingProduct) {
                     fontWeight = FontWeight.Bold,
                 )
                 AppText(
-                    text = "$${formatAmount(archingProduct.cost)}",
+                    text = "$${formatAmount(archingProduct.price)}",
                     fontSize = 16.sp,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontWeight = FontWeight.Medium,
@@ -64,7 +64,7 @@ fun ArchingProductCard(archingProduct: ArchingProduct) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 AppText(
-                    text = "Cant.: ${archingProduct.quantity}",
+                    text = "Cant.: 0",
                     color = MaterialTheme.colorScheme.secondary,
                     fontSize = 12.sp,
                 )
@@ -75,9 +75,10 @@ fun ArchingProductCard(archingProduct: ArchingProduct) {
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                val total = formatAmount(archingProduct.cost * archingProduct.quantity)
+//                val total = formatAmount(archingProduct.cost * archingProduct.quantity)
                 AppText(
-                    text = "Costo total: $total",
+                    text = "0",
+//                    text = "Costo total: $total",
                     color = MaterialTheme.colorScheme.tertiary,
                     fontSize = 12.sp,
                 )

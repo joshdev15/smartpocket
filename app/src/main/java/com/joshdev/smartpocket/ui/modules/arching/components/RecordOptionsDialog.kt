@@ -19,14 +19,14 @@ import com.joshdev.smartpocket.ui.modules.arching.activity.ArchingViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ArchingRecordOptionsDialog(viewModel: ArchingViewModel) {
+fun RecordOptionsDialog(viewModel: ArchingViewModel) {
     val sheetState = rememberModalBottomSheetState()
 
     val onClose = {
-        viewModel.toggleArchingRecordOptionsDialog(null, false)
+        viewModel.toggleRecordOptionsDialog(null, false)
     }
 
-    if (viewModel.showArchingRecordOptionsDialog.value) {
+    if (viewModel.showRecordOptionsDialog.value) {
         ModalBottomSheet(
             onDismissRequest = { onClose() },
             sheetState = sheetState,

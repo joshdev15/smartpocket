@@ -5,10 +5,10 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.joshdev.smartpocket.domain.models.ArchingProduct
+import com.joshdev.smartpocket.domain.arching.Product
 import com.joshdev.smartpocket.repository.database.Operations
 import com.joshdev.smartpocket.repository.database.RealmDatabase
-import com.joshdev.smartpocket.repository.entities.ArchingProductRealm
+import com.joshdev.smartpocket.repository.entities.arching.ArchingProductRealm
 import kotlinx.coroutines.launch
 
 class ArchingProductsViewModel: ViewModel() {
@@ -17,8 +17,8 @@ class ArchingProductsViewModel: ViewModel() {
     private val context = mutableStateOf<Context?>(null)
     private val operations = Operations(database)
 
-    private val _products = mutableStateOf<List<ArchingProduct>>(emptyList())
-    val products: State<List<ArchingProduct>> = _products
+    private val _products = mutableStateOf<List<Product>>(emptyList())
+    val products: State<List<Product>> = _products
 
     fun start(act: ArchingProductsActivity, ctx: Context) {
         activity.value = act
@@ -29,7 +29,7 @@ class ArchingProductsViewModel: ViewModel() {
     // Operations
     private fun observeLedgers() {
         viewModelScope.launch {
-            operations.observeItems<ArchingProduct, ArchingProductRealm>().collect { products ->
+            operations.observeItems<Product, ArchingProductRealm>().collect { products ->
                 _products.value = products
             }
         }

@@ -6,11 +6,11 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.joshdev.smartpocket.domain.models.LedgerProduct
-import com.joshdev.smartpocket.domain.models.LedgerTransaction
+import com.joshdev.smartpocket.domain.ledger.Product
+import com.joshdev.smartpocket.domain.ledger.Transaction
 import com.joshdev.smartpocket.repository.database.RealmDatabase
-import com.joshdev.smartpocket.repository.entities.LedgerProductRealm
-import com.joshdev.smartpocket.repository.entities.LedgerTransactionRealm
+import com.joshdev.smartpocket.repository.entities.ledger.LedgerProductRealm
+import com.joshdev.smartpocket.repository.entities.ledger.LedgerTransactionRealm
 import com.joshdev.smartpocket.ui.activities.photoai.PhotoAIActivity
 import io.realm.kotlin.ext.query
 import kotlinx.coroutines.Dispatchers
@@ -24,11 +24,11 @@ class ProductListViewModel : ViewModel() {
     private val context = mutableStateOf<Context?>(null)
     private val transactionId = mutableStateOf<String?>(null)
 
-    private val _Ledger_transaction = mutableStateOf<LedgerTransaction?>(null)
-    val ledgerTransaction: State<LedgerTransaction?> = _Ledger_transaction
+    private val _Ledger_transaction = mutableStateOf<Transaction?>(null)
+    val ledgerTransaction: State<Transaction?> = _Ledger_transaction
 
-    private val _products = mutableStateOf<List<LedgerProduct>>(emptyList())
-    val products: State<List<LedgerProduct>> = _products
+    private val _products = mutableStateOf<List<Product>>(emptyList())
+    val products: State<List<Product>> = _products
 
     private val _showNewProductDialog = mutableStateOf(false)
     val showNewProductDialog: State<Boolean> = _showNewProductDialog
@@ -71,13 +71,13 @@ class ProductListViewModel : ViewModel() {
         }
     }
 
-    fun addProduct(ledgerProduct: LedgerProduct) {
+    fun addProduct(product: Product) {
         database.writeBlocking {
             val newLedgerProductRealm = LedgerProductRealm().apply {
-                invoiceId = ledgerProduct.invoiceId
-                name = ledgerProduct.name
-                cost = ledgerProduct.cost
-                quantity = ledgerProduct.quantity
+                invoiceId = product.invoiceId
+                name = product.name
+                cost = product.cost
+                quantity = product.quantity
             }
 
             copyToRealm(newLedgerProductRealm)

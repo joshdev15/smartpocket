@@ -20,7 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.joshdev.smartpocket.domain.models.ArchingProduct
+import com.joshdev.smartpocket.domain.arching.Product
 import com.joshdev.smartpocket.ui.activities.archingProducts.ArchingProductViewModel
 import com.joshdev.smartpocket.ui.components.AppText
 
@@ -86,15 +86,15 @@ fun NewArchingProductDialog(viewModel: ArchingProductViewModel) {
                     Button(
                         onClick = {
                             try {
-                                val pro = ArchingProduct(
+                                val pro = Product(
                                     name = proName,
-                                    quantity = proQty.toInt(),
-                                    cost = proCost.toDouble(),
-                                    currency = 0,
-                                    customRate = 0.0,
-                                    order = 0,
-                                    baseCost = 0.0,
-                                    invoiceId = "",
+//                                    quantity = proQty.toInt(),
+//                                    cost = proCost.toDouble(),
+//                                    currency = 0,
+//                                    customRate = 0.0,
+//                                    order = 0,
+//                                    baseCost = 0.0,
+//                                    invoiceId = "",
                                 )
 
                                 viewModel.addProduct(pro)
