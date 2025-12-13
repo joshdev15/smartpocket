@@ -36,7 +36,7 @@ fun NewArchingDialog(viewModel: ArchingViewModel) {
         viewModel.toggleNewArchingDialog(false)
     }
 
-    if (viewModel.showNewArchingDialog.value) {
+    if (viewModel.showNewArching.value) {
         ModalBottomSheet(
             onDismissRequest = { onClose() },
             sheetState = sheetState

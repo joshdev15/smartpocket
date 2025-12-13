@@ -22,7 +22,7 @@ import com.joshdev.smartpocket.ui.components.AppText
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ArchingRecordCard(
+fun RecordCard(
     record: Record,
     onClick: () -> Unit,
     onLongClick: () -> Unit

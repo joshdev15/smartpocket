@@ -6,13 +6,15 @@ import org.mongodb.kbson.ObjectId
 
 data class RecordItem(
     val id: String = "",
-    val product: Product?,
+    val recordId: String = "",
+    val productId: String = "",
     val quantity: Int,
 ) : ToRealm<ArchingRecordItemRealm> {
     override fun toRealm(): ArchingRecordItemRealm {
         return ArchingRecordItemRealm().apply {
             id = if (this@RecordItem.id != "") ObjectId(this@RecordItem.id) else ObjectId()
-            product = this@RecordItem.product?.toRealm()
+            recordId = if (this@RecordItem.recordId != "") ObjectId(this@RecordItem.recordId) else ObjectId()
+            productId = if (this@RecordItem.productId != "") ObjectId(this@RecordItem.productId) else ObjectId()
             quantity = this@RecordItem.quantity
         }
     }

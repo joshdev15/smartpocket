@@ -91,5 +91,3 @@ object RealmDatabase {
         }
     }
 }
-
-

@@ -2,6 +2,7 @@ package com.joshdev.smartpocket.domain.arching
 
 import com.joshdev.smartpocket.repository.entities.arching.ArchingRecordRealm
 import com.joshdev.smartpocket.repository.mappers.ToRealm
+import io.realm.kotlin.ext.toRealmList
 import org.mongodb.kbson.ObjectId
 
 data class Record(
@@ -9,7 +10,8 @@ data class Record(
     val archingId: String = "",
     val dayName: String,
     val weekOfYear: Int,
-    val monthOfYear: Int
+    val monthOfYear: Int,
+    val items: List<RecordItem> = listOf()
 ) : ToRealm<ArchingRecordRealm> {
     override fun toRealm(): ArchingRecordRealm {
         return ArchingRecordRealm().apply {
@@ -18,6 +20,7 @@ data class Record(
             dayName = this@Record.dayName
             weekOfYear = this@Record.weekOfYear
             monthOfYear = this@Record.monthOfYear
+            items = this@Record.items.map { it.toRealm() }.toRealmList()
         }
     }
 }

@@ -12,6 +12,8 @@ import androidx.navigation.navArgument
 import com.joshdev.smartpocket.ui.modules.arching.activity.ArchingViewModel
 import com.joshdev.smartpocket.ui.modules.arching.screens.RecordsScreen
 import com.joshdev.smartpocket.ui.modules.arching.screens.ArchingScreen
+import com.joshdev.smartpocket.ui.modules.arching.screens.ProductScreen
+import com.joshdev.smartpocket.ui.modules.arching.screens.RecordItemsScreen
 import com.joshdev.smartpocket.ui.utils.appComposable
 
 @Composable
@@ -33,11 +35,16 @@ fun Navigator(navController: NavHostController, viewModel: ArchingViewModel) {
             }
 
             appComposable(
-                route = "count/{recordId}",
+                route = "recordItems/{recordId}",
                 arguments = listOf(navArgument("recordId") { type = NavType.StringType })
             ) { backStackEntry ->
                 val recordId = backStackEntry.arguments?.getString("recordId") ?: ""
-                RecordsScreen(recordId, viewModel)
+                RecordItemsScreen(recordId, viewModel)
+            }
+
+
+            appComposable("products") {
+                ProductScreen(viewModel)
             }
         }
     }

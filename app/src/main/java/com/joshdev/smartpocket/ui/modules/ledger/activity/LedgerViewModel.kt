@@ -15,7 +15,7 @@ import com.joshdev.smartpocket.repository.entities.ledger.LedgerRealm
 import com.joshdev.smartpocket.repository.entities.ledger.LedgerTransactionRealm
 import com.joshdev.smartpocket.ui.activities.productList.ProductListActivity
 import com.joshdev.smartpocket.ui.models.FastPanelOption
-import com.joshdev.smartpocket.ui.utils.UiUtils
+import com.joshdev.smartpocket.ui.utils.UiUtils.getIntentByFastOptionID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -106,7 +106,7 @@ class LedgerViewModel : ViewModel() {
     // Ledger Operations
     private fun observeLedgers() {
         viewModelScope.launch {
-            operations.observeItems<Ledger, LedgerRealm>().collect { ledgerList ->
+            operations.observe<Ledger, LedgerRealm>().collect { ledgerList ->
                 _ledgers.value = ledgerList
             }
         }
@@ -114,28 +114,30 @@ class LedgerViewModel : ViewModel() {
 
     fun addLedger(ledger: Ledger) {
         viewModelScope.launch(Dispatchers.IO) {
-            operations.addItem<Ledger, LedgerRealm>(ledger)
+            operations.add<Ledger, LedgerRealm>(ledger)
         }
     }
 
     fun deleteLedger() {
         selectedLedger.value?.let { ledger ->
             viewModelScope.launch(Dispatchers.IO) {
-                operations.deleteItem<Ledger, LedgerRealm>(ledger.id)
+                operations.delete<Ledger, LedgerRealm>(ledger.id)
             }
         }
     }
 
     fun goTo(id: FastPanelOption.IDs) {
-        UiUtils.getIntentByFastOptionID(id, context.value)?.let {
-            activity.value?.startActivity(it)
+        navController.value?.let { nav ->
+            getIntentByFastOptionID(id, context.value, nav)?.let {
+                activity.value?.startActivity(it)
+            }
         }
     }
 
     // Transactions Operations
     fun observeTransactions() {
         viewModelScope.launch {
-            operations.observeItems<Transaction, LedgerTransactionRealm>()
+            operations.observe<Transaction, LedgerTransactionRealm>()
                 .collect { transactionList ->
                     _transactions.value = transactionList
                 }
@@ -143,14 +145,14 @@ class LedgerViewModel : ViewModel() {
     }
 
     fun addTransaction(ledgerTransaction: Transaction) {
-        operations.addItem<Transaction, LedgerTransactionRealm>(ledgerTransaction)
+        operations.add<Transaction, LedgerTransactionRealm>(ledgerTransaction)
         updateLedgerBalance()
     }
 
     fun updateLedgerBalance() {
         ledger.value?.let {
             viewModelScope.launch(Dispatchers.IO) {
-                operations.updateItem(it.id)
+                operations.update(it.id)
             }
         }
     }
@@ -158,7 +160,7 @@ class LedgerViewModel : ViewModel() {
     fun deleteTransaction() {
         selectedLedgerTransaction.value?.let { tx ->
             viewModelScope.launch(Dispatchers.IO) {
-                operations.deleteItem<Transaction, LedgerTransactionRealm>(tx.id)
+                operations.delete<Transaction, LedgerTransactionRealm>(tx.id)
                 updateLedgerBalance()
             }
         }

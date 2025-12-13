@@ -54,7 +54,7 @@ class CurrencyViewModel : ViewModel() {
     // Operations
     private fun observeLedgers() {
         viewModelScope.launch {
-            operations.observeItems<Currency, CurrencyRealm>().collect {
+            operations.observe<Currency, CurrencyRealm>().collect {
                 _currencies.value = it
             }
         }
@@ -62,7 +62,7 @@ class CurrencyViewModel : ViewModel() {
 
     fun addCurrency(currency: Currency) {
         viewModelScope.launch {
-            operations.addItem<Currency, CurrencyRealm>(currency)
+            operations.add<Currency, CurrencyRealm>(currency)
         }
     }
 
@@ -70,7 +70,7 @@ class CurrencyViewModel : ViewModel() {
         selectedCurrency.value?.let { currency ->
             viewModelScope.launch(Dispatchers.IO) {
                 if (currency.name != "USD") {
-                    operations.deleteItem<Currency, CurrencyRealm>(currency.id)
+                    operations.delete<Currency, CurrencyRealm>(currency.id)
                 }
             }
         }

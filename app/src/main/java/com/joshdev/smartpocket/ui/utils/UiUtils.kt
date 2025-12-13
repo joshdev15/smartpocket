@@ -10,7 +10,6 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import com.joshdev.smartpocket.ui.models.HomeOption
 import com.joshdev.smartpocket.R
-import com.joshdev.smartpocket.ui.activities.archingProducts.ArchingProductsActivity
 import com.joshdev.smartpocket.ui.activities.categoryList.CategoryListActivity
 import com.joshdev.smartpocket.ui.modules.currency.activity.CurrencyActivity
 import com.joshdev.smartpocket.ui.activities.productList.ProductListActivity
@@ -26,6 +25,9 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.navigation.NamedNavArgument
+import androidx.navigation.NavController
+import com.joshdev.smartpocket.domain.arching.Product
+import com.joshdev.smartpocket.ui.models.ItemProduct
 
 object UiUtils {
     val SCREEN_PADDING = 10.dp
@@ -75,7 +77,11 @@ object UiUtils {
         )
     }
 
-    fun getIntentByFastOptionID(id: FastPanelOption.IDs, context: Context?): Intent? {
+    fun getIntentByFastOptionID(
+        id: FastPanelOption.IDs,
+        context: Context?,
+        navController: NavController
+    ): Intent? {
         if (context == null) {
             return null
         }
@@ -86,23 +92,31 @@ object UiUtils {
             }
 
             FastPanelOption.IDs.CATEGORIES_LEDGER -> {
-                Intent(context, CategoryListActivity::class.java)
+                navController.navigate("categories")
+                null
             }
 
             FastPanelOption.IDs.PRODUCTS_LEDGER -> {
-                Intent(context, ProductListActivity::class.java)
+                navController.navigate("products")
+                null
             }
 
             FastPanelOption.IDs.CATEGORIES_ARCHING -> {
-                Intent(context, CategoryListActivity::class.java)
+                navController.navigate("categories")
+                null
             }
 
             FastPanelOption.IDs.PRODUCTS_ARCHING -> {
-                Intent(context, ArchingProductsActivity::class.java)
+                navController.navigate("products")
+                null
             }
         }
 
         return goTo
+    }
+
+    fun getItemProducts(productList: List<Product>): List<ItemProduct> {
+        return productList.map { it -> ItemProduct(it.copy()) }
     }
 }
 

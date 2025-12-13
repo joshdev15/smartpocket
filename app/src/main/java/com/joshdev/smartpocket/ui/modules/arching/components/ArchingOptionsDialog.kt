@@ -1,11 +1,13 @@
 package com.joshdev.smartpocket.ui.modules.arching.components
 
+import android.R
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -47,13 +49,19 @@ fun ArchingOptionsDialog(viewModel: ArchingViewModel) {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Button(
+                        colors = ButtonColors(
+                            containerColor = MaterialTheme.colorScheme.errorContainer,
+                            contentColor = MaterialTheme.colorScheme.onBackground,
+                            disabledContainerColor = MaterialTheme.colorScheme.errorContainer,
+                            disabledContentColor = MaterialTheme.colorScheme.onBackground
+                        ),
                         onClick = {
                             viewModel.deleteArching()
                             onClose()
                         },
                         modifier = Modifier.padding(top = 10.dp, end = 8.dp)
                     ) {
-                        AppText("Eliminar")
+                        AppText("Eliminar", color = MaterialTheme.colorScheme.onBackground)
                     }
                 }
             }
