@@ -9,14 +9,12 @@ data class Arching(
     val id: String = "",
     val name: String,
     val creationDate: Long,
-    val records: List<Record> = listOf()
 ) : ToRealm<ArchingRealm> {
     override fun toRealm(): ArchingRealm {
         return ArchingRealm().apply {
             id = if (this@Arching.id != "") ObjectId(this@Arching.id) else ObjectId()
             name = this@Arching.name
             creationDate = this@Arching.creationDate
-            records = this@Arching.records.map { it.toRealm() }.toRealmList()
         }
     }
 }

@@ -11,7 +11,6 @@ data class Record(
     val dayName: String,
     val weekOfYear: Int,
     val monthOfYear: Int,
-    val items: List<RecordItem> = listOf()
 ) : ToRealm<ArchingRecordRealm> {
     override fun toRealm(): ArchingRecordRealm {
         return ArchingRecordRealm().apply {
@@ -20,7 +19,6 @@ data class Record(
             dayName = this@Record.dayName
             weekOfYear = this@Record.weekOfYear
             monthOfYear = this@Record.monthOfYear
-            items = this@Record.items.map { it.toRealm() }.toRealmList()
         }
     }
 }

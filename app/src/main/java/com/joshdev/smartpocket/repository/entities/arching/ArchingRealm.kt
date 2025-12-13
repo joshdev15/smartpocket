@@ -13,14 +13,12 @@ class ArchingRealm() : RealmObject, ToData<Arching> {
     var id: ObjectId = ObjectId()
     var name: String = ""
     var creationDate: Long = 0L
-    var records: RealmList<ArchingRecordRealm> = realmListOf()
 
     override fun toData(): Arching {
         return Arching(
             id = id.toHexString(),
             name = name,
             creationDate = creationDate,
-            records = records.map { it.toData() }
         )
     }
 }
