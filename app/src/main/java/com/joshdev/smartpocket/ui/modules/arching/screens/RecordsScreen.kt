@@ -19,15 +19,15 @@ import androidx.compose.ui.unit.dp
 import com.joshdev.smartpocket.ui.components.AppTopBarBasic
 import com.joshdev.smartpocket.ui.components.FloatingButton
 import com.joshdev.smartpocket.ui.modules.arching.activity.ArchingViewModel
+import com.joshdev.smartpocket.ui.modules.arching.components.NewRecordDialog
 import com.joshdev.smartpocket.ui.modules.arching.components.RecordCard
 import com.joshdev.smartpocket.ui.modules.arching.components.RecordOptionsDialog
-import com.joshdev.smartpocket.ui.modules.arching.components.NewRecordDialog
 import com.joshdev.smartpocket.ui.utils.UiUtils.SCREEN_FLOATING_PADDING
 import com.joshdev.smartpocket.ui.utils.UiUtils.SCREEN_PADDING
 
 @Composable
 fun RecordsScreen(
-    archingId: String,
+    archingId: Long,
     viewModel: ArchingViewModel
 ) {
     viewModel.observeRecords(archingId)
@@ -68,7 +68,11 @@ fun RecordsScreen(
             items(viewModel.records.value) { record ->
                 RecordCard(
                     arcRecord = record,
-                    onClick = { viewModel.navToRecordItem(record.id) },
+                    onClick = {
+                        record.id?.let { recordId ->
+                            viewModel.navToRecordItem(recordId)
+                        }
+                    },
                     onLongClick = {
                         viewModel.toggleRecordOptionsDialog(record, true)
                     }

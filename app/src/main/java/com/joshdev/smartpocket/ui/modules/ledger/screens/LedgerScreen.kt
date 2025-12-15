@@ -15,13 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.joshdev.smartpocket.ui.components.AppTopBarBasic
-import com.joshdev.smartpocket.ui.modules.ledger.activity.LedgerViewModel
 import com.joshdev.smartpocket.ui.components.FastPanel
 import com.joshdev.smartpocket.ui.components.FloatingButton
 import com.joshdev.smartpocket.ui.components.LedgerCard
+import com.joshdev.smartpocket.ui.models.FastPanelOption
+import com.joshdev.smartpocket.ui.modules.ledger.activity.LedgerViewModel
 import com.joshdev.smartpocket.ui.modules.ledger.components.LedgerOptionsDialog
 import com.joshdev.smartpocket.ui.modules.ledger.components.NewLedgerDialog
-import com.joshdev.smartpocket.ui.models.FastPanelOption
 import com.joshdev.smartpocket.ui.utils.UiUtils.SCREEN_FLOATING_PADDING
 import com.joshdev.smartpocket.ui.utils.UiUtils.SCREEN_PADDING
 
@@ -70,7 +70,11 @@ fun LedgerScreen(viewModel: LedgerViewModel) {
 
                         LedgerCard(
                             it,
-                            onClick = { viewModel.navToTransactions(it.id) },
+                            onClick = {
+                                it.id?.let { ledgerId ->
+                                    viewModel.navToTransactions(ledgerId)
+                                }
+                            },
                             onLongClick = { viewModel.toggleLedgerOptionsDialog(it, true) }
                         )
                     }

@@ -6,10 +6,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.joshdev.smartpocket.domain.arching.Arching
 import com.joshdev.smartpocket.domain.arching.ArcProduct
 import com.joshdev.smartpocket.domain.arching.ArcRecord
 import com.joshdev.smartpocket.domain.arching.ArcRecordItem
+import com.joshdev.smartpocket.domain.arching.Arching
 import com.joshdev.smartpocket.domain.currency.Currency
 import com.joshdev.smartpocket.repository.database.room.AppDatabase
 import com.joshdev.smartpocket.repository.database.room.AppDatabaseSingleton
@@ -84,29 +84,29 @@ class ArchingViewModel : ViewModel() {
     // Operations
     private fun observeArchingList() {
         archingJob.value = viewModelScope.launch {
-//            operations.observe<Arching, ArchingRealm>().collect { archingList ->
-//                _archingList.value = archingList
-//            }
+            database.value?.archingDao()?.getAllArching()?.collect { archingList ->
+                _archingList.value = archingList
+            }
         }
     }
 
     fun addArching(arching: Arching) {
         viewModelScope.launch(Dispatchers.IO) {
-//            operations.add<Arching, ArchingRealm>(arching)
+            database.value?.archingDao()?.insert(arching)
         }
     }
 
     fun deleteArching() {
         selectedArching.value?.let { arching ->
             viewModelScope.launch(Dispatchers.IO) {
-//                operations.delete<Arching, ArchingRealm>(arching.id)
+                database.value?.archingDao()?.delete(arching)
             }
         }
     }
 
-    ////////////
-    // ArcRecord //
-    ////////////
+    ///////////////////
+    //// ArcRecord ////
+    ///////////////////
 
     // Declarations
     private val _records = mutableStateOf<List<ArcRecord>>(listOf())
@@ -136,22 +136,20 @@ class ArchingViewModel : ViewModel() {
     }
 
     // Operations
-    fun observeRecords(archingId: String) {
+    fun observeRecords(archingId: Long) {
         if (recordJob.value?.isActive == true) {
             recordJob.value?.cancel()
         }
 
         recordJob.value = viewModelScope.launch {
-//            operations.observeWithQuery<ArcRecord, ArchingRecordRealm>(
-//                "archingId == $0",
-//                ObjectId(archingId)
-//            ).collect { records ->
-//                _records.value = records
-//            }
+            database.value?.archingRecordDao()?.getRecordByArchingId(archingId)
+                ?.collect { tmpRecords ->
+                    _records.value = tmpRecords.filterNotNull()
+                }
         }
     }
 
-    fun addRecord(archingId: String) {
+    fun addRecord(archingId: Long) {
         val calendar = Calendar.getInstance()
         val dayName = calendar.getDisplayName(
             Calendar.DAY_OF_WEEK,
@@ -168,14 +166,14 @@ class ArchingViewModel : ViewModel() {
         )
 
         viewModelScope.launch(Dispatchers.IO) {
-//            operations.add<ArcRecord, ArchingRecordRealm>(arcRecord)
+            database.value?.archingRecordDao()?.insert(arcRecord)
         }
     }
 
     fun deleteArchingRecord() {
         selectedArcRecord.value?.let { archingRecord ->
             viewModelScope.launch(Dispatchers.IO) {
-//                operations.delete<ArcRecord, ArchingRecordRealm>(archingRecord.id)
+                database.value?.archingRecordDao()?.delete(archingRecord)
             }
         }
     }
@@ -191,7 +189,7 @@ class ArchingViewModel : ViewModel() {
     fun cleanRecordStates() {
         navController.value?.popBackStack()
         viewModelScope.launch {
-            delay(600)
+            delay(500)
             _records.value = listOf()
             _selectedArcRecord.value = null
             _showNewRecordDialog.value = false

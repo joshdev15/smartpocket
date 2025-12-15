@@ -15,11 +15,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.joshdev.smartpocket.ui.components.AppTopBarBasic
-import com.joshdev.smartpocket.ui.modules.arching.activity.ArchingViewModel
 import com.joshdev.smartpocket.ui.components.ArchingCard
 import com.joshdev.smartpocket.ui.components.FastPanel
 import com.joshdev.smartpocket.ui.components.FloatingButton
 import com.joshdev.smartpocket.ui.models.FastPanelOption
+import com.joshdev.smartpocket.ui.modules.arching.activity.ArchingViewModel
 import com.joshdev.smartpocket.ui.modules.arching.components.ArchingOptionsDialog
 import com.joshdev.smartpocket.ui.modules.arching.components.NewArchingDialog
 import com.joshdev.smartpocket.ui.utils.UiUtils.SCREEN_FLOATING_PADDING
@@ -49,9 +49,7 @@ fun ArchingScreen(viewModel: ArchingViewModel) {
         },
         floatingActionButton = {
             FloatingButton("Nuevo Cierre") {
-                viewModel.toggleNewArchingDialog(
-                    true
-                )
+                viewModel.toggleNewArchingDialog(true)
             }
         },
         content = { innerPadding ->
@@ -77,7 +75,11 @@ fun ArchingScreen(viewModel: ArchingViewModel) {
 
                         ArchingCard(
                             it,
-                            onClick = { viewModel.navToRecords(it.id) },
+                            onClick = {
+                                it.id?.let { recordId ->
+                                    viewModel.navToRecords(recordId)
+                                }
+                            },
                             onLongClick = { viewModel.toggleArchingOptionsDialog(it, true) }
                         )
                     }

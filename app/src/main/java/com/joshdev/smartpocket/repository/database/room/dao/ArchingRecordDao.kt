@@ -22,6 +22,9 @@ interface ArchingRecordDao {
     @Query("SELECT * FROM arcRecord WHERE id = :recordId")
     suspend fun getRecordById(recordId: Long): ArcRecord?
 
+    @Query("SELECT * FROM arcRecord WHERE archingId = :archingId")
+    fun getRecordByArchingId(archingId: Long): Flow<List<ArcRecord>>
+
     @Query("SELECT * FROM arcRecord ORDER BY id DESC")
     fun getAllRecords(): Flow<List<ArcRecord>>
 

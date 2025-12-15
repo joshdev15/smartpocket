@@ -57,7 +57,11 @@ fun TransactionScreen(
                 itemsIndexed(filteredTransactions) { idx, it ->
                     TransactionCard(
                         tx = it,
-                        onClick = { viewModel.goToTransaction(it.id) },
+                        onClick = {
+                            it.id?.let { txId ->
+                                viewModel.goToTransaction(txId)
+                            }
+                        },
                         onLongClick = { tx ->
                             viewModel.toggleTransactionOptionsDialog(
                                 tx,

@@ -23,7 +23,7 @@ import com.joshdev.smartpocket.ui.modules.arching.activity.ArchingViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewRecordDialog(viewModel: ArchingViewModel, archingId: String) {
+fun NewRecordDialog(viewModel: ArchingViewModel, archingId: Long) {
     val sheetState = rememberModalBottomSheetState()
 
     if (viewModel.showNewRecordDialog.value) {

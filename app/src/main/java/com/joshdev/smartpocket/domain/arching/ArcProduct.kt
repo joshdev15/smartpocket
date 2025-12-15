@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "arcProduct")
 data class ArcProduct(
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    val id: Long? = null,
     val name: String = "",
     val categoryId: String = "",
     val subCategoryId: String = "",

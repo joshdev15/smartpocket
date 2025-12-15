@@ -28,22 +28,22 @@ fun Navigator(navController: NavHostController, viewModel: ArchingViewModel) {
 
             appComposable(
                 route = "records/{archingId}",
-                arguments = listOf(navArgument("archingId") { type = NavType.StringType })
+                arguments = listOf(navArgument("archingId") { type = NavType.LongType })
             ) { backStackEntry ->
-                val archingId = backStackEntry.arguments?.getString("archingId") ?: ""
+                val archingId = backStackEntry.arguments?.getLong("archingId") ?: 0L
                 RecordsScreen(archingId, viewModel)
             }
 
             appComposable(
-                route = "arcRecordItems/{recordId}",
-                arguments = listOf(navArgument("recordId") { type = NavType.StringType })
+                route = "recordItems/{recordId}",
+                arguments = listOf(navArgument("recordId") { type = NavType.LongType })
             ) { backStackEntry ->
                 val recordId = backStackEntry.arguments?.getLong("recordId") ?: 0L
                 RecordItemsScreen(recordId, viewModel)
             }
 
 
-            appComposable("ledProducts") {
+            appComposable("products") {
                 ProductScreen(viewModel)
             }
         }

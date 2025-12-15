@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "ledProducts")
 data class LedProduct(
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    val id: Long? = null,
     val invoiceId: String,
     val name: String,
     val quantity: Int,
