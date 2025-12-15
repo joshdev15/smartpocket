@@ -61,10 +61,6 @@ fun RecordsScreen(
                 .background(MaterialTheme.colorScheme.inverseOnSurface)
                 .padding(innerPadding)
         ) {
-            item {
-//                RecordTotalizer()
-            }
-
             items(viewModel.records.value) { record ->
                 RecordCard(
                     arcRecord = record,

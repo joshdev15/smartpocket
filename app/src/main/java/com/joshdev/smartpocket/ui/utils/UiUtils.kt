@@ -5,27 +5,27 @@ import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavGraphBuilder
-import com.joshdev.smartpocket.ui.models.HomeOption
-import com.joshdev.smartpocket.R
-import com.joshdev.smartpocket.ui.modules.currency.activity.CurrencyActivity
-import com.joshdev.smartpocket.ui.models.FastPanelOption
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import androidx.compose.runtime.Composable
-import androidx.navigation.compose.composable
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NamedNavArgument
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import com.joshdev.smartpocket.R
 import com.joshdev.smartpocket.domain.arching.ArcProduct
+import com.joshdev.smartpocket.ui.models.FastPanelOption
+import com.joshdev.smartpocket.ui.models.HomeOption
 import com.joshdev.smartpocket.ui.models.ItemProduct
+import com.joshdev.smartpocket.ui.modules.currency.activity.CurrencyActivity
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 object UiUtils {
     val SCREEN_PADDING = 10.dp
@@ -95,7 +95,7 @@ object UiUtils {
             }
 
             FastPanelOption.IDs.PRODUCTS_LEDGER -> {
-                navController.navigate("ledProducts")
+                navController.navigate("products")
                 null
             }
 
@@ -105,7 +105,7 @@ object UiUtils {
             }
 
             FastPanelOption.IDs.PRODUCTS_ARCHING -> {
-                navController.navigate("ledProducts")
+                navController.navigate("products")
                 null
             }
         }

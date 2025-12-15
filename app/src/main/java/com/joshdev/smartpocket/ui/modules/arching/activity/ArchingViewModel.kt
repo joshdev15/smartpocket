@@ -104,16 +104,16 @@ class ArchingViewModel : ViewModel() {
         }
     }
 
-    ///////////////////
-    //// ArcRecord ////
-    ///////////////////
+    /////////////////
+    //// Records ////
+    /////////////////
 
     // Declarations
     private val _records = mutableStateOf<List<ArcRecord>>(listOf())
     val records: State<List<ArcRecord>> = _records
 
-    private val _selectedArcRecord = mutableStateOf<ArcRecord?>(null)
-    val selectedArcRecord: State<ArcRecord?> = _selectedArcRecord
+    private val _selectedRecord = mutableStateOf<ArcRecord?>(null)
+    val selectedRecord: State<ArcRecord?> = _selectedRecord
 
     private val _showNewRecordDialog = mutableStateOf(false)
     val showNewRecordDialog: State<Boolean> = _showNewRecordDialog
@@ -123,11 +123,11 @@ class ArchingViewModel : ViewModel() {
 
     // UI Actions
     fun navToRecordItem(recordId: Long) {
-        navController.value?.navigate("arcRecordItems/$recordId")
+        navController.value?.navigate("recordItems/$recordId")
     }
 
     fun toggleRecordOptionsDialog(arcRecord: ArcRecord?, value: Boolean? = null) {
-        _selectedArcRecord.value = arcRecord
+        _selectedRecord.value = arcRecord
         _showRecordOptionsDialog.value = value ?: false
     }
 
@@ -171,7 +171,7 @@ class ArchingViewModel : ViewModel() {
     }
 
     fun deleteArchingRecord() {
-        selectedArcRecord.value?.let { archingRecord ->
+        selectedRecord.value?.let { archingRecord ->
             viewModelScope.launch(Dispatchers.IO) {
                 database.value?.archingRecordDao()?.delete(archingRecord)
             }
@@ -191,16 +191,16 @@ class ArchingViewModel : ViewModel() {
         viewModelScope.launch {
             delay(500)
             _records.value = listOf()
-            _selectedArcRecord.value = null
+            _selectedRecord.value = null
             _showNewRecordDialog.value = false
             _showRecordOptionsDialog.value = false
             recordJob.value?.cancel()
         }
     }
 
-    /////////////////
-    // ArcRecord Item //
-    /////////////////
+    /////////////////////
+    //// Record Item ////
+    /////////////////////
 
     // Declarations
     private val _recordItems = mutableStateOf<List<ArcRecordItem>>(listOf())
@@ -217,7 +217,7 @@ class ArchingViewModel : ViewModel() {
 
     // UI Actions
     fun toggleItemOptionsDialog(arcRecord: ArcRecord?, value: Boolean? = null) {
-        _selectedArcRecord.value = arcRecord
+        _selectedRecord.value = arcRecord
         _showRecordOptionsDialog.value = value ?: false
     }
 
@@ -298,9 +298,9 @@ class ArchingViewModel : ViewModel() {
     // Operations
     private fun observeProducts() {
         viewModelScope.launch {
-//            operations.observe<ArcProduct, ArchingProductRealm>().collect { productList ->
-//                _products.value = productList
-//            }
+            database.value?.archingProductDao()?.getAllProducts()?.collect { tmpProducts ->
+                _products.value = tmpProducts.filterNotNull()
+            }
         }
     }
 
@@ -310,7 +310,7 @@ class ArchingViewModel : ViewModel() {
 
     fun addProduct(archingArcProduct: ArcProduct) {
         viewModelScope.launch {
-//            operations.add<ArcProduct, ArchingProductRealm>(archingArcProduct)
+            database.value?.archingProductDao()?.insert(archingArcProduct)
         }
     }
 

@@ -20,11 +20,11 @@ interface ArchingProductDao {
     suspend fun delete(arcProduct: ArcProduct)
 
     @Query("SELECT * FROM arcProduct WHERE id = :productId")
-    suspend fun getArchingById(productId: Long): ArcProduct?
+    suspend fun getProductById(productId: Long): ArcProduct?
 
     @Query("SELECT * FROM arcProduct ORDER BY id DESC")
-    fun getAllArching(): Flow<List<ArcProduct>>
+    fun getAllProducts(): Flow<List<ArcProduct>>
 
     @Query("DELETE FROM arcProduct")
-    suspend fun deleteAllArching()
+    suspend fun deleteAllProducts()
 }

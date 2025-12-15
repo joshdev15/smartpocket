@@ -35,7 +35,7 @@ fun RecordItemsScreen(
 
     Scaffold(
         topBar = {
-            AppTopBarBasic("Elementos de ${viewModel.selectedArcRecord.value?.dayName ?: ""}")
+            AppTopBarBasic("Elementos de $recordId")
         },
         floatingActionButton = {
             FloatingButton() {
@@ -52,7 +52,7 @@ fun RecordItemsScreen(
         ) {
             item {
                 RecordItemTotalizer(
-                    viewModel.selectedArcRecord.value?.dayName ?: "Totales",
+                    viewModel.selectedRecord.value?.dayName ?: "Totales",
                     viewModel.recordItems.value,
                     viewModel.products.value,
                     viewModel.currencies.value
