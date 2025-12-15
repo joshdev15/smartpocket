@@ -6,17 +6,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.joshdev.smartpocket.domain.currency.Currency
-import com.joshdev.smartpocket.repository.database.Operations
-import com.joshdev.smartpocket.repository.database.RealmDatabase
-import com.joshdev.smartpocket.repository.entities.currency.CurrencyRealm
+import com.joshdev.smartpocket.repository.database.room.AppDatabase
+import com.joshdev.smartpocket.repository.database.room.AppDatabaseSingleton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CurrencyViewModel : ViewModel() {
-    private val database = RealmDatabase.getInstance()
+    private val database = mutableStateOf<AppDatabase?>(null)
     private val activity = mutableStateOf<CurrencyActivity?>(null)
     private val context = mutableStateOf<Context?>(null)
-    private val operations = Operations(database)
 
     private val _showNewCurrencyDialog = mutableStateOf(false)
     val showNewCurrencyDialog: State<Boolean> = _showNewCurrencyDialog
@@ -33,6 +31,7 @@ class CurrencyViewModel : ViewModel() {
     fun start(act: CurrencyActivity, ctx: Context) {
         activity.value = act
         context.value = ctx
+        database.value = AppDatabaseSingleton.getInstance(ctx)
 
         observeLedgers()
     }
@@ -54,15 +53,15 @@ class CurrencyViewModel : ViewModel() {
     // Operations
     private fun observeLedgers() {
         viewModelScope.launch {
-            operations.observe<Currency, CurrencyRealm>().collect {
-                _currencies.value = it
-            }
+//            operations.observe<Currency, CurrencyRealm>().collect {
+//                _currencies.value = it
+//            }
         }
     }
 
     fun addCurrency(currency: Currency) {
         viewModelScope.launch {
-            operations.add<Currency, CurrencyRealm>(currency)
+//            operations.add<Currency, CurrencyRealm>(currency)
         }
     }
 
@@ -70,7 +69,7 @@ class CurrencyViewModel : ViewModel() {
         selectedCurrency.value?.let { currency ->
             viewModelScope.launch(Dispatchers.IO) {
                 if (currency.name != "USD") {
-                    operations.delete<Currency, CurrencyRealm>(currency.id)
+//                    operations.delete<Currency, CurrencyRealm>(currency.id)
                 }
             }
         }

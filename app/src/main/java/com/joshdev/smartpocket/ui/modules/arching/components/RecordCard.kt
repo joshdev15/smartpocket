@@ -17,13 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.joshdev.smartpocket.domain.arching.Record
+import com.joshdev.smartpocket.domain.arching.ArcRecord
 import com.joshdev.smartpocket.ui.components.AppText
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun RecordCard(
-    record: Record,
+    arcRecord: ArcRecord,
     onClick: () -> Unit,
     onLongClick: () -> Unit
 ) {
@@ -45,17 +45,17 @@ fun RecordCard(
             modifier = Modifier.weight(1f)
         ) {
             AppText(
-                text = record.dayName,
+                text = arcRecord.dayName,
                 color = MaterialTheme.colorScheme.onBackground,
                 fontSize = 18.sp,
             )
             AppText(
-                text = "Semana: ${record.weekOfYear}",
+                text = "Semana: ${arcRecord.weekOfYear}",
                 color = MaterialTheme.colorScheme.secondary,
                 fontSize = 12.sp,
             )
             AppText(
-                text = "Mes: ${record.monthOfYear}",
+                text = "Mes: ${arcRecord.monthOfYear}",
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = 12.sp,
             )

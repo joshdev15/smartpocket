@@ -20,7 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.joshdev.smartpocket.domain.arching.Product
+import com.joshdev.smartpocket.domain.arching.ArcProduct
 import com.joshdev.smartpocket.ui.components.AppText
 import com.joshdev.smartpocket.ui.modules.arching.activity.ArchingViewModel
 
@@ -76,7 +76,7 @@ fun NewArchingProductDialog(viewModel: ArchingViewModel) {
                     Button(
                         onClick = {
                             try {
-                                val pro = Product(
+                                val pro = ArcProduct(
                                     name = proName,
                                     price = proPrice.toDouble(),
                                     categoryId = "",

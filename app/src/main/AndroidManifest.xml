@@ -77,29 +77,9 @@
             android:name=".ui.modules.ledger.activity.LedgerActivity"
             android:exported="false" />
 
-        <activity
-            android:name=".ui.activities.invoiceList.TransactionListActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".ui.activities.productList.ProductListActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".ui.activities.categoryList.CategoryListActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".ui.activities.photoai.PhotoAIActivity"
-            android:exported="false" />
-
         <!-- Arching Activities -->
         <activity
             android:name=".ui.modules.arching.activity.ArchingActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".ui.activities.archingProducts.ArchingProductsActivity"
             android:exported="false" />
 
     </application>

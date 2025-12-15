@@ -36,21 +36,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.joshdev.smartpocket.R
-import com.joshdev.smartpocket.domain.arching.RecordItem
+import com.joshdev.smartpocket.domain.arching.ArcRecordItem
 import com.joshdev.smartpocket.ui.components.AppText
 import com.joshdev.smartpocket.ui.models.ItemProduct
 import com.joshdev.smartpocket.ui.modules.arching.activity.ArchingViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewItemDialog(viewModel: ArchingViewModel, recordId: String) {
+fun NewItemDialog(viewModel: ArchingViewModel, recordId: Long) {
     val sheetState = rememberModalBottomSheetState()
 
     if (viewModel.showNewItem.value) {
         val availableProducts = viewModel.products.value
         val itemProducts: List<ItemProduct> = remember(availableProducts) {
             availableProducts.map { product ->
-                ItemProduct(product = product)
+                ItemProduct(arcProduct = product)
             }
         }
 
@@ -81,7 +81,7 @@ fun NewItemDialog(viewModel: ArchingViewModel, recordId: String) {
                                 .background(MaterialTheme.colorScheme.surfaceBright)
                                 .padding(10.dp)
                         ) {
-                            AppText(itemProduct.product.name)
+                            AppText(itemProduct.arcProduct.name)
 
                             Row(
                                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -115,9 +115,9 @@ fun NewItemDialog(viewModel: ArchingViewModel, recordId: String) {
                     enabled = localSelectedProducts.value,
                     onClick = {
                         val productList = itemProducts.filter { it.isSelected.value }
-                            .map { RecordItem(
+                            .map { ArcRecordItem(
                                 recordId = recordId,
-                                productId = it.product.id,
+                                productId = it.arcProduct.id,
                                 quantity = it.quantity.value
                             ) }
                         viewModel.addAllItems(productList, recordId)

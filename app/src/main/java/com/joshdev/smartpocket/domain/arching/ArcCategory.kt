@@ -3,10 +3,12 @@ package com.joshdev.smartpocket.domain.arching
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "arching")
-data class Arching(
+@Entity(tableName = "arcCategory")
+class ArcCategory(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val name: String,
-    val creationDate: Long,
+    val level: Int,
+    val description: String,
+    val color: String
 )

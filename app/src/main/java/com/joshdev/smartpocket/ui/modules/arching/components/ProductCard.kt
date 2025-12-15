@@ -17,13 +17,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.joshdev.smartpocket.domain.arching.Product
+import com.joshdev.smartpocket.domain.arching.ArcProduct
 import com.joshdev.smartpocket.ui.components.AppText
 import com.joshdev.smartpocket.ui.utils.UiUtils.formatAmount
 
 @Composable
-fun ProductCard(product: Product) {
+fun ProductCard(arcProduct: ArcProduct) {
     Row(
         modifier = Modifier
             .padding(bottom = 10.dp)
@@ -41,13 +40,13 @@ fun ProductCard(product: Product) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 AppText(
-                    text = product.name,
+                    text = arcProduct.name,
                     fontSize = 18.sp,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontWeight = FontWeight.Bold,
                 )
                 AppText(
-                    text = "$${formatAmount(product.price)}",
+                    text = "$${formatAmount(arcProduct.price)}",
                     fontSize = 16.sp,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontWeight = FontWeight.Medium,

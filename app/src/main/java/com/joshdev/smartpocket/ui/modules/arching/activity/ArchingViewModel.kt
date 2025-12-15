@@ -7,48 +7,43 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.joshdev.smartpocket.domain.arching.Arching
-import com.joshdev.smartpocket.domain.arching.Product
-import com.joshdev.smartpocket.domain.arching.Record
-import com.joshdev.smartpocket.domain.arching.RecordItem
-import com.joshdev.smartpocket.repository.database.Operations
-import com.joshdev.smartpocket.repository.database.RealmDatabase
-import com.joshdev.smartpocket.repository.entities.arching.ArchingProductRealm
-import com.joshdev.smartpocket.repository.entities.arching.ArchingRealm
-import com.joshdev.smartpocket.repository.entities.arching.ArchingRecordItemRealm
-import com.joshdev.smartpocket.repository.entities.arching.ArchingRecordRealm
+import com.joshdev.smartpocket.domain.arching.ArcProduct
+import com.joshdev.smartpocket.domain.arching.ArcRecord
+import com.joshdev.smartpocket.domain.arching.ArcRecordItem
+import com.joshdev.smartpocket.domain.currency.Currency
+import com.joshdev.smartpocket.repository.database.room.AppDatabase
+import com.joshdev.smartpocket.repository.database.room.AppDatabaseSingleton
 import com.joshdev.smartpocket.ui.models.FastPanelOption
 import com.joshdev.smartpocket.ui.utils.UiUtils.getIntentByFastOptionID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import org.mongodb.kbson.ObjectId
 import java.util.Calendar
 import java.util.Locale
 
 class ArchingViewModel : ViewModel() {
-    private val database = RealmDatabase.getInstance()
+    private val database = mutableStateOf<AppDatabase?>(null)
     private val activity = mutableStateOf<ArchingActivity?>(null)
     private val context = mutableStateOf<Context?>(null)
     private var navController = mutableStateOf<NavController?>(null)
-    private val operations = Operations(database)
 
     // Jobs
     private val archingJob = mutableStateOf<Job?>(null)
     private val recordJob = mutableStateOf<Job?>(null)
     private val recordItemsJob = mutableStateOf<Job?>(null)
     private val productJob = mutableStateOf<Job?>(null)
+    private val currencyJob = mutableStateOf<Job?>(null)
 
     fun start(act: ArchingActivity, ctx: Context, nav: NavController) {
         activity.value = act
         context.value = ctx
         navController.value = nav
+        database.value = AppDatabaseSingleton.getInstance(ctx)
 
+        getCurrencies()
         observeProducts()
         observeArchingList()
-//        observeRecords()
-//        observeRecordsItems()
     }
 
     //////////////
@@ -69,12 +64,12 @@ class ArchingViewModel : ViewModel() {
     val showArchingOptionsDialog: State<Boolean> = _showArchingOptions
 
     // UI Actions
-    fun navToRecords(archingId: String) {
+    fun navToRecords(archingId: Long) {
         navController.value?.navigate("records/$archingId")
     }
 
     fun findArchingById(id: String) {
-        _selectedArching.value = _archingList.value.find { it.id == id }
+//        _selectedArching.value = _archingList.value.find { it.id == id }
     }
 
     fun toggleNewArchingDialog(value: Boolean? = null) {
@@ -89,36 +84,36 @@ class ArchingViewModel : ViewModel() {
     // Operations
     private fun observeArchingList() {
         archingJob.value = viewModelScope.launch {
-            operations.observe<Arching, ArchingRealm>().collect { archingList ->
-                _archingList.value = archingList
-            }
+//            operations.observe<Arching, ArchingRealm>().collect { archingList ->
+//                _archingList.value = archingList
+//            }
         }
     }
 
     fun addArching(arching: Arching) {
         viewModelScope.launch(Dispatchers.IO) {
-            operations.add<Arching, ArchingRealm>(arching)
+//            operations.add<Arching, ArchingRealm>(arching)
         }
     }
 
     fun deleteArching() {
         selectedArching.value?.let { arching ->
             viewModelScope.launch(Dispatchers.IO) {
-                operations.delete<Arching, ArchingRealm>(arching.id)
+//                operations.delete<Arching, ArchingRealm>(arching.id)
             }
         }
     }
 
     ////////////
-    // Record //
+    // ArcRecord //
     ////////////
 
     // Declarations
-    private val _records = mutableStateOf<List<Record>>(listOf())
-    val records: State<List<Record>> = _records
+    private val _records = mutableStateOf<List<ArcRecord>>(listOf())
+    val records: State<List<ArcRecord>> = _records
 
-    private val _selectedRecord = mutableStateOf<Record?>(null)
-    val selectedRecord: State<Record?> = _selectedRecord
+    private val _selectedArcRecord = mutableStateOf<ArcRecord?>(null)
+    val selectedArcRecord: State<ArcRecord?> = _selectedArcRecord
 
     private val _showNewRecordDialog = mutableStateOf(false)
     val showNewRecordDialog: State<Boolean> = _showNewRecordDialog
@@ -127,12 +122,12 @@ class ArchingViewModel : ViewModel() {
     val showRecordOptionsDialog: State<Boolean> = _showRecordOptionsDialog
 
     // UI Actions
-    fun navToRecordItem(recordId: String) {
-        navController.value?.navigate("recordItems/$recordId")
+    fun navToRecordItem(recordId: Long) {
+        navController.value?.navigate("arcRecordItems/$recordId")
     }
 
-    fun toggleRecordOptionsDialog(record: Record?, value: Boolean? = null) {
-        _selectedRecord.value = record
+    fun toggleRecordOptionsDialog(arcRecord: ArcRecord?, value: Boolean? = null) {
+        _selectedArcRecord.value = arcRecord
         _showRecordOptionsDialog.value = value ?: false
     }
 
@@ -147,12 +142,12 @@ class ArchingViewModel : ViewModel() {
         }
 
         recordJob.value = viewModelScope.launch {
-            operations.observeWithQuery<Record, ArchingRecordRealm>(
-                "archingId == $0",
-                ObjectId(archingId)
-            ).collect { records ->
-                _records.value = records
-            }
+//            operations.observeWithQuery<ArcRecord, ArchingRecordRealm>(
+//                "archingId == $0",
+//                ObjectId(archingId)
+//            ).collect { records ->
+//                _records.value = records
+//            }
         }
     }
 
@@ -165,22 +160,22 @@ class ArchingViewModel : ViewModel() {
         val weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR)
         val monthOfYear = calendar.get(Calendar.MONTH)
 
-        val record = Record(
+        val arcRecord = ArcRecord(
             archingId = archingId,
             dayName = dayName,
             weekOfYear = weekOfYear,
-            monthOfYear = monthOfYear
+            monthOfYear = monthOfYear,
         )
 
         viewModelScope.launch(Dispatchers.IO) {
-            operations.add<Record, ArchingRecordRealm>(record)
+//            operations.add<ArcRecord, ArchingRecordRealm>(arcRecord)
         }
     }
 
     fun deleteArchingRecord() {
-        selectedRecord.value?.let { archingRecord ->
+        selectedArcRecord.value?.let { archingRecord ->
             viewModelScope.launch(Dispatchers.IO) {
-                operations.delete<Record, ArchingRecordRealm>(archingRecord.id)
+//                operations.delete<ArcRecord, ArchingRecordRealm>(archingRecord.id)
             }
         }
     }
@@ -198,7 +193,7 @@ class ArchingViewModel : ViewModel() {
         viewModelScope.launch {
             delay(600)
             _records.value = listOf()
-            _selectedRecord.value = null
+            _selectedArcRecord.value = null
             _showNewRecordDialog.value = false
             _showRecordOptionsDialog.value = false
             recordJob.value?.cancel()
@@ -206,15 +201,15 @@ class ArchingViewModel : ViewModel() {
     }
 
     /////////////////
-    // Record Item //
+    // ArcRecord Item //
     /////////////////
 
     // Declarations
-    private val _recordItems = mutableStateOf<List<RecordItem>>(listOf())
-    val recordItems: State<List<RecordItem>> = _recordItems
+    private val _recordItems = mutableStateOf<List<ArcRecordItem>>(listOf())
+    val recordItems: State<List<ArcRecordItem>> = _recordItems
 
-    private val _selectedItem = mutableStateOf<RecordItem?>(null)
-    val selectedItem: State<RecordItem?> = _selectedItem
+    private val _selectedItem = mutableStateOf<ArcRecordItem?>(null)
+    val selectedItem: State<ArcRecordItem?> = _selectedItem
 
     private val _showNewItem = mutableStateOf(false)
     val showNewItem: State<Boolean> = _showNewItem
@@ -223,8 +218,8 @@ class ArchingViewModel : ViewModel() {
     val showItemOptions: State<Boolean> = _showItemOptions
 
     // UI Actions
-    fun toggleItemOptionsDialog(record: Record?, value: Boolean? = null) {
-        _selectedRecord.value = record
+    fun toggleItemOptionsDialog(arcRecord: ArcRecord?, value: Boolean? = null) {
+        _selectedArcRecord.value = arcRecord
         _showRecordOptionsDialog.value = value ?: false
     }
 
@@ -233,49 +228,49 @@ class ArchingViewModel : ViewModel() {
     }
 
     // Operations
-    fun observeRecordsItems(recordId: String) {
+    fun observeRecordsItems(recordId: Long) {
         if (recordItemsJob.value?.isActive == true) {
             recordItemsJob.value?.cancel()
         }
 
         recordItemsJob.value = viewModelScope.launch {
-            operations.observeWithQuery<RecordItem, ArchingRecordItemRealm>(
-                "recordId == $0",
-                ObjectId(recordId)
-            ).collect { recordItems ->
-                _recordItems.value = recordItems
-            }
+//            operations.observeWithQuery<ArcRecordItem, ArchingRecordItemRealm>(
+//                "recordId == $0",
+//                ObjectId(recordId)
+//            ).collect { recordItems ->
+//                _Arc_recordItems.value = recordItems
+//            }
         }
     }
 
-    fun addAllItems(itemList: List<RecordItem>, recordId: String) {
+    fun addAllItems(itemList: List<ArcRecordItem>, recordId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            val idProductList = itemList.map { ObjectId(it.productId) }
-
-            val dbResults = operations.getAllWithQuery<RecordItem, ArchingRecordItemRealm>(
-                "recordId = $0 AND productId IN $1",
-                ObjectId(recordId),
-                idProductList
-            ).first()
-
-            val dbMap = dbResults.associateBy { it.productId }
-
-            val finalList = itemList.map { incomingItem ->
-                val existingItem = dbMap[incomingItem.productId]
-
-                if (existingItem != null) {
-                    incomingItem.copy(
-                        id = existingItem.id,
-                        quantity = existingItem.quantity + incomingItem.quantity
-                    )
-                } else {
-                    incomingItem
-                }
-            }
-
-            if (finalList.isNotEmpty()) {
-                operations.addAll<RecordItem, ArchingRecordItemRealm>(finalList)
-            }
+//            val idProductList = itemList.map { ObjectId(it.productId) }
+//
+//            val dbResults = operations.getAllWithQuery<ArcRecordItem, ArchingRecordItemRealm>(
+//                "recordId = $0 AND productId IN $1",
+//                ObjectId(recordId),
+//                idProductList
+//            ).first()
+//
+//            val dbMap = dbResults.associateBy { it.productId }
+//
+//            val finalList = itemList.map { incomingItem ->
+//                val existingItem = dbMap[incomingItem.productId]
+//
+//                if (existingItem != null) {
+//                    incomingItem.copy(
+//                        id = existingItem.id,
+//                        quantity = existingItem.quantity + incomingItem.quantity
+//                    )
+//                } else {
+//                    incomingItem
+//                }
+//            }
+//
+//            if (finalList.isNotEmpty()) {
+//                operations.addAll<ArcRecordItem, ArchingRecordItemRealm>(finalList)
+//            }
         }
     }
 
@@ -296,8 +291,8 @@ class ArchingViewModel : ViewModel() {
     //////////////
 
     // Declarations
-    private val _products = mutableStateOf<List<Product>>(emptyList())
-    val products: State<List<Product>> = _products
+    private val _products = mutableStateOf<List<ArcProduct>>(emptyList())
+    val products: State<List<ArcProduct>> = _products
 
     private val _showNewProductDialog = mutableStateOf(false)
     val showNewProductDialog: State<Boolean> = _showNewProductDialog
@@ -305,9 +300,9 @@ class ArchingViewModel : ViewModel() {
     // Operations
     private fun observeProducts() {
         viewModelScope.launch {
-            operations.observe<Product, ArchingProductRealm>().collect { productList ->
-                _products.value = productList
-            }
+//            operations.observe<ArcProduct, ArchingProductRealm>().collect { productList ->
+//                _products.value = productList
+//            }
         }
     }
 
@@ -315,9 +310,24 @@ class ArchingViewModel : ViewModel() {
         _showNewProductDialog.value = value ?: !_showNewProductDialog.value
     }
 
-    fun addProduct(archingProduct: Product) {
+    fun addProduct(archingArcProduct: ArcProduct) {
         viewModelScope.launch {
-            operations.add<Product, ArchingProductRealm>(archingProduct)
+//            operations.add<ArcProduct, ArchingProductRealm>(archingArcProduct)
+        }
+    }
+
+    ////////////////
+    // Currencies //
+    ////////////////
+
+    // Declarations
+    private val _currencies = mutableStateOf<List<Currency>>(emptyList())
+    val currencies: State<List<Currency>> = _currencies
+
+    private fun getCurrencies() {
+        viewModelScope.launch {
+//            operations.getAll<Currency, CurrencyRealm>()
+//                .collect { currencies -> _currencies.value = currencies }
         }
     }
 }

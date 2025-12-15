@@ -21,14 +21,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.joshdev.smartpocket.domain.ledger.Transaction
+import com.joshdev.smartpocket.domain.ledger.LedTransaction
 import com.joshdev.smartpocket.ui.components.AppSwitch
 import com.joshdev.smartpocket.ui.components.AppText
 import com.joshdev.smartpocket.ui.modules.ledger.activity.LedgerViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewTransactionDialog(ledgerId: String, viewModel: LedgerViewModel) {
+fun NewTransactionDialog(ledgerId: Long, viewModel: LedgerViewModel) {
     val sheetState = rememberModalBottomSheetState()
     var txName by remember { mutableStateOf("") }
     var txType by remember { mutableStateOf(false) }
@@ -99,10 +99,9 @@ fun NewTransactionDialog(ledgerId: String, viewModel: LedgerViewModel) {
                 ) {
                     Button(
                         onClick = {
-                            val tx = Transaction(
-                                id = "",
+                            val tx = LedTransaction(
                                 name = txName,
-                                type = if (txType) Transaction.TxType.INCOME else Transaction.TxType.EGRESS,
+                                type = if (txType) LedTransaction.TxType.INCOME else LedTransaction.TxType.EGRESS,
                                 amount = txAmount.toDouble(),
                                 date = System.currentTimeMillis(),
                                 description = "",
@@ -111,7 +110,6 @@ fun NewTransactionDialog(ledgerId: String, viewModel: LedgerViewModel) {
                                 postBalance = viewModel.ledger.value?.totalBalance?.minus(txAmount.toDouble())
                                     ?: 0.0,
                                 hasProducts = false,
-                                products = emptyList()
                             )
 
                             viewModel.addTransaction(tx)

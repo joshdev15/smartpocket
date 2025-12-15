@@ -3,12 +3,9 @@ package com.joshdev.smartpocket.ui.modules.arching.screens
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -17,10 +14,8 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.joshdev.smartpocket.ui.components.AppText
 import com.joshdev.smartpocket.ui.components.AppTopBarBasic
 import com.joshdev.smartpocket.ui.components.FloatingButton
 import com.joshdev.smartpocket.ui.modules.arching.activity.ArchingViewModel
@@ -51,29 +46,6 @@ fun RecordsScreen(
             }
         },
     ) { innerPadding ->
-        LaunchedEffect(archingId) {
-            viewModel.findArchingById(archingId)
-        }
-
-        Column {
-            Row(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                Spacer(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(1.dp)
-                        .background(MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f))
-                )
-            }
-
-            Row(
-                modifier = Modifier.background(MaterialTheme.colorScheme.tertiaryContainer)
-            ) {
-                AppText("Hola")
-            }
-        }
-
         LazyVerticalGrid(
             horizontalArrangement = Arrangement.spacedBy(SCREEN_PADDING),
             verticalArrangement = Arrangement.spacedBy(SCREEN_PADDING),
@@ -89,9 +61,13 @@ fun RecordsScreen(
                 .background(MaterialTheme.colorScheme.inverseOnSurface)
                 .padding(innerPadding)
         ) {
+            item {
+//                RecordTotalizer()
+            }
+
             items(viewModel.records.value) { record ->
                 RecordCard(
-                    record = record,
+                    arcRecord = record,
                     onClick = { viewModel.navToRecordItem(record.id) },
                     onLongClick = {
                         viewModel.toggleRecordOptionsDialog(record, true)

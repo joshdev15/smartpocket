@@ -1,0 +1,30 @@
+package com.joshdev.smartpocket.repository.database.room.dao
+
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
+import com.joshdev.smartpocket.domain.arching.ArcRecordItem
+import kotlinx.coroutines.flow.Flow
+
+@Dao
+interface ArchingRecordItemDao {
+    @Insert
+    suspend fun insert(item: ArcRecordItem)
+
+    @Update
+    suspend fun update(item: ArcRecordItem)
+
+    @Delete
+    suspend fun delete(item: ArcRecordItem)
+
+    @Query("SELECT * FROM arcRecordItem WHERE id = :recordItemId")
+    suspend fun getRecordItemById(recordItemId: Long): ArcRecordItem?
+
+    @Query("SELECT * FROM arcRecordItem ORDER BY id DESC")
+    fun getAllRecordItems(): Flow<List<ArcRecordItem>>
+
+    @Query("DELETE FROM arcRecordItem")
+    suspend fun deleteAllRecordItems()
+}

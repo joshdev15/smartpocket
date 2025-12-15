@@ -22,7 +22,7 @@ import com.joshdev.smartpocket.ui.utils.UiUtils.SCREEN_PADDING
 @Composable
 fun TransactionScreen(
     viewModel: LedgerViewModel,
-    ledgerId: String
+    ledgerId: Long
 ) {
     val transactions = viewModel.transactions.value
     val filteredTransactions = transactions.filter { it.ledgerId == ledgerId }

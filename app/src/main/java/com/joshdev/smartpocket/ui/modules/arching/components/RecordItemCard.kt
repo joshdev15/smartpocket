@@ -17,15 +17,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.joshdev.smartpocket.domain.arching.Product
-import com.joshdev.smartpocket.domain.arching.RecordItem
+import com.joshdev.smartpocket.domain.arching.ArcProduct
+import com.joshdev.smartpocket.domain.arching.ArcRecordItem
 import com.joshdev.smartpocket.ui.components.AppText
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun RecordItemCard(
-    recordItem: RecordItem,
-    product: Product,
+    arcRecordItem: ArcRecordItem,
+    arcProduct: ArcProduct,
     onClick: () -> Unit,
     onLongClick: () -> Unit
 ) {
@@ -48,7 +48,7 @@ fun RecordItemCard(
             modifier = Modifier.weight(1f)
         ) {
             AppText(
-                text = product.name,
+                text = arcProduct.name,
                 color = MaterialTheme.colorScheme.onBackground,
                 fontSize = 18.sp,
             )
@@ -58,12 +58,12 @@ fun RecordItemCard(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 AppText(
-                    text = "Cantidad: ${recordItem.quantity}",
+                    text = "Cantidad: ${arcRecordItem.quantity}",
                     color = MaterialTheme.colorScheme.secondary,
                     fontSize = 12.sp,
                 )
                 AppText(
-                    text = "Precio Individual: ${product.price}",
+                    text = "Precio Individual: ${arcProduct.price}",
                     color = MaterialTheme.colorScheme.secondary,
                     fontSize = 12.sp,
                 )
@@ -74,7 +74,7 @@ fun RecordItemCard(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 AppText(
-                    text = "Precio Total: ${product.price * recordItem.quantity}",
+                    text = "Precio Total: ${arcProduct.price * arcRecordItem.quantity}",
                     color = MaterialTheme.colorScheme.tertiary,
                     fontSize = 12.sp,
                 )

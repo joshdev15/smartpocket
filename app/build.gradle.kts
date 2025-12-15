@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.realm.android)
+    alias(libs.plugins.google.ksp)
 }
 
 android {
@@ -27,11 +27,23 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            lint {
+                abortOnError = true
+                checkDependencies = true
+                disable.add("MissingTranslation")
+            }
         }
 
         debug {
             isMinifyEnabled = false
             applicationIdSuffix = ".debug"
+
+            lint {
+                abortOnError = true
+                checkDependencies = true
+                disable.add("MissingTranslation")
+            }
         }
     }
 
@@ -50,6 +62,16 @@ android {
 }
 
 dependencies {
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+
+    annotationProcessor(libs.androidx.room.compiler)
+
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -66,18 +88,13 @@ dependencies {
     implementation(libs.androidx.startup.runtime)
     implementation(libs.androidx.ui.text.google.fonts)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.google.mlkit)
-    implementation(libs.google.gson)
-    implementation(libs.realm)
+//    implementation(libs.google.mlkit)
+//    implementation(libs.google.gson)
+
+    ksp(libs.androidx.room.compiler)
 
     testImplementation(libs.junit)
-
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
 }

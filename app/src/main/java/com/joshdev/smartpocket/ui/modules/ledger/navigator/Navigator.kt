@@ -28,7 +28,7 @@ fun Navigator(navController: NavHostController, viewModel: LedgerViewModel) {
                 route = "transactions/{ledgerId}",
                 arguments = listOf(navArgument("ledgerId") { type = NavType.StringType })
             ) { backStackEntry ->
-                val ledgerId = backStackEntry.arguments?.getString("ledgerId") ?: ""
+                val ledgerId = backStackEntry.arguments?.getLong("ledgerId") ?: 0L
                 TransactionScreen(viewModel, ledgerId)
             }
         }

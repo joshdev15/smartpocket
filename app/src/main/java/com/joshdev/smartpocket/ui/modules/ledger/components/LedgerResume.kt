@@ -18,18 +18,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.joshdev.smartpocket.R
 import com.joshdev.smartpocket.domain.ledger.Ledger
-import com.joshdev.smartpocket.domain.ledger.Transaction
+import com.joshdev.smartpocket.domain.ledger.LedTransaction
 import com.joshdev.smartpocket.ui.components.AppText
 
 @SuppressLint("ResourceAsColor")
 @Composable
-fun LedgerResume(ledger: Ledger, ledgerTransactions: List<Transaction>) {
+fun LedgerResume(ledger: Ledger, ledgerLedTransactions: List<LedTransaction>) {
     val capitalColor = MaterialTheme.colorScheme.background.copy(0.3f)
     val incomeColor = colorResource(id = R.color.income)
     val egressColor = colorResource(id = R.color.egress)
 
-    val income = ledgerTransactions.filter { it.type == Transaction.TxType.INCOME }.sumOf { it.amount }
-    val egress = ledgerTransactions.filter { it.type == Transaction.TxType.EGRESS }.sumOf { it.amount }
+    val income = ledgerLedTransactions.filter { it.type == LedTransaction.TxType.INCOME }.sumOf { it.amount }
+    val egress = ledgerLedTransactions.filter { it.type == LedTransaction.TxType.EGRESS }.sumOf { it.amount }
 
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -74,7 +74,7 @@ fun LedgerResume(ledger: Ledger, ledgerTransactions: List<Transaction>) {
                     verticalArrangement = Arrangement.Top,
                 ) {
                     AppText("Saldo actual: ${ledger?.totalBalance ?: 0}", fontSize = 10.sp)
-                    AppText("Transacciones: ${ledgerTransactions.size}", fontSize = 10.sp)
+                    AppText("Transacciones: ${ledgerLedTransactions.size}", fontSize = 10.sp)
                 }
             }
         }

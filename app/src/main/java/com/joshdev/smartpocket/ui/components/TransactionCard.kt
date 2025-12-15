@@ -20,20 +20,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.joshdev.smartpocket.R
-import com.joshdev.smartpocket.domain.ledger.Transaction
+import com.joshdev.smartpocket.domain.ledger.LedTransaction
 import com.joshdev.smartpocket.ui.utils.UiUtils.formatAmount
 import com.joshdev.smartpocket.ui.utils.UiUtils.formatDate
 
 @Composable
-fun TransactionCard(tx: Transaction, onClick: () -> Unit, onLongClick: (tx: Transaction) -> Unit) {
+fun TransactionCard(tx: LedTransaction, onClick: () -> Unit, onLongClick: (tx: LedTransaction) -> Unit) {
     val borderColor = when (tx.type) {
-        Transaction.TxType.EGRESS -> Color(0xFFFF6347)
-        Transaction.TxType.INCOME -> Color(0xFF4CAF50)
+        LedTransaction.TxType.EGRESS -> Color(0xFFFF6347)
+        LedTransaction.TxType.INCOME -> Color(0xFF4CAF50)
     }
 
     val txIcon = when (tx.type) {
-        Transaction.TxType.EGRESS -> R.drawable.arrow_egress
-        Transaction.TxType.INCOME -> R.drawable.arrow_income
+        LedTransaction.TxType.EGRESS -> R.drawable.arrow_egress
+        LedTransaction.TxType.INCOME -> R.drawable.arrow_income
     }
 
     Row(
@@ -43,7 +43,7 @@ fun TransactionCard(tx: Transaction, onClick: () -> Unit, onLongClick: (tx: Tran
             .clip(RoundedCornerShape(30.dp))
             .combinedClickable(
                 onClick = {
-                    if (tx.type == Transaction.TxType.EGRESS && tx.products.isNotEmpty()) {
+                    if (tx.type == LedTransaction.TxType.EGRESS) {
                         onClick()
                     }
                 },

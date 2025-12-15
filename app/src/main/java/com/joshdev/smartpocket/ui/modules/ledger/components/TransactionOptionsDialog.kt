@@ -25,7 +25,7 @@ fun TransactionOptionsDialog(viewModel: LedgerViewModel) {
     val sheetState = rememberModalBottomSheetState()
     val onClose = { viewModel.toggleTransactionOptionsDialog(null, false) }
 
-    viewModel.selectedLedgerTransaction.value?.let {
+    viewModel.selectedLedgerLedTransaction.value?.let {
         if (viewModel.showTransactionOptionsDialog.value) {
             ModalBottomSheet(
                 onDismissRequest = { onClose() },

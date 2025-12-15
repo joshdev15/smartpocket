@@ -11,12 +11,13 @@ composeBom = "2025.09.00"
 workers = "2.10.4"
 startup = "1.2.0"
 uiTextGoogleFonts = "1.9.1"
-mlkit = "19.0.1"
 camerax_version = "1.5.0"
 navigation = "2.9.4"
-realm = "3.0.0"
 kca = "1.6.4"
-gson = "2.13.2"
+googleKspVersion = "2.0.21-1.0.27"
+room = "2.8.4"
+#mlkit = "19.0.1"
+#gson = "2.13.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -40,15 +41,17 @@ androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workers" }
 androidx-startup-runtime = { group = "androidx.startup", name = "startup-runtime", version.ref = "startup" }
-google-mlkit = { group = "com.google.android.gms", name = "play-services-mlkit-text-recognition", version.ref = "mlkit" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kca" }
-realm = { group = "io.realm.kotlin", name = "library-base", version = "3.0.0" }
-google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+#google-mlkit = { group = "com.google.android.gms", name = "play-services-mlkit-text-recognition", version.ref = "mlkit" }
+#google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-realm-android = { id = "io.realm.kotlin", version.ref = "realm" }
+google-ksp = { id = "com.google.devtools.ksp", version.ref = "googleKspVersion" }
 

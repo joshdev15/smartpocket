@@ -10,9 +10,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import com.joshdev.smartpocket.ui.models.HomeOption
 import com.joshdev.smartpocket.R
-import com.joshdev.smartpocket.ui.activities.categoryList.CategoryListActivity
 import com.joshdev.smartpocket.ui.modules.currency.activity.CurrencyActivity
-import com.joshdev.smartpocket.ui.activities.productList.ProductListActivity
 import com.joshdev.smartpocket.ui.models.FastPanelOption
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -26,7 +24,7 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavController
-import com.joshdev.smartpocket.domain.arching.Product
+import com.joshdev.smartpocket.domain.arching.ArcProduct
 import com.joshdev.smartpocket.ui.models.ItemProduct
 
 object UiUtils {
@@ -97,7 +95,7 @@ object UiUtils {
             }
 
             FastPanelOption.IDs.PRODUCTS_LEDGER -> {
-                navController.navigate("products")
+                navController.navigate("ledProducts")
                 null
             }
 
@@ -107,7 +105,7 @@ object UiUtils {
             }
 
             FastPanelOption.IDs.PRODUCTS_ARCHING -> {
-                navController.navigate("products")
+                navController.navigate("ledProducts")
                 null
             }
         }
@@ -115,8 +113,8 @@ object UiUtils {
         return goTo
     }
 
-    fun getItemProducts(productList: List<Product>): List<ItemProduct> {
-        return productList.map { it -> ItemProduct(it.copy()) }
+    fun getItemProducts(arcProductList: List<ArcProduct>): List<ItemProduct> {
+        return arcProductList.map { it -> ItemProduct(it.copy()) }
     }
 }
 
