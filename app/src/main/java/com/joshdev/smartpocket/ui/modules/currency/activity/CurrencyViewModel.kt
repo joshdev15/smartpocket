@@ -53,15 +53,15 @@ class CurrencyViewModel : ViewModel() {
     // Operations
     private fun observeLedgers() {
         viewModelScope.launch {
-//            operations.observe<Currency, CurrencyRealm>().collect {
-//                _currencies.value = it
-//            }
+            database.value?.currencyDao()?.getAllCurrencies()?.collect { tmpCurrencies ->
+                _currencies.value = tmpCurrencies.filterNotNull()
+            }
         }
     }
 
     fun addCurrency(currency: Currency) {
         viewModelScope.launch {
-//            operations.add<Currency, CurrencyRealm>(currency)
+            database.value?.currencyDao()?.insert(currency)
         }
     }
 
@@ -69,7 +69,7 @@ class CurrencyViewModel : ViewModel() {
         selectedCurrency.value?.let { currency ->
             viewModelScope.launch(Dispatchers.IO) {
                 if (currency.name != "USD") {
-//                    operations.delete<Currency, CurrencyRealm>(currency.id)
+                    database.value?.currencyDao()?.delete(currency)
                 }
             }
         }

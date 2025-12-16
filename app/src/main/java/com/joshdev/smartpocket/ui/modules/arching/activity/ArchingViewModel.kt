@@ -244,7 +244,8 @@ class ArchingViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             val idProductList = itemList.mapNotNull { it.productId }
 
-            val dbResults = database.value?.archingRecordItemDao()?.getAllByRecordIdAndProductId(recordId, idProductList)?.first()
+            val dbResults = database.value?.archingRecordItemDao()
+                ?.getAllByRecordIdAndProductId(recordId, idProductList)?.first()
 
             dbResults?.let {
                 val dbMap = dbResults.associateBy { it.productId }
@@ -321,8 +322,9 @@ class ArchingViewModel : ViewModel() {
 
     private fun getCurrencies() {
         viewModelScope.launch {
-//            operations.getAll<Currency, CurrencyRealm>()
-//                .collect { currencies -> _currencies.value = currencies }
+            database.value?.currencyDao()?.getAllCurrencies()?.collect { tmpCurrencies ->
+                _currencies.value = tmpCurrencies.filterNotNull()
+            }
         }
     }
 }
