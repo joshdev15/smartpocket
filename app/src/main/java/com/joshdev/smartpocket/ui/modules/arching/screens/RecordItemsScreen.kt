@@ -59,24 +59,22 @@ fun RecordItemsScreen(
                 )
             }
 
-            itemsIndexed(viewModel.recordItems.value) { idx, innerItems ->
-                val product = viewModel.products.value.find { it.id == innerItems.productId }
+            itemsIndexed(viewModel.recordItems.value) { idx, innerItem ->
+                val product = viewModel.products.value.find { it.id == innerItem.productId }
 
 
                 Spacer(modifier = Modifier.height(if (idx == 0) SCREEN_PADDING else 0.dp))
 
                 product?.let {
                     RecordItemCard(
-                        arcRecordItem = innerItems,
+                        arcRecordItem = innerItem,
                         arcProduct = product,
-                        onClick = { },
-                        onLongClick = { }
+                        onClick = {},
+                        onLongClick = {
+                            viewModel.toggleItemOptionsDialog(innerItem, true)
+                        }
                     )
                 }
-            }
-
-            item {
-
             }
 
             item {

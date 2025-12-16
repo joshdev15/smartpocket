@@ -3,6 +3,7 @@ package com.joshdev.smartpocket.repository.database.room.dao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.joshdev.smartpocket.domain.arching.ArcRecordItem
@@ -12,6 +13,9 @@ import kotlinx.coroutines.flow.Flow
 interface ArchingRecordItemDao {
     @Insert
     suspend fun insert(item: ArcRecordItem)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(items: List<ArcRecordItem>)
 
     @Update
     suspend fun update(item: ArcRecordItem)
@@ -24,6 +28,12 @@ interface ArchingRecordItemDao {
 
     @Query("SELECT * FROM arcRecordItem ORDER BY id DESC")
     fun getAllRecordItems(): Flow<List<ArcRecordItem>>
+
+    @Query("SELECT * FROM arcRecordItem where recordId = :recordId")
+    fun getAllRecordItemsByRecordId(recordId: Long): Flow<List<ArcRecordItem>>
+
+    @Query("select * from arcRecordItem where recordId = :recordId and productId in (:productId)")
+    fun getAllByRecordIdAndProductId(recordId: Long, productId: List<Long>): Flow<List<ArcRecordItem>>
 
     @Query("DELETE FROM arcRecordItem")
     suspend fun deleteAllRecordItems()

@@ -115,11 +115,13 @@ fun NewItemDialog(viewModel: ArchingViewModel, recordId: Long) {
                     enabled = localSelectedProducts.value,
                     onClick = {
                         val productList = itemProducts.filter { it.isSelected.value }
-                            .map { ArcRecordItem(
-                                recordId = recordId,
-                                productId = it.arcProduct.id,
-                                quantity = it.quantity.value
-                            ) }
+                            .map {
+                                ArcRecordItem(
+                                    recordId = recordId,
+                                    productId = it.arcProduct.id,
+                                    quantity = it.quantity.value
+                                )
+                            }
                         viewModel.addAllItems(productList, recordId)
                         viewModel.toggleNewItemDialog(false)
                     },

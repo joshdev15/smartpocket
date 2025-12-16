@@ -18,6 +18,7 @@ import com.joshdev.smartpocket.ui.utils.UiUtils.getIntentByFastOptionID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Locale
@@ -216,9 +217,9 @@ class ArchingViewModel : ViewModel() {
     val showItemOptions: State<Boolean> = _showItemOptions
 
     // UI Actions
-    fun toggleItemOptionsDialog(arcRecord: ArcRecord?, value: Boolean? = null) {
-        _selectedRecord.value = arcRecord
-        _showRecordOptionsDialog.value = value ?: false
+    fun toggleItemOptionsDialog(arcRecordItem: ArcRecordItem?, show: Boolean? = null) {
+        _selectedItem.value = arcRecordItem
+        _showRecordOptionsDialog.value = show ?: false
     }
 
     fun toggleNewItemDialog(value: Boolean? = null) {
@@ -232,43 +233,39 @@ class ArchingViewModel : ViewModel() {
         }
 
         recordItemsJob.value = viewModelScope.launch {
-//            operations.observeWithQuery<ArcRecordItem, ArchingRecordItemRealm>(
-//                "recordId == $0",
-//                ObjectId(recordId)
-//            ).collect { recordItems ->
-//                _Arc_recordItems.value = recordItems
-//            }
+            database.value?.archingRecordItemDao()?.getAllRecordItemsByRecordId(recordId)
+                ?.collect { tmpRecordItems ->
+                    _recordItems.value = tmpRecordItems
+                }
         }
     }
 
     fun addAllItems(itemList: List<ArcRecordItem>, recordId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-//            val idProductList = itemList.map { ObjectId(it.productId) }
-//
-//            val dbResults = operations.getAllWithQuery<ArcRecordItem, ArchingRecordItemRealm>(
-//                "recordId = $0 AND productId IN $1",
-//                ObjectId(recordId),
-//                idProductList
-//            ).first()
-//
-//            val dbMap = dbResults.associateBy { it.productId }
-//
-//            val finalList = itemList.map { incomingItem ->
-//                val existingItem = dbMap[incomingItem.productId]
-//
-//                if (existingItem != null) {
-//                    incomingItem.copy(
-//                        id = existingItem.id,
-//                        quantity = existingItem.quantity + incomingItem.quantity
-//                    )
-//                } else {
-//                    incomingItem
-//                }
-//            }
-//
-//            if (finalList.isNotEmpty()) {
-//                operations.addAll<ArcRecordItem, ArchingRecordItemRealm>(finalList)
-//            }
+            val idProductList = itemList.mapNotNull { it.productId }
+
+            val dbResults = database.value?.archingRecordItemDao()?.getAllByRecordIdAndProductId(recordId, idProductList)?.first()
+
+            dbResults?.let {
+                val dbMap = dbResults.associateBy { it.productId }
+
+                val finalList = itemList.map { incomingItem ->
+                    val existingItem = dbMap[incomingItem.productId]
+
+                    if (existingItem != null) {
+                        incomingItem.copy(
+                            id = existingItem.id,
+                            quantity = existingItem.quantity + incomingItem.quantity
+                        )
+                    } else {
+                        incomingItem
+                    }
+                }
+
+                if (finalList.isNotEmpty()) {
+                    database.value?.archingRecordItemDao()?.insertAll(finalList)
+                }
+            }
         }
     }
 
