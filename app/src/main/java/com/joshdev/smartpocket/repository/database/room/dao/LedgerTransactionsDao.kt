@@ -25,7 +25,7 @@ interface LedgerTransactionsDao {
     @Query("SELECT * FROM ledTransactions ORDER BY id DESC")
     fun getAllTx(): Flow<List<LedTransaction>>
 
-    @Query("SELECT * FROM ledTransactions WHERE ledgerId = :ledgerId ORDER BY id DESC")
+    @Query("SELECT * FROM ledTransactions WHERE ledgerId = :ledgerId")
     fun getAllTxByLedgerId(ledgerId: Long): Flow<List<LedTransaction>>
 
     @Query("DELETE FROM ledTransactions")

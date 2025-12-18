@@ -1,4 +1,4 @@
-package com.joshdev.smartpocket.ui.modules.ledger.components
+package com.joshdev.smartpocket.ui.modules.ledger.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +16,9 @@ import com.joshdev.smartpocket.ui.components.AppTopBarBasic
 import com.joshdev.smartpocket.ui.components.FloatingButton
 import com.joshdev.smartpocket.ui.components.TransactionCard
 import com.joshdev.smartpocket.ui.modules.ledger.activity.LedgerViewModel
+import com.joshdev.smartpocket.ui.modules.ledger.components.LedgerResume
+import com.joshdev.smartpocket.ui.modules.ledger.components.NewTransactionDialog
+import com.joshdev.smartpocket.ui.modules.ledger.components.TransactionOptionsDialog
 import com.joshdev.smartpocket.ui.utils.UiUtils.SCREEN_FLOATING_PADDING
 import com.joshdev.smartpocket.ui.utils.UiUtils.SCREEN_PADDING
 
@@ -59,11 +62,7 @@ fun TransactionScreen(
                 itemsIndexed(filteredTransactions) { idx, it ->
                     TransactionCard(
                         tx = it,
-                        onClick = {
-                            it.id?.let { txId ->
-                                viewModel.goToTransaction(txId)
-                            }
-                        },
+                        onClick = {},
                         onLongClick = { tx ->
                             viewModel.toggleTransactionOptionsDialog(
                                 tx,

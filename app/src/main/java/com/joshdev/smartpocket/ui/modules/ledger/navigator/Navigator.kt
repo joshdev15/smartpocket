@@ -9,9 +9,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navArgument
-import com.joshdev.smartpocket.ui.modules.ledger.components.TransactionScreen
 import com.joshdev.smartpocket.ui.modules.ledger.activity.LedgerViewModel
+import com.joshdev.smartpocket.ui.modules.ledger.screens.CategoriesScreen
 import com.joshdev.smartpocket.ui.modules.ledger.screens.LedgerScreen
+import com.joshdev.smartpocket.ui.modules.ledger.screens.TransactionScreen
 import com.joshdev.smartpocket.ui.utils.appComposable
 
 @Composable
@@ -30,6 +31,12 @@ fun Navigator(navController: NavHostController, viewModel: LedgerViewModel) {
             ) { backStackEntry ->
                 val ledgerId = backStackEntry.arguments?.getLong("ledgerId") ?: 0L
                 TransactionScreen(viewModel, ledgerId)
+            }
+
+            appComposable(
+                route = "categories",
+            ) {
+                CategoriesScreen(viewModel)
             }
         }
     }

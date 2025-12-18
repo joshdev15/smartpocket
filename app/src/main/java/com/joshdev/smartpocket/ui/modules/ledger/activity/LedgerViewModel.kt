@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.joshdev.smartpocket.domain.ledger.LedCategory
 import com.joshdev.smartpocket.domain.ledger.LedTransaction
 import com.joshdev.smartpocket.domain.ledger.Ledger
 import com.joshdev.smartpocket.repository.database.room.AppDatabase
@@ -22,6 +23,19 @@ class LedgerViewModel : ViewModel() {
     private val context = mutableStateOf<Context?>(null)
     private val navController = mutableStateOf<NavController?>(null)
 
+    fun start(act: LedgerActivity, ctx: Context, nav: NavController) {
+        activity.value = act
+        context.value = ctx
+        navController.value = nav
+        database.value = AppDatabaseSingleton.getInstance(ctx)
+
+        observeLedgers()
+    }
+
+    ////////////////
+    //// Ledger ////
+    ////////////////
+
     // Ledger Declarations
     private val _showNewLedgerDialog = mutableStateOf(false)
     val showNewLedgerDialog: State<Boolean> = _showNewLedgerDialog
@@ -34,31 +48,6 @@ class LedgerViewModel : ViewModel() {
 
     private val _selectedLedger = mutableStateOf<Ledger?>(null)
     val selectedLedger: State<Ledger?> = _selectedLedger
-
-    // LedTransaction Declarations
-    private val _showNewTransactionDialog = mutableStateOf(false)
-    val showNewTransactionDialog: State<Boolean> = _showNewTransactionDialog
-
-    private val _showTransactionOptionsDialog = mutableStateOf(false)
-    val showTransactionOptionsDialog: State<Boolean> = _showTransactionOptionsDialog
-
-    private val _selectedLedgerLedTransaction = mutableStateOf<LedTransaction?>(null)
-    val selectedLedgerLedTransaction: State<LedTransaction?> = _selectedLedgerLedTransaction
-
-    private val _ledger = mutableStateOf<Ledger?>(null)
-    val ledger: State<Ledger?> = _ledger
-
-    private val _transactions = mutableStateOf<List<LedTransaction>>(listOf())
-    val transactions: State<List<LedTransaction>> = _transactions
-
-    fun start(act: LedgerActivity, ctx: Context, nav: NavController) {
-        activity.value = act
-        context.value = ctx
-        navController.value = nav
-        database.value = AppDatabaseSingleton.getInstance(ctx)
-
-        observeLedgers()
-    }
 
     // Ledger UI Actions
     fun toggleNewRecordDialog(value: Boolean? = null) {
@@ -77,26 +66,6 @@ class LedgerViewModel : ViewModel() {
     fun navToTransactions(ledgerId: Long) {
         _ledger.value = _ledgers.value.find { it.id == ledgerId }
         navController.value?.navigate("transactions/${ledgerId}")
-    }
-
-    // Transactions UI Actions
-    fun toggleNewTransactionDialog(value: Boolean?) {
-        if (value != null) {
-            _showNewTransactionDialog.value = value
-        } else {
-            _showNewTransactionDialog.value = !_showNewTransactionDialog.value
-        }
-    }
-
-    fun goToTransaction(txId: Long) {
-//        val goToProductList = Intent(context.value, ProductListActivity::class.java)
-//        goToProductList.putExtra("txId", txId)
-//        activity.value?.startActivity(goToProductList)
-    }
-
-    fun toggleTransactionOptionsDialog(tx: LedTransaction?, value: Boolean) {
-        _selectedLedgerLedTransaction.value = tx
-        _showTransactionOptionsDialog.value = value
     }
 
     // Ledger Operations
@@ -128,6 +97,40 @@ class LedgerViewModel : ViewModel() {
                 activity.value?.startActivity(it)
             }
         }
+    }
+
+    //////////////////////
+    //// Transactions ////
+    //////////////////////
+
+    // Transaction Declarations
+    private val _showNewTransactionDialog = mutableStateOf(false)
+    val showNewTransactionDialog: State<Boolean> = _showNewTransactionDialog
+
+    private val _showTransactionOptionsDialog = mutableStateOf(false)
+    val showTransactionOptionsDialog: State<Boolean> = _showTransactionOptionsDialog
+
+    private val _selectedLedgerLedTransaction = mutableStateOf<LedTransaction?>(null)
+    val selectedLedgerLedTransaction: State<LedTransaction?> = _selectedLedgerLedTransaction
+
+    private val _ledger = mutableStateOf<Ledger?>(null)
+    val ledger: State<Ledger?> = _ledger
+
+    private val _transactions = mutableStateOf<List<LedTransaction>>(listOf())
+    val transactions: State<List<LedTransaction>> = _transactions
+
+    // Transactions UI Actions
+    fun toggleNewTransactionDialog(value: Boolean?) {
+        if (value != null) {
+            _showNewTransactionDialog.value = value
+        } else {
+            _showNewTransactionDialog.value = !_showNewTransactionDialog.value
+        }
+    }
+
+    fun toggleTransactionOptionsDialog(tx: LedTransaction?, value: Boolean) {
+        _selectedLedgerLedTransaction.value = tx
+        _showTransactionOptionsDialog.value = value
     }
 
     // Transactions Operations
@@ -170,4 +173,54 @@ class LedgerViewModel : ViewModel() {
             }
         }
     }
+
+
+    ////////////////////
+    //// Categories ////
+    ////////////////////
+
+    // Categories Declarations
+    private val _showNewCategory = mutableStateOf(false)
+    val showNewCategory: State<Boolean> = _showNewCategory
+
+    private val _showCategoryOptions = mutableStateOf(false)
+    val showCategoryOptions: State<Boolean> = _showCategoryOptions
+
+    private val _categories = mutableStateOf<List<LedCategory>>(emptyList())
+    val categories: State<List<LedCategory>> = _categories
+
+    private val _selectedCategory = mutableStateOf<LedCategory?>(null)
+    val selectedCategory: State<LedCategory?> = _selectedCategory
+
+    // Transactions UI Actions
+    fun toggleNewCategory(value: Boolean?) {
+        if (value != null) {
+            _showNewCategory.value = value
+        } else {
+            _showNewCategory.value = !_showNewCategory.value
+        }
+    }
+
+    fun toggleCategoryOptions(category: LedCategory?, value: Boolean) {
+        _selectedCategory.value = category
+        _showCategoryOptions.value = value
+    }
+
+    // Transactions Operations
+    fun observeCategories() {
+        viewModelScope.launch {
+            database.value?.ledCategoryDao()?.getAllCategories()
+                ?.collect { tmpCategoryList ->
+                    _categories.value = tmpCategoryList
+                }
+        }
+    }
+
+    fun addCategory(category: LedCategory) {
+        viewModelScope.launch {
+            database.value?.ledCategoryDao()?.insert(category)
+            updateLedgerBalance()
+        }
+    }
+
 }

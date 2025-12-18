@@ -34,8 +34,8 @@ class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
         checkCameraPermissionAndLaunch()
+        viewModel.start(this@HomeActivity)
 
         val options = UiUtils.getHomeOptions()
 
