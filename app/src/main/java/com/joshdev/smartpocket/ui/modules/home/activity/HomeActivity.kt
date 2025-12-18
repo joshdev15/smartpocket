@@ -9,26 +9,26 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.material3.Scaffold
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.joshdev.smartpocket.ui.components.AppTopBarBasic
+import com.joshdev.smartpocket.ui.models.HomeOption
 import com.joshdev.smartpocket.ui.modules.arching.activity.ArchingActivity
 import com.joshdev.smartpocket.ui.modules.currency.activity.CurrencyActivity
 import com.joshdev.smartpocket.ui.modules.home.components.HomeScreen
-import com.joshdev.smartpocket.ui.components.AppTopBarBasic
 import com.joshdev.smartpocket.ui.modules.ledger.activity.LedgerActivity
-import com.joshdev.smartpocket.ui.models.HomeOption
 import com.joshdev.smartpocket.ui.theme.SmartPocketTheme
 import com.joshdev.smartpocket.ui.utils.UiUtils
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class HomeActivity : ComponentActivity() {
-    private var allowExit = false
-    private var cameraAllowed = false
+    private val viewModel by viewModels<HomeViewModel>()
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-            cameraAllowed = isGranted
+            viewModel.setCameraAllowed(isGranted)
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,16 +42,16 @@ class HomeActivity : ComponentActivity() {
         setContent {
             BackHandler {
                 when {
-                    allowExit -> {
+                    viewModel.allowExit.value -> {
                         finish()
                     }
 
                     else -> {
                         UiUtils.showToast(this@HomeActivity, "Click nuevamente para salir")
-                        allowExit = true
+                        viewModel.setAllowExit(true)
                         lifecycleScope.launch {
                             delay(2000)
-                            allowExit = false
+                            viewModel.setAllowExit(false)
                         }
                     }
                 }
@@ -75,9 +75,11 @@ class HomeActivity : ComponentActivity() {
             HomeOption.IDs.LEDGERS -> {
                 Intent(this, LedgerActivity::class.java)
             }
+
             HomeOption.IDs.ARCHING -> {
                 Intent(this, ArchingActivity::class.java)
             }
+
             HomeOption.IDs.COINS -> {
                 Intent(this, CurrencyActivity::class.java)
             }

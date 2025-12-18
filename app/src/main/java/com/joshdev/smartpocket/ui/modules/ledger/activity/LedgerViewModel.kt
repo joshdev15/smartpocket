@@ -6,13 +6,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.joshdev.smartpocket.domain.ledger.Ledger
 import com.joshdev.smartpocket.domain.ledger.LedTransaction
+import com.joshdev.smartpocket.domain.ledger.Ledger
 import com.joshdev.smartpocket.repository.database.room.AppDatabase
 import com.joshdev.smartpocket.repository.database.room.AppDatabaseSingleton
 import com.joshdev.smartpocket.ui.models.FastPanelOption
 import com.joshdev.smartpocket.ui.utils.UiUtils.getIntentByFastOptionID
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class LedgerViewModel : ViewModel() {
@@ -35,8 +36,8 @@ class LedgerViewModel : ViewModel() {
     val selectedLedger: State<Ledger?> = _selectedLedger
 
     // LedTransaction Declarations
-    private val _showNewLedTransactionDialog = mutableStateOf(false)
-    val showNewTransactionDialog: State<Boolean> = _showNewLedTransactionDialog
+    private val _showNewTransactionDialog = mutableStateOf(false)
+    val showNewTransactionDialog: State<Boolean> = _showNewTransactionDialog
 
     private val _showTransactionOptionsDialog = mutableStateOf(false)
     val showTransactionOptionsDialog: State<Boolean> = _showTransactionOptionsDialog
@@ -57,7 +58,6 @@ class LedgerViewModel : ViewModel() {
         database.value = AppDatabaseSingleton.getInstance(ctx)
 
         observeLedgers()
-        observeTransactions()
     }
 
     // Ledger UI Actions
@@ -82,9 +82,9 @@ class LedgerViewModel : ViewModel() {
     // Transactions UI Actions
     fun toggleNewTransactionDialog(value: Boolean?) {
         if (value != null) {
-            _showNewLedTransactionDialog.value = value
+            _showNewTransactionDialog.value = value
         } else {
-            _showNewLedTransactionDialog.value = !_showNewLedTransactionDialog.value
+            _showNewTransactionDialog.value = !_showNewTransactionDialog.value
         }
     }
 
@@ -102,22 +102,22 @@ class LedgerViewModel : ViewModel() {
     // Ledger Operations
     private fun observeLedgers() {
         viewModelScope.launch {
-//            operations.observe<Ledger, LedgerRealm>().collect { ledgerList ->
-//                _ledgers.value = ledgerList
-//            }
+            database.value?.ledgerDao()?.getAllLedgers()?.collect { tmpLedgerList ->
+                _ledgers.value = tmpLedgerList
+            }
         }
     }
 
-    fun addLedger(ledger: Ledger) {
+    fun addLedger(currentLedger: Ledger) {
         viewModelScope.launch(Dispatchers.IO) {
-//            operations.add<Ledger, LedgerRealm>(ledger)
+            database.value?.ledgerDao()?.insert(currentLedger)
         }
     }
 
     fun deleteLedger() {
-        selectedLedger.value?.let { ledger ->
+        selectedLedger.value?.let { currentLedger ->
             viewModelScope.launch(Dispatchers.IO) {
-//                operations.delete<Ledger, LedgerRealm>(ledger.id)
+                database.value?.ledgerDao()?.delete(currentLedger)
             }
         }
     }
@@ -131,32 +131,41 @@ class LedgerViewModel : ViewModel() {
     }
 
     // Transactions Operations
-    fun observeTransactions() {
+    fun observeTransactions(ledgerId: Long) {
         viewModelScope.launch {
-//            operations.observe<LedTransaction, LedgerTransactionRealm>()
-//                .collect { transactionList ->
-//                    _transactions.value = transactionList
-//                }
+            database.value?.ledTransactionDao()?.getAllTxByLedgerId(ledgerId)
+                ?.collect { tmpTransactionList ->
+                    _transactions.value = tmpTransactionList
+                }
         }
     }
 
-    fun addTransaction(ledgerLedTransaction: LedTransaction) {
-//        operations.add<LedTransaction, LedgerTransactionRealm>(ledgerLedTransaction)
-        updateLedgerBalance()
+    fun addTransaction(tx: LedTransaction) {
+        viewModelScope.launch {
+            database.value?.ledTransactionDao()?.insert(tx)
+            updateLedgerBalance()
+        }
     }
 
     fun updateLedgerBalance() {
-        ledger.value?.let {
-            viewModelScope.launch(Dispatchers.IO) {
-//                operations.update(it.id)
+        ledger.value?.let { currentLedger ->
+            viewModelScope.launch {
+                val newLedgerAmount = getTransactionsAmountByLedgerId(currentLedger.id!!)
+                val updatedLedger = currentLedger.copy(totalBalance = newLedgerAmount)
+                database.value?.ledgerDao()?.update(updatedLedger)
             }
         }
     }
 
+    suspend fun getTransactionsAmountByLedgerId(ledgerId: Long): Double {
+        val txList = database.value?.ledTransactionDao()?.getAllTxByLedgerId(ledgerId)?.first()
+        return txList?.sumOf { it.amount } ?: 0.0
+    }
+
     fun deleteTransaction() {
         selectedLedgerLedTransaction.value?.let { tx ->
-            viewModelScope.launch(Dispatchers.IO) {
-//                operations.delete<LedTransaction, LedgerTransactionRealm>(tx.id)
+            viewModelScope.launch {
+                database.value?.ledTransactionDao()?.delete(tx)
                 updateLedgerBalance()
             }
         }

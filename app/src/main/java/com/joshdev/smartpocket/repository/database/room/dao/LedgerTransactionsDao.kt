@@ -23,8 +23,11 @@ interface LedgerTransactionsDao {
     suspend fun getTxById(txId: Long): LedTransaction?
 
     @Query("SELECT * FROM ledTransactions ORDER BY id DESC")
-    fun getAllCategories(): Flow<List<LedTransaction>>
+    fun getAllTx(): Flow<List<LedTransaction>>
+
+    @Query("SELECT * FROM ledTransactions WHERE ledgerId = :ledgerId ORDER BY id DESC")
+    fun getAllTxByLedgerId(ledgerId: Long): Flow<List<LedTransaction>>
 
     @Query("DELETE FROM ledTransactions")
-    suspend fun deleteAllCategories()
+    suspend fun deleteAllTx()
 }

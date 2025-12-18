@@ -30,11 +30,9 @@ fun TransactionOptionsDialog(viewModel: LedgerViewModel) {
             ModalBottomSheet(
                 onDismissRequest = { onClose() },
                 sheetState = sheetState,
+                containerColor = MaterialTheme.colorScheme.inverseOnSurface
             ) {
-                Column(
-                    modifier = Modifier
-                        .padding(20.dp)
-                ) {
+                Column(Modifier.padding(20.dp)) {
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,

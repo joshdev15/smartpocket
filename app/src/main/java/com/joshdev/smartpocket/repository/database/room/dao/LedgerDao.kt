@@ -23,8 +23,8 @@ interface LedgerDao {
     suspend fun getLedgerById(ledgerId: Long): Ledger?
 
     @Query("SELECT * FROM ledgers ORDER BY creationDate DESC")
-    fun getAllRecords(): Flow<List<Ledger>>
+    fun getAllLedgers(): Flow<List<Ledger>>
 
     @Query("DELETE FROM ledgers")
-    suspend fun deleteAllRecords()
+    suspend fun deleteAllLedgers()
 }

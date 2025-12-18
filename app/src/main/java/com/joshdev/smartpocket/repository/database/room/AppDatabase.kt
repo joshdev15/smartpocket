@@ -42,5 +42,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun archingCategoryDao(): ArchingCategoryDao
     abstract fun archingProductDao(): ArchingProductDao
 
+    // Currency
     abstract fun currencyDao(): CurrencyDao
 }

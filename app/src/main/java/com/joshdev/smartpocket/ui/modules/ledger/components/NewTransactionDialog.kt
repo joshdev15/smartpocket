@@ -42,6 +42,7 @@ fun NewTransactionDialog(ledgerId: Long, viewModel: LedgerViewModel) {
         ModalBottomSheet(
             onDismissRequest = { onClose() },
             sheetState = sheetState,
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
         ) {
             Column(
                 modifier = Modifier
@@ -51,19 +52,6 @@ fun NewTransactionDialog(ledgerId: Long, viewModel: LedgerViewModel) {
                     text = "Nueva Transacción",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = MaterialTheme.typography.titleLarge.fontSize
-                )
-
-                OutlinedTextField(
-                    value = txName,
-                    onValueChange = {
-                        if (txName.length <= 20) {
-                            txName = it
-                        }
-                    },
-                    label = { Text("Nombre") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp),
                 )
 
                 Row(
@@ -82,6 +70,19 @@ fun NewTransactionDialog(ledgerId: Long, viewModel: LedgerViewModel) {
                         enableColor = MaterialTheme.colorScheme.primaryContainer,
                     )
                 }
+
+                OutlinedTextField(
+                    value = txName,
+                    onValueChange = {
+                        if (txName.length <= 20) {
+                            txName = it
+                        }
+                    },
+                    label = { Text("Nombre") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp),
+                )
 
                 OutlinedTextField(
                     value = txAmount,

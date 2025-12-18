@@ -24,6 +24,8 @@ fun TransactionScreen(
     viewModel: LedgerViewModel,
     ledgerId: Long
 ) {
+    viewModel.observeTransactions(ledgerId)
+
     val transactions = viewModel.transactions.value
     val filteredTransactions = transactions.filter { it.ledgerId == ledgerId }
 
