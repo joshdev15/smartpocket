@@ -192,7 +192,7 @@ class LedgerViewModel : ViewModel() {
     private val _selectedCategory = mutableStateOf<LedCategory?>(null)
     val selectedCategory: State<LedCategory?> = _selectedCategory
 
-    // Transactions UI Actions
+    // Categories UI Actions
     fun toggleNewCategory(value: Boolean?) {
         if (value != null) {
             _showNewCategory.value = value
@@ -206,7 +206,7 @@ class LedgerViewModel : ViewModel() {
         _showCategoryOptions.value = value
     }
 
-    // Transactions Operations
+    // Categories Operations
     fun observeCategories() {
         viewModelScope.launch {
             database.value?.ledCategoryDao()?.getAllCategories()
@@ -219,8 +219,6 @@ class LedgerViewModel : ViewModel() {
     fun addCategory(category: LedCategory) {
         viewModelScope.launch {
             database.value?.ledCategoryDao()?.insert(category)
-            updateLedgerBalance()
         }
     }
-
 }

@@ -8,7 +8,4 @@ class ArcCategory(
     @PrimaryKey(autoGenerate = true)
     val id: Long? = null,
     val name: String,
-    val level: Int,
-    val description: String,
-    val color: String
 )

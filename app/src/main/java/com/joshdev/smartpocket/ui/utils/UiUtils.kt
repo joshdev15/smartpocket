@@ -90,7 +90,7 @@ object UiUtils {
             }
 
             FastPanelOption.IDs.CATEGORIES_LEDGER -> {
-                navController.navigate("categories")
+                navController.navigate("ledCategories")
                 null
             }
 
@@ -100,7 +100,7 @@ object UiUtils {
             }
 
             FastPanelOption.IDs.CATEGORIES_ARCHING -> {
-                navController.navigate("categories")
+                navController.navigate("arcCategories")
                 null
             }
 

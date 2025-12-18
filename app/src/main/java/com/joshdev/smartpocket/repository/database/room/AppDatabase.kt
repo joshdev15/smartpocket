@@ -25,7 +25,7 @@ import com.joshdev.smartpocket.repository.database.room.dao.LedgerTransactionsDa
 
 @Database(
     entities = [Ledger::class, LedTransaction::class, LedProduct::class, LedCategory::class, Arching::class, ArcRecord::class, ArcRecordItem::class, ArcProduct::class, ArcCategory::class, Currency::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -37,10 +37,10 @@ abstract class AppDatabase : RoomDatabase() {
 
     // Arching
     abstract fun archingDao(): ArchingDao
-    abstract fun archingRecordDao(): ArchingRecordDao
-    abstract fun archingRecordItemDao(): ArchingRecordItemDao
-    abstract fun archingCategoryDao(): ArchingCategoryDao
-    abstract fun archingProductDao(): ArchingProductDao
+    abstract fun arcRecordDao(): ArchingRecordDao
+    abstract fun arcRecordItemDao(): ArchingRecordItemDao
+    abstract fun arcCategoryDao(): ArchingCategoryDao
+    abstract fun arcProductDao(): ArchingProductDao
 
     // Currency
     abstract fun currencyDao(): CurrencyDao

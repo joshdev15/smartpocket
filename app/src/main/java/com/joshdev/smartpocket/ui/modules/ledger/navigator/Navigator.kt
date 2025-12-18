@@ -33,9 +33,7 @@ fun Navigator(navController: NavHostController, viewModel: LedgerViewModel) {
                 TransactionScreen(viewModel, ledgerId)
             }
 
-            appComposable(
-                route = "categories",
-            ) {
+            appComposable("ledCategories") {
                 CategoriesScreen(viewModel)
             }
         }

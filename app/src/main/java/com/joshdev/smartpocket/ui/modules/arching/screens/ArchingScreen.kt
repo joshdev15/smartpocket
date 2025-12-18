@@ -30,11 +30,11 @@ fun ArchingScreen(viewModel: ArchingViewModel) {
     val options = listOf(
         FastPanelOption(
             id = FastPanelOption.IDs.PRODUCTS_ARCHING,
-            name = "Productos",
+            name = "Productos de Cierre",
         ),
         FastPanelOption(
             id = FastPanelOption.IDs.CATEGORIES_ARCHING,
-            name = "Categorías",
+            name = "Categorías de Cierre",
         ),
         FastPanelOption(
             id = FastPanelOption.IDs.CURRENCIES,

@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.joshdev.smartpocket.domain.arching.ArcCategory
 import com.joshdev.smartpocket.domain.arching.ArcProduct
 import com.joshdev.smartpocket.domain.arching.ArcRecord
 import com.joshdev.smartpocket.domain.arching.ArcRecordItem
@@ -67,10 +68,6 @@ class ArchingViewModel : ViewModel() {
     // UI Actions
     fun navToRecords(archingId: Long) {
         navController.value?.navigate("records/$archingId")
-    }
-
-    fun findArchingById(id: String) {
-//        _selectedArching.value = _archingList.value.find { it.id == id }
     }
 
     fun toggleNewArchingDialog(value: Boolean? = null) {
@@ -143,8 +140,7 @@ class ArchingViewModel : ViewModel() {
         }
 
         recordJob.value = viewModelScope.launch {
-            database.value?.archingRecordDao()?.getRecordByArchingId(archingId)
-                ?.collect { tmpRecords ->
+            database.value?.arcRecordDao()?.getRecordByArchingId(archingId)?.collect { tmpRecords ->
                     _records.value = tmpRecords.filterNotNull()
                 }
         }
@@ -153,8 +149,7 @@ class ArchingViewModel : ViewModel() {
     fun addRecord(archingId: Long) {
         val calendar = Calendar.getInstance()
         val dayName = calendar.getDisplayName(
-            Calendar.DAY_OF_WEEK,
-            Calendar.LONG, Locale.getDefault()
+            Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()
         ) ?: ""
         val weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR)
         val monthOfYear = calendar.get(Calendar.MONTH)
@@ -167,14 +162,14 @@ class ArchingViewModel : ViewModel() {
         )
 
         viewModelScope.launch(Dispatchers.IO) {
-            database.value?.archingRecordDao()?.insert(arcRecord)
+            database.value?.arcRecordDao()?.insert(arcRecord)
         }
     }
 
     fun deleteArchingRecord() {
         selectedRecord.value?.let { archingRecord ->
             viewModelScope.launch(Dispatchers.IO) {
-                database.value?.archingRecordDao()?.delete(archingRecord)
+                database.value?.arcRecordDao()?.delete(archingRecord)
             }
         }
     }
@@ -233,7 +228,7 @@ class ArchingViewModel : ViewModel() {
         }
 
         recordItemsJob.value = viewModelScope.launch {
-            database.value?.archingRecordItemDao()?.getAllRecordItemsByRecordId(recordId)
+            database.value?.arcRecordItemDao()?.getAllRecordItemsByRecordId(recordId)
                 ?.collect { tmpRecordItems ->
                     _recordItems.value = tmpRecordItems
                 }
@@ -244,7 +239,7 @@ class ArchingViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             val idProductList = itemList.mapNotNull { it.productId }
 
-            val dbResults = database.value?.archingRecordItemDao()
+            val dbResults = database.value?.arcRecordItemDao()
                 ?.getAllByRecordIdAndProductId(recordId, idProductList)?.first()
 
             dbResults?.let {
@@ -264,7 +259,7 @@ class ArchingViewModel : ViewModel() {
                 }
 
                 if (finalList.isNotEmpty()) {
-                    database.value?.archingRecordItemDao()?.insertAll(finalList)
+                    database.value?.arcRecordItemDao()?.insertAll(finalList)
                 }
             }
         }
@@ -296,7 +291,7 @@ class ArchingViewModel : ViewModel() {
     // Operations
     private fun observeProducts() {
         viewModelScope.launch {
-            database.value?.archingProductDao()?.getAllProducts()?.collect { tmpProducts ->
+            database.value?.arcProductDao()?.getAllProducts()?.collect { tmpProducts ->
                 _products.value = tmpProducts.filterNotNull()
             }
         }
@@ -308,7 +303,7 @@ class ArchingViewModel : ViewModel() {
 
     fun addProduct(archingArcProduct: ArcProduct) {
         viewModelScope.launch {
-            database.value?.archingProductDao()?.insert(archingArcProduct)
+            database.value?.arcProductDao()?.insert(archingArcProduct)
         }
     }
 
@@ -323,7 +318,61 @@ class ArchingViewModel : ViewModel() {
     private fun getCurrencies() {
         viewModelScope.launch {
             database.value?.currencyDao()?.getAllCurrencies()?.collect { tmpCurrencies ->
-                _currencies.value = tmpCurrencies.filterNotNull()
+                _currencies.value = tmpCurrencies
+            }
+        }
+    }
+
+    ////////////////////
+    //// Categories ////
+    ////////////////////
+
+    // Categories Declarations
+    private val _showNewCategory = mutableStateOf(false)
+    val showNewCategory: State<Boolean> = _showNewCategory
+
+    private val _showCategoryOptions = mutableStateOf(false)
+    val showCategoryOptions: State<Boolean> = _showCategoryOptions
+
+    private val _categories = mutableStateOf<List<ArcCategory>>(emptyList())
+    val categories: State<List<ArcCategory>> = _categories
+
+    private val _selectedCategory = mutableStateOf<ArcCategory?>(null)
+    val selectedCategory: State<ArcCategory?> = _selectedCategory
+
+    // Transactions UI Actions
+    fun toggleNewCategory(value: Boolean?) {
+        if (value != null) {
+            _showNewCategory.value = value
+        } else {
+            _showNewCategory.value = !_showNewCategory.value
+        }
+    }
+
+    fun toggleCategoryOptions(category: ArcCategory?, value: Boolean) {
+        _selectedCategory.value = category
+        _showCategoryOptions.value = value
+    }
+
+    // Transactions Operations
+    fun observeCategories() {
+        viewModelScope.launch {
+            database.value?.arcCategoryDao()?.getAllCategories()?.collect { tmpCategoryList ->
+                    _categories.value = tmpCategoryList
+                }
+        }
+    }
+
+    fun addCategory(category: ArcCategory) {
+        viewModelScope.launch {
+            database.value?.arcCategoryDao()?.insert(category)
+        }
+    }
+
+    fun deleteCategory() {
+        selectedCategory.value?.let { category ->
+            viewModelScope.launch(Dispatchers.IO) {
+                database.value?.arcCategoryDao()?.delete(category)
             }
         }
     }

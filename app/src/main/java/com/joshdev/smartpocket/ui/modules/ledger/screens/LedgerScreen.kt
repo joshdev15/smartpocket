@@ -29,13 +29,13 @@ import com.joshdev.smartpocket.ui.utils.UiUtils.SCREEN_PADDING
 fun LedgerScreen(viewModel: LedgerViewModel) {
     val options = listOf(
         FastPanelOption(
+            id = FastPanelOption.IDs.CATEGORIES_LEDGER,
+            name = "Categorías de Cuentas",
+        ),
+        FastPanelOption(
             id = FastPanelOption.IDs.CURRENCIES,
             name = "Divisas",
         ),
-        FastPanelOption(
-            id = FastPanelOption.IDs.CATEGORIES_LEDGER,
-            name = "Categorías de Cuentas",
-        )
     )
 
     Scaffold(

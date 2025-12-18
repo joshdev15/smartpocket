@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.navArgument
 import com.joshdev.smartpocket.ui.modules.arching.activity.ArchingViewModel
 import com.joshdev.smartpocket.ui.modules.arching.screens.ArchingScreen
+import com.joshdev.smartpocket.ui.modules.arching.screens.CategoriesScreen
 import com.joshdev.smartpocket.ui.modules.arching.screens.ProductScreen
 import com.joshdev.smartpocket.ui.modules.arching.screens.RecordItemsScreen
 import com.joshdev.smartpocket.ui.modules.arching.screens.RecordsScreen
@@ -42,9 +43,12 @@ fun Navigator(navController: NavHostController, viewModel: ArchingViewModel) {
                 RecordItemsScreen(recordId, viewModel)
             }
 
-
             appComposable("products") {
                 ProductScreen(viewModel)
+            }
+
+            appComposable("arcCategories") {
+                CategoriesScreen(viewModel)
             }
         }
     }

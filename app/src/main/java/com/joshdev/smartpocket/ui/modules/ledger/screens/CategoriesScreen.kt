@@ -18,7 +18,7 @@ import com.joshdev.smartpocket.ui.utils.UiUtils.SCREEN_PADDING
 @Composable
 fun CategoriesScreen(viewModel: LedgerViewModel) {
     Scaffold(
-        topBar = { AppTopBarBasic("Categorías") },
+        topBar = { AppTopBarBasic("Categorías de Cuentas") },
         floatingActionButton = {
             FloatingButton("Nueva Categoría") {
                 viewModel.toggleNewCategory(true)
