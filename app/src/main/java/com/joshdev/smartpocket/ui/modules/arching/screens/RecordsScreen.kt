@@ -2,6 +2,7 @@ package com.joshdev.smartpocket.ui.modules.arching.screens
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -45,48 +46,50 @@ fun RecordsScreen(
             }
         },
     ) { innerPadding ->
-        LazyColumn(
-            contentPadding = PaddingValues(
-                top = SCREEN_PADDING,
-                start = SCREEN_PADDING,
-                end = SCREEN_PADDING,
-                bottom = 0.dp
-            ),
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.inverseOnSurface)
                 .padding(innerPadding)
+
         ) {
-            item {
-                val title = if (viewModel.currentArching.value?.name != null) {
-                    "Totales de ${viewModel.currentArching.value?.name}"
-                } else {
-                    "Totales"
+            val title = if (viewModel.currentArching.value?.name != null) {
+                "Totales de ${viewModel.currentArching.value?.name}"
+            } else {
+                "Totales"
+            }
+
+            RecordTotalizer(
+                title,
+                viewModel.records.value,
+                viewModel.currencies.value
+            )
+
+            LazyColumn(
+                contentPadding = PaddingValues(
+                    top = SCREEN_PADDING,
+                    start = SCREEN_PADDING,
+                    end = SCREEN_PADDING,
+                    bottom = 0.dp
+                ),
+            ) {
+                items(viewModel.records.value) { record ->
+                    RecordCard(
+                        arcRecord = record,
+                        onClick = {
+                            record.id?.let { recordId ->
+                                viewModel.navToRecordItem(recordId)
+                            }
+                        },
+                        onLongClick = {
+                            viewModel.toggleRecordOptionsDialog(record, true)
+                        }
+                    )
                 }
 
-                RecordTotalizer(
-                    title,
-                    viewModel.records.value,
-                    viewModel.currencies.value
-                )
-            }
-
-            items(viewModel.records.value) { record ->
-                RecordCard(
-                    arcRecord = record,
-                    onClick = {
-                        record.id?.let { recordId ->
-                            viewModel.navToRecordItem(recordId)
-                        }
-                    },
-                    onLongClick = {
-                        viewModel.toggleRecordOptionsDialog(record, true)
-                    }
-                )
-            }
-
-            item {
-                Spacer(modifier = Modifier.height(SCREEN_FLOATING_PADDING))
+                item {
+                    Spacer(modifier = Modifier.height(SCREEN_FLOATING_PADDING))
+                }
             }
         }
 

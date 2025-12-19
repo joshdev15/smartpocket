@@ -62,7 +62,7 @@ fun RecordOptionsDialog(viewModel: ArchingViewModel) {
                         },
                         modifier = Modifier.padding(top = 10.dp, end = 8.dp)
                     ) {
-                        AppText("Eliminar")
+                        AppText("Eliminar", color = MaterialTheme.colorScheme.onBackground)
                     }
                 }
             }

@@ -68,7 +68,6 @@ fun RecordItemsScreen(
             itemsIndexed(viewModel.recordItems.value) { idx, innerItem ->
                 val product = viewModel.products.value.find { it.id == innerItem.productId }
 
-
                 Spacer(modifier = Modifier.height(if (idx == 0) SCREEN_PADDING else 0.dp))
 
                 product?.let {

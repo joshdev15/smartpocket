@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -28,6 +27,8 @@ fun RecordCard(
     onLongClick: () -> Unit
 ) {
     Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .padding(bottom = 10.dp)
             .fillMaxWidth()
@@ -40,26 +41,16 @@ fun RecordCard(
             )
             .padding(20.dp)
     ) {
-        Column(
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.weight(1f)
-        ) {
-            AppText(
-                text = arcRecord.dayName,
-                color = MaterialTheme.colorScheme.onBackground,
-                fontSize = 18.sp,
-            )
-            AppText(
-                text = "Semana: ${arcRecord.weekOfYear}",
-                color = MaterialTheme.colorScheme.secondary,
-                fontSize = 12.sp,
-            )
-            AppText(
-                text = "Mes: ${arcRecord.monthOfYear}",
-                color = MaterialTheme.colorScheme.tertiary,
-                fontSize = 12.sp,
-            )
-        }
+        AppText(
+            text = arcRecord.dayName,
+            color = MaterialTheme.colorScheme.onBackground,
+            fontSize = 18.sp,
+        )
+
+        AppText(
+            text = "Semana: ${arcRecord.weekOfYear}",
+            color = MaterialTheme.colorScheme.secondary,
+            fontSize = 12.sp,
+        )
     }
 }
