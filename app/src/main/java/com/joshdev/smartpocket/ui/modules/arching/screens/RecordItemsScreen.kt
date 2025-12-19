@@ -35,7 +35,7 @@ fun RecordItemsScreen(
 
     Scaffold(
         topBar = {
-            AppTopBarBasic("Elementos de $recordId")
+            AppTopBarBasic("Elementos de ${viewModel.currentRecord.value?.dayName}")
         },
         floatingActionButton = {
             FloatingButton() {
@@ -51,8 +51,14 @@ fun RecordItemsScreen(
                 .padding(horizontal = SCREEN_PADDING)
         ) {
             item {
+                val title = if (viewModel.currentRecord.value?.dayName != null) {
+                    "Elementos de ${viewModel.currentRecord.value?.dayName}"
+                } else {
+                    "Elementos"
+                }
+
                 RecordItemTotalizer(
-                    viewModel.selectedRecord.value?.dayName ?: "Totales",
+                    title,
                     viewModel.recordItems.value,
                     viewModel.products.value,
                     viewModel.currencies.value

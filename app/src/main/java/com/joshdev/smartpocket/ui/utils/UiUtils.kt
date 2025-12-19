@@ -18,10 +18,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.joshdev.smartpocket.R
-import com.joshdev.smartpocket.domain.arching.ArcProduct
 import com.joshdev.smartpocket.ui.models.FastPanelOption
 import com.joshdev.smartpocket.ui.models.HomeOption
-import com.joshdev.smartpocket.ui.models.ItemProduct
 import com.joshdev.smartpocket.ui.modules.currency.activity.CurrencyActivity
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -37,7 +35,7 @@ object UiUtils {
 
     fun formatDate(timestamp: Long): String {
         val date = Date(timestamp)
-        val formatter = SimpleDateFormat("dd-MM-yy", Locale.getDefault())
+        val formatter = SimpleDateFormat("dd.MM.yy", Locale.getDefault())
         val formattedDate: String = formatter.format(date)
         return formattedDate
     }
@@ -90,7 +88,7 @@ object UiUtils {
             }
 
             FastPanelOption.IDs.CATEGORIES_LEDGER -> {
-                navController.navigate("ledCategories")
+                navController.navigate("categories")
                 null
             }
 
@@ -100,7 +98,7 @@ object UiUtils {
             }
 
             FastPanelOption.IDs.CATEGORIES_ARCHING -> {
-                navController.navigate("arcCategories")
+                navController.navigate("categories")
                 null
             }
 
@@ -111,10 +109,6 @@ object UiUtils {
         }
 
         return goTo
-    }
-
-    fun getItemProducts(arcProductList: List<ArcProduct>): List<ItemProduct> {
-        return arcProductList.map { it -> ItemProduct(it.copy()) }
     }
 }
 

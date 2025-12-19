@@ -2,15 +2,13 @@ package com.joshdev.smartpocket.ui.modules.arching.screens
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -22,6 +20,7 @@ import com.joshdev.smartpocket.ui.modules.arching.activity.ArchingViewModel
 import com.joshdev.smartpocket.ui.modules.arching.components.NewRecordDialog
 import com.joshdev.smartpocket.ui.modules.arching.components.RecordCard
 import com.joshdev.smartpocket.ui.modules.arching.components.RecordOptionsDialog
+import com.joshdev.smartpocket.ui.modules.arching.components.RecordTotalizer
 import com.joshdev.smartpocket.ui.utils.UiUtils.SCREEN_FLOATING_PADDING
 import com.joshdev.smartpocket.ui.utils.UiUtils.SCREEN_PADDING
 
@@ -38,7 +37,7 @@ fun RecordsScreen(
 
     Scaffold(
         topBar = {
-            AppTopBarBasic("Cierre - $archingId")
+            AppTopBarBasic("Cierre - ${viewModel.currentArching.value?.name ?: ""}")
         },
         floatingActionButton = {
             FloatingButton {
@@ -46,21 +45,32 @@ fun RecordsScreen(
             }
         },
     ) { innerPadding ->
-        LazyVerticalGrid(
-            horizontalArrangement = Arrangement.spacedBy(SCREEN_PADDING),
-            verticalArrangement = Arrangement.spacedBy(SCREEN_PADDING),
+        LazyColumn(
             contentPadding = PaddingValues(
                 top = SCREEN_PADDING,
                 start = SCREEN_PADDING,
                 end = SCREEN_PADDING,
                 bottom = 0.dp
             ),
-            columns = GridCells.Fixed(2),
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.inverseOnSurface)
                 .padding(innerPadding)
         ) {
+            item {
+                val title = if (viewModel.currentArching.value?.name != null) {
+                    "Totales de ${viewModel.currentArching.value?.name}"
+                } else {
+                    "Totales"
+                }
+
+                RecordTotalizer(
+                    title,
+                    viewModel.records.value,
+                    viewModel.currencies.value
+                )
+            }
+
             items(viewModel.records.value) { record ->
                 RecordCard(
                     arcRecord = record,

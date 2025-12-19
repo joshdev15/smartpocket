@@ -11,4 +11,5 @@ data class ArcRecord(
     val dayName: String,
     val weekOfYear: Int,
     val monthOfYear: Int,
+    val totalAmount: Double
 )

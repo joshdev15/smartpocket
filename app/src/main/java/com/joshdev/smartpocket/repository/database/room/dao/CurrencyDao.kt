@@ -19,7 +19,7 @@ interface CurrencyDao {
     @Delete
     suspend fun delete(currency: Currency)
 
-    @Query("SELECT * FROM currencies ORDER BY id DESC")
+    @Query("SELECT * FROM currencies ORDER BY id ASC")
     fun getAllCurrencies(): Flow<List<Currency>>
 
     @Query("DELETE FROM currencies")

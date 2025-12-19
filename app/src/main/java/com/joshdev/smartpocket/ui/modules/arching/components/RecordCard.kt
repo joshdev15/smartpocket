@@ -29,6 +29,7 @@ fun RecordCard(
 ) {
     Row(
         modifier = Modifier
+            .padding(bottom = 10.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(30.dp))
             .border(2.dp, MaterialTheme.colorScheme.tertiaryContainer, RoundedCornerShape(30.dp))

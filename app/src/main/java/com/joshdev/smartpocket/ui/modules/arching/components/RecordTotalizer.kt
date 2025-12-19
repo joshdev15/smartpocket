@@ -18,7 +18,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.joshdev.smartpocket.domain.arching.ArcProduct
 import com.joshdev.smartpocket.domain.arching.ArcRecord
 import com.joshdev.smartpocket.domain.currency.Currency
 import com.joshdev.smartpocket.ui.components.AppText
@@ -27,17 +26,14 @@ import com.joshdev.smartpocket.ui.utils.UiUtils.formatAmount
 @Composable
 fun RecordTotalizer(
     title: String,
-    arcRecordList: List<ArcRecord>,
-    arcProductList: List<ArcProduct>,
+    recordList: List<ArcRecord>,
     currencyList: List<Currency>
 ) {
-    val subTotals = arcRecordList.map { recItem -> }
-    val totalQuantities = /*  itemList.sumOf { it.quantity } ?: */ 0.0
-    val total = /* subTotals.sum() */ 0.0
+    val finalAmount = recordList.sumOf { it.totalAmount }
 
     Column(
         modifier = Modifier
-            .padding(top = 10.dp)
+            .padding(bottom = 10.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(20.dp))
             .background(MaterialTheme.colorScheme.tertiaryContainer)
@@ -60,15 +56,20 @@ fun RecordTotalizer(
                 .background(MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f))
         )
 
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            AppText("Cant. Productos", fontSize = 12.sp, fontWeight = FontWeight.Bold)
-            AppText(totalQuantities.toString(), fontSize = 12.sp)
+        recordList.forEach { record ->
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                AppText(record.dayName, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                AppText(
+                    formatAmount(record.totalAmount),
+                    fontSize = 12.sp
+                )
+            }
         }
+
 
         Spacer(
             modifier = Modifier
@@ -85,10 +86,20 @@ fun RecordTotalizer(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 AppText(currency.name, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                AppText(
-                    "${currency.symbol} ${formatAmount(total * currency.rate)}",
-                    fontSize = 12.sp
-                )
+
+                Row {
+                    AppText(
+                        currency.symbol,
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier.padding(end = 5.dp)
+                    )
+
+                    AppText(
+                        formatAmount(currency.rate * finalAmount),
+                        fontSize = 12.sp
+                    )
+                }
             }
         }
     }

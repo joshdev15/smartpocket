@@ -47,7 +47,7 @@ fun RecordItemTotalizer(
             .padding(top = 10.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(20.dp))
-            .background(MaterialTheme.colorScheme.tertiaryContainer)
+            .background(MaterialTheme.colorScheme.secondaryContainer)
             .padding(10.dp)
             .width(70.dp)
     ) {
@@ -92,10 +92,20 @@ fun RecordItemTotalizer(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 AppText(currency.name, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                AppText(
-                    "${currency.symbol} ${formatAmount(total * currency.rate)}",
-                    fontSize = 12.sp
-                )
+
+                Row {
+                    AppText(
+                        currency.symbol,
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.tertiary,
+                        modifier = Modifier.padding(end = 5.dp)
+                    )
+
+                    AppText(
+                        formatAmount(total * currency.rate),
+                        fontSize = 12.sp
+                    )
+                }
             }
         }
     }

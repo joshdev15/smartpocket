@@ -56,6 +56,9 @@ class ArchingViewModel : ViewModel() {
     private val _archingList = mutableStateOf<List<Arching>>(listOf())
     val archingList: State<List<Arching>> = _archingList
 
+    private val _currentArching = mutableStateOf<Arching?>(null)
+    val currentArching: State<Arching?> = _currentArching
+
     private val _selectedArching = mutableStateOf<Arching?>(null)
     val selectedArching: State<Arching?> = _selectedArching
 
@@ -67,6 +70,7 @@ class ArchingViewModel : ViewModel() {
 
     // UI Actions
     fun navToRecords(archingId: Long) {
+        _currentArching.value = archingList.value.find { it.id == archingId }
         navController.value?.navigate("records/$archingId")
     }
 
@@ -110,6 +114,9 @@ class ArchingViewModel : ViewModel() {
     private val _records = mutableStateOf<List<ArcRecord>>(listOf())
     val records: State<List<ArcRecord>> = _records
 
+    private val _currentRecord = mutableStateOf<ArcRecord?>(null)
+    val currentRecord: State<ArcRecord?> = _currentRecord
+
     private val _selectedRecord = mutableStateOf<ArcRecord?>(null)
     val selectedRecord: State<ArcRecord?> = _selectedRecord
 
@@ -135,14 +142,16 @@ class ArchingViewModel : ViewModel() {
 
     // Operations
     fun observeRecords(archingId: Long) {
+        _currentArching.value = archingList.value.find { it.id == archingId }
+
         if (recordJob.value?.isActive == true) {
             recordJob.value?.cancel()
         }
 
         recordJob.value = viewModelScope.launch {
             database.value?.arcRecordDao()?.getRecordByArchingId(archingId)?.collect { tmpRecords ->
-                    _records.value = tmpRecords.filterNotNull()
-                }
+                _records.value = tmpRecords
+            }
         }
     }
 
@@ -159,6 +168,7 @@ class ArchingViewModel : ViewModel() {
             dayName = dayName,
             weekOfYear = weekOfYear,
             monthOfYear = monthOfYear,
+            totalAmount = 0.0
         )
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -223,6 +233,8 @@ class ArchingViewModel : ViewModel() {
 
     // Operations
     fun observeRecordsItems(recordId: Long) {
+        _currentRecord.value = records.value.find { it.id == recordId }
+
         if (recordItemsJob.value?.isActive == true) {
             recordItemsJob.value?.cancel()
         }
@@ -233,6 +245,8 @@ class ArchingViewModel : ViewModel() {
                     _recordItems.value = tmpRecordItems
                 }
         }
+
+        calculateTotalAmount(recordId)
     }
 
     fun addAllItems(itemList: List<ArcRecordItem>, recordId: Long) {
@@ -263,6 +277,8 @@ class ArchingViewModel : ViewModel() {
                 }
             }
         }
+
+        calculateTotalAmount(recordId)
     }
 
     fun cleanRecordItemsStates() {
@@ -274,6 +290,29 @@ class ArchingViewModel : ViewModel() {
             _showNewItem.value = false
             _showItemOptions.value = false
             recordItemsJob.value?.cancel()
+        }
+    }
+
+    fun calculateTotalAmount(recordId: Long) {
+        viewModelScope.launch {
+            var totalAmount = 0.0
+            val allRecordItems =
+                database.value?.arcRecordItemDao()?.getAllRecordItemsByRecordId(recordId)?.first()
+            allRecordItems?.let { tmpRecordItems ->
+
+                tmpRecordItems.forEach { recItem ->
+                    val productRelated = products.value.find { it.id == recItem.productId }
+                    productRelated?.let {
+                        totalAmount += it.price * recItem.quantity
+                    }
+                }
+            }
+
+            currentRecord.value?.let {
+                val tmpCurrentRecord = it.copy(totalAmount = totalAmount)
+                _currentRecord.value = tmpCurrentRecord
+                database.value?.arcRecordDao()?.update(tmpCurrentRecord)
+            }
         }
     }
 
@@ -358,8 +397,8 @@ class ArchingViewModel : ViewModel() {
     fun observeCategories() {
         viewModelScope.launch {
             database.value?.arcCategoryDao()?.getAllCategories()?.collect { tmpCategoryList ->
-                    _categories.value = tmpCategoryList
-                }
+                _categories.value = tmpCategoryList
+            }
         }
     }
 

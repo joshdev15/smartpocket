@@ -47,7 +47,7 @@ fun Navigator(navController: NavHostController, viewModel: ArchingViewModel) {
                 ProductScreen(viewModel)
             }
 
-            appComposable("arcCategories") {
+            appComposable("categories") {
                 CategoriesScreen(viewModel)
             }
         }
