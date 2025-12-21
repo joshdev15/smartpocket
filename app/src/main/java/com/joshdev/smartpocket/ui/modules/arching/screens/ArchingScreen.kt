@@ -42,7 +42,6 @@ fun ArchingScreen(viewModel: ArchingViewModel) {
         )
     )
 
-
     Scaffold(
         topBar = {
             AppTopBarBasic("Cierres")

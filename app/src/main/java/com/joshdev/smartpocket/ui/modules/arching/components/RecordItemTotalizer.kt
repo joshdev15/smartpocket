@@ -44,6 +44,7 @@ fun RecordItemTotalizer(
 
     Column(
         modifier = Modifier
+            .padding(horizontal = 5.dp)
             .padding(top = 10.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(20.dp))

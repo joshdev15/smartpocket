@@ -16,7 +16,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.joshdev.smartpocket.ui.components.AppTopBarBasic
+import com.joshdev.smartpocket.ui.components.FastPanel
 import com.joshdev.smartpocket.ui.components.FloatingButton
+import com.joshdev.smartpocket.ui.models.FastPanelOption
 import com.joshdev.smartpocket.ui.modules.arching.activity.ArchingViewModel
 import com.joshdev.smartpocket.ui.modules.arching.components.NewRecordDialog
 import com.joshdev.smartpocket.ui.modules.arching.components.RecordCard
@@ -30,6 +32,21 @@ fun RecordsScreen(
     archingId: Long,
     viewModel: ArchingViewModel
 ) {
+    val options = listOf(
+        FastPanelOption(
+            id = FastPanelOption.IDs.PRODUCTS_ARCHING,
+            name = "Productos de Cierre",
+        ),
+        FastPanelOption(
+            id = FastPanelOption.IDs.CATEGORIES_ARCHING,
+            name = "Categorías de Cierre",
+        ),
+        FastPanelOption(
+            id = FastPanelOption.IDs.CURRENCIES,
+            name = "Divisas",
+        )
+    )
+
     viewModel.observeRecords(archingId)
 
     BackHandler {
@@ -51,8 +68,11 @@ fun RecordsScreen(
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.inverseOnSurface)
                 .padding(innerPadding)
-
         ) {
+            FastPanel(options) { id ->
+                viewModel.goTo(id)
+            }
+
             val title = if (viewModel.currentArching.value?.name != null) {
                 "Totales de ${viewModel.currentArching.value?.name}"
             } else {

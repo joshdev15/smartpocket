@@ -2,6 +2,8 @@ package com.joshdev.smartpocket.ui.modules.arching.screens
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -43,47 +45,53 @@ fun RecordItemsScreen(
             }
         },
     ) { innerPadding ->
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.inverseOnSurface)
                 .padding(innerPadding)
-                .padding(horizontal = SCREEN_PADDING)
         ) {
-            item {
-                val title = if (viewModel.currentRecord.value?.dayName != null) {
-                    "Elementos de ${viewModel.currentRecord.value?.dayName}"
-                } else {
-                    "Elementos"
-                }
+            val title = if (viewModel.currentRecord.value?.dayName != null) {
+                "Elementos de ${viewModel.currentRecord.value?.dayName}"
+            } else {
+                "Elementos"
+            }
 
-                RecordItemTotalizer(
-                    title,
-                    viewModel.recordItems.value,
-                    viewModel.products.value,
-                    viewModel.currencies.value
+            RecordItemTotalizer(
+                title,
+                viewModel.recordItems.value,
+                viewModel.products.value,
+                viewModel.currencies.value
+            )
+
+            LazyColumn(
+                contentPadding = PaddingValues(
+                    top = 0.dp,
+                    start = SCREEN_PADDING,
+                    end = SCREEN_PADDING,
+                    bottom = 0.dp
                 )
-            }
+            ) {
+                itemsIndexed(viewModel.recordItems.value) { idx, innerItem ->
+                    val product = viewModel.products.value.find { it.id == innerItem.productId }
 
-            itemsIndexed(viewModel.recordItems.value) { idx, innerItem ->
-                val product = viewModel.products.value.find { it.id == innerItem.productId }
+                    Spacer(modifier = Modifier.height(if (idx == 0) SCREEN_PADDING else 0.dp))
 
-                Spacer(modifier = Modifier.height(if (idx == 0) SCREEN_PADDING else 0.dp))
-
-                product?.let {
-                    RecordItemCard(
-                        arcRecordItem = innerItem,
-                        arcProduct = product,
-                        onClick = {},
-                        onLongClick = {
-                            viewModel.toggleItemOptionsDialog(innerItem, true)
-                        }
-                    )
+                    product?.let {
+                        RecordItemCard(
+                            arcRecordItem = innerItem,
+                            arcProduct = product,
+                            onClick = {},
+                            onLongClick = {
+                                viewModel.toggleItemOptionsDialog(innerItem, true)
+                            }
+                        )
+                    }
                 }
-            }
 
-            item {
-                Spacer(modifier = Modifier.height(SCREEN_FLOATING_PADDING))
+                item {
+                    Spacer(modifier = Modifier.height(SCREEN_FLOATING_PADDING))
+                }
             }
         }
     }

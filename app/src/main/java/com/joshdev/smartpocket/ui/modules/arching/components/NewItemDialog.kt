@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -44,7 +45,9 @@ import com.joshdev.smartpocket.ui.modules.arching.activity.ArchingViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewItemDialog(viewModel: ArchingViewModel, recordId: Long) {
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
 
     if (viewModel.showNewItem.value) {
         val availableProducts = viewModel.products.value
@@ -61,7 +64,8 @@ fun NewItemDialog(viewModel: ArchingViewModel, recordId: Long) {
         ModalBottomSheet(
             onDismissRequest = { viewModel.toggleNewItemDialog(false) },
             sheetState = sheetState,
-            containerColor = MaterialTheme.colorScheme.inverseOnSurface
+            containerColor = MaterialTheme.colorScheme.inverseOnSurface,
+            modifier = Modifier.fillMaxSize()
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 AppText("Agregar elemento al registro", fontWeight = FontWeight.Bold)
@@ -79,6 +83,7 @@ fun NewItemDialog(viewModel: ArchingViewModel, recordId: Long) {
                                     itemProduct.isSelected.value = !itemProduct.isSelected.value
                                 })
                                 .background(MaterialTheme.colorScheme.surfaceBright)
+                                .height(50.dp)
                                 .padding(10.dp)
                         ) {
                             AppText(itemProduct.arcProduct.name)
@@ -144,7 +149,8 @@ fun QtyItemProduct(
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(end = 20.dp)
+        modifier = Modifier
+            .padding(end = 20.dp)
     ) {
         Box(
             contentAlignment = Alignment.Center,
