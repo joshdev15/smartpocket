@@ -8,8 +8,7 @@ data class ArcRecord(
     @PrimaryKey(autoGenerate = true)
     val id: Long? = null,
     val archingId: Long? = null,
-    val dayName: String,
-    val weekOfYear: Int,
-    val monthOfYear: Int,
-    val totalAmount: Double
+    val name: String,
+    val totalAmount: Double,
+    val creationDate: Long
 )

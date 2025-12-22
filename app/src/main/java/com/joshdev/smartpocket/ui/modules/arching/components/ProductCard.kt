@@ -2,7 +2,7 @@ package com.joshdev.smartpocket.ui.modules.arching.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,13 +22,16 @@ import com.joshdev.smartpocket.ui.components.AppText
 import com.joshdev.smartpocket.ui.utils.UiUtils.formatAmount
 
 @Composable
-fun ProductCard(arcProduct: ArcProduct) {
+fun ProductCard(arcProduct: ArcProduct, onLongClick: () -> Unit) {
     Row(
         modifier = Modifier
             .padding(bottom = 10.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(30.dp))
-            .clickable(onClick = {})
+            .combinedClickable(
+                onClick = {},
+                onLongClick = { onLongClick() }
+            )
             .border(2.dp, MaterialTheme.colorScheme.secondaryContainer, RoundedCornerShape(30.dp))
             .background(MaterialTheme.colorScheme.background)
             .padding(20.dp)

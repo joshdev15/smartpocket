@@ -19,6 +19,7 @@ import com.joshdev.smartpocket.ui.modules.arching.components.NewArchingProductDi
 import com.joshdev.smartpocket.ui.components.AppTopBarBasic
 import com.joshdev.smartpocket.ui.components.FloatingButton
 import com.joshdev.smartpocket.ui.modules.arching.activity.ArchingViewModel
+import com.joshdev.smartpocket.ui.modules.arching.components.ProductOptionsDialog
 
 @Composable
 fun ProductScreen(viewModel: ArchingViewModel) {
@@ -47,7 +48,9 @@ fun ProductScreen(viewModel: ArchingViewModel) {
                                 .height(if (idx == 0) 15.dp else 0.dp)
                         )
 
-                        ProductCard(product)
+                        ProductCard(product, onLongClick = {
+                            viewModel.toggleProductOptionsDialog(product, true)
+                        })
                     }
 
                     item {
@@ -61,7 +64,7 @@ fun ProductScreen(viewModel: ArchingViewModel) {
             }
 
             NewArchingProductDialog(viewModel = viewModel)
+            ProductOptionsDialog(viewModel = viewModel)
         }
     )
-
 }

@@ -45,7 +45,12 @@ fun NewRecordDialog(viewModel: ArchingViewModel, archingId: Long) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(
                     onClick = {
-                        viewModel.addRecord(archingId)
+                        if (recordName.isNotBlank()) {
+                            viewModel.addRecord(archingId, recordName)
+                        } else {
+                            viewModel.addRecord(archingId, null)
+                        }
+
                         viewModel.toggleNewRecordDialog(false)
                     },
                     modifier = Modifier.fillMaxWidth()

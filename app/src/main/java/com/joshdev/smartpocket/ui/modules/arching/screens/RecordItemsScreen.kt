@@ -37,7 +37,7 @@ fun RecordItemsScreen(
 
     Scaffold(
         topBar = {
-            AppTopBarBasic("Elementos de ${viewModel.currentRecord.value?.dayName}")
+            AppTopBarBasic("Elementos de ${viewModel.currentRecord.value?.name}")
         },
         floatingActionButton = {
             FloatingButton() {
@@ -51,8 +51,8 @@ fun RecordItemsScreen(
                 .background(MaterialTheme.colorScheme.inverseOnSurface)
                 .padding(innerPadding)
         ) {
-            val title = if (viewModel.currentRecord.value?.dayName != null) {
-                "Elementos de ${viewModel.currentRecord.value?.dayName}"
+            val title = if (viewModel.currentRecord.value?.name != null) {
+                "Elementos de ${viewModel.currentRecord.value?.name}"
             } else {
                 "Elementos"
             }

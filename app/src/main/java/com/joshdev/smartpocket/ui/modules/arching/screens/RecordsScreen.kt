@@ -59,7 +59,8 @@ fun RecordsScreen(
         },
         floatingActionButton = {
             FloatingButton {
-                viewModel.addRecord(archingId)
+                viewModel.toggleNewRecordDialog(true)
+//                viewModel.addRecord(archingId)
             }
         },
     ) { innerPadding ->

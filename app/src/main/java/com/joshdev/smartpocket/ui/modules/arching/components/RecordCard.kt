@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.joshdev.smartpocket.domain.arching.ArcRecord
 import com.joshdev.smartpocket.ui.components.AppText
+import com.joshdev.smartpocket.ui.utils.UiUtils.formatDate
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -26,31 +27,33 @@ fun RecordCard(
     onClick: () -> Unit,
     onLongClick: () -> Unit
 ) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .padding(bottom = 10.dp)
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(30.dp))
-            .border(2.dp, MaterialTheme.colorScheme.tertiaryContainer, RoundedCornerShape(30.dp))
-            .background(MaterialTheme.colorScheme.background)
-            .combinedClickable(
-                onClick = { onClick() },
-                onLongClick = { onLongClick() }
+    arcRecord?.let { rec ->
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(bottom = 10.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(30.dp))
+                .border(2.dp, MaterialTheme.colorScheme.tertiaryContainer, RoundedCornerShape(30.dp))
+                .background(MaterialTheme.colorScheme.background)
+                .combinedClickable(
+                    onClick = { onClick() },
+                    onLongClick = { onLongClick() }
+                )
+                .padding(20.dp)
+        ) {
+            AppText(
+                text = rec.name ?: "",
+                color = MaterialTheme.colorScheme.onBackground,
+                fontSize = 18.sp,
             )
-            .padding(20.dp)
-    ) {
-        AppText(
-            text = arcRecord.dayName,
-            color = MaterialTheme.colorScheme.onBackground,
-            fontSize = 18.sp,
-        )
 
-        AppText(
-            text = "Semana: ${arcRecord.weekOfYear}",
-            color = MaterialTheme.colorScheme.secondary,
-            fontSize = 12.sp,
-        )
+            AppText(
+                text = formatDate(rec.creationDate),
+                color = MaterialTheme.colorScheme.secondary,
+                fontSize = 12.sp,
+            )
+        }
     }
 }

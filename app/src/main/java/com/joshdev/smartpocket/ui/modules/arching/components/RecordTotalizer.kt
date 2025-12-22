@@ -80,7 +80,7 @@ fun RecordTotalizer(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    AppText(record.dayName, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    AppText(record.name, fontSize = 12.sp, fontWeight = FontWeight.Bold)
                     AppText(
                         formatAmount(record.totalAmount),
                         fontSize = 12.sp

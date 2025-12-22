@@ -155,20 +155,17 @@ class ArchingViewModel : ViewModel() {
         }
     }
 
-    fun addRecord(archingId: Long) {
+    fun addRecord(archingId: Long, name: String? = null) {
         val calendar = Calendar.getInstance()
         val dayName = calendar.getDisplayName(
             Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()
         ) ?: ""
-        val weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR)
-        val monthOfYear = calendar.get(Calendar.MONTH)
 
         val arcRecord = ArcRecord(
+            name = name ?: dayName,
             archingId = archingId,
-            dayName = dayName,
-            weekOfYear = weekOfYear,
-            monthOfYear = monthOfYear,
-            totalAmount = 0.0
+            totalAmount = 0.0,
+            creationDate = calendar.timeInMillis,
         )
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -324,8 +321,14 @@ class ArchingViewModel : ViewModel() {
     private val _products = mutableStateOf<List<ArcProduct>>(emptyList())
     val products: State<List<ArcProduct>> = _products
 
+    private val _selectedProduct = mutableStateOf<ArcProduct?>(null)
+    val selectedProduct: State<ArcProduct?> = _selectedProduct
+
     private val _showNewProductDialog = mutableStateOf(false)
     val showNewProductDialog: State<Boolean> = _showNewProductDialog
+
+    private val _showProductOptionsDialog = mutableStateOf(false)
+    val showProductOptionsDialog: State<Boolean> = _showProductOptionsDialog
 
     // Operations
     private fun observeProducts() {
@@ -340,9 +343,22 @@ class ArchingViewModel : ViewModel() {
         _showNewProductDialog.value = value ?: !_showNewProductDialog.value
     }
 
+    fun toggleProductOptionsDialog(product: ArcProduct?, value: Boolean? = null) {
+        _selectedProduct.value = product
+        _showProductOptionsDialog.value = value ?: false
+    }
+
     fun addProduct(archingArcProduct: ArcProduct) {
         viewModelScope.launch {
             database.value?.arcProductDao()?.insert(archingArcProduct)
+        }
+    }
+
+    fun deleteProduct() {
+        selectedProduct.value?.let { product ->
+            viewModelScope.launch(Dispatchers.IO) {
+                database.value?.arcProductDao()?.delete(product)
+            }
         }
     }
 

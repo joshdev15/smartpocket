@@ -20,14 +20,14 @@ import com.joshdev.smartpocket.ui.modules.arching.activity.ArchingViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ArchingOptionsDialog(viewModel: ArchingViewModel) {
+fun ProductOptionsDialog(viewModel: ArchingViewModel) {
     val sheetState = rememberModalBottomSheetState()
 
     val onClose = {
-        viewModel.toggleArchingOptionsDialog(null, false)
+        viewModel.toggleProductOptionsDialog(null, false)
     }
 
-    if (viewModel.showArchingOptionsDialog.value) {
+    if (viewModel.showProductOptionsDialog.value) {
         ModalBottomSheet(
             onDismissRequest = { onClose() },
             sheetState = sheetState,
@@ -37,7 +37,7 @@ fun ArchingOptionsDialog(viewModel: ArchingViewModel) {
                     .padding(20.dp)
             ) {
                 AppText(
-                    text = "Opciones de cierre",
+                    text = "Opciones de producto",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = MaterialTheme.typography.titleLarge.fontSize
                 )
@@ -53,7 +53,7 @@ fun ArchingOptionsDialog(viewModel: ArchingViewModel) {
                             contentColor = MaterialTheme.colorScheme.onBackground
                         ),
                         onClick = {
-                            viewModel.deleteArching()
+                            viewModel.deleteProduct()
                             onClose()
                         },
                         modifier = Modifier.padding(top = 10.dp, end = 8.dp)

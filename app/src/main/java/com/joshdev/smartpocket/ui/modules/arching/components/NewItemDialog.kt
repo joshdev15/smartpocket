@@ -114,25 +114,27 @@ fun NewItemDialog(viewModel: ArchingViewModel, recordId: Long) {
                             }
                         }
                     }
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-                Button(
-                    enabled = localSelectedProducts.value,
-                    onClick = {
-                        val productList = itemProducts.filter { it.isSelected.value }
-                            .map {
-                                ArcRecordItem(
-                                    recordId = recordId,
-                                    productId = it.arcProduct.id,
-                                    quantity = it.quantity.value
-                                )
-                            }
-                        viewModel.addAllItems(productList, recordId)
-                        viewModel.toggleNewItemDialog(false)
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text("Guardar")
+
+                    item {
+                        Button(
+                            enabled = localSelectedProducts.value,
+                            onClick = {
+                                val productList = itemProducts.filter { it.isSelected.value }
+                                    .map {
+                                        ArcRecordItem(
+                                            recordId = recordId,
+                                            productId = it.arcProduct.id,
+                                            quantity = it.quantity.value
+                                        )
+                                    }
+                                viewModel.addAllItems(productList, recordId)
+                                viewModel.toggleNewItemDialog(false)
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Guardar")
+                        }
+                    }
                 }
             }
         }
