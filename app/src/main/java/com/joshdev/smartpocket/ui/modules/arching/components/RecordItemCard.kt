@@ -47,11 +47,24 @@ fun RecordItemCard(
             verticalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.weight(1f)
         ) {
-            AppText(
-                text = arcProduct.name,
-                color = MaterialTheme.colorScheme.onBackground,
-                fontSize = 18.sp,
-            )
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                AppText(
+                    text = arcProduct.name,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontSize = 18.sp,
+                )
+
+                AppText(
+                    text = "Precio Individual: ${arcProduct.price}",
+                    color = MaterialTheme.colorScheme.secondary,
+                    fontSize = 12.sp,
+                )
+            }
+
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
@@ -62,17 +75,7 @@ fun RecordItemCard(
                     color = MaterialTheme.colorScheme.secondary,
                     fontSize = 12.sp,
                 )
-                AppText(
-                    text = "Precio Individual: ${arcProduct.price}",
-                    color = MaterialTheme.colorScheme.secondary,
-                    fontSize = 12.sp,
-                )
-            }
-            Row(
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) {
+
                 AppText(
                     text = "Precio Total: ${arcProduct.price * arcRecordItem.quantity}",
                     color = MaterialTheme.colorScheme.tertiary,

@@ -155,7 +155,7 @@ class ArchingViewModel : ViewModel() {
         }
     }
 
-    fun addRecord(archingId: Long, name: String? = null) {
+    fun addRecord(archingId: Long, name: String? = null, isDeduction: Boolean = true, deductionAmount: Double = 0.0) {
         val calendar = Calendar.getInstance()
         val dayName = calendar.getDisplayName(
             Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()
@@ -164,8 +164,9 @@ class ArchingViewModel : ViewModel() {
         val arcRecord = ArcRecord(
             name = name ?: dayName,
             archingId = archingId,
-            totalAmount = 0.0,
+            totalAmount = if (isDeduction) deductionAmount else 0.0,
             creationDate = calendar.timeInMillis,
+            type = if (isDeduction) ArcRecord.RecType.Deduction else ArcRecord.RecType.WorkingDay
         )
 
         viewModelScope.launch(Dispatchers.IO) {

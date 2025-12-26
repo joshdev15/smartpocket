@@ -37,7 +37,7 @@ fun ArchingCard(arching: Arching, onClick: () -> Unit, onLongClick: () -> Unit) 
     ) {
         Column {
             Row(
-                horizontalArrangement = Arrangement.Start,
+                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -46,14 +46,8 @@ fun ArchingCard(arching: Arching, onClick: () -> Unit, onLongClick: () -> Unit) 
                     fontSize = 18.sp,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(bottom = 10.dp)
                 )
-            }
-            Row(
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) {
+
                 AppText(
                     text = formatDate(arching.creationDate),
                     color = MaterialTheme.colorScheme.tertiary,

@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.joshdev.smartpocket.domain.arching.ArcRecord
 import com.joshdev.smartpocket.ui.components.AppText
+import com.joshdev.smartpocket.ui.utils.UiUtils.formatAmount
 import com.joshdev.smartpocket.ui.utils.UiUtils.formatDate
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -27,33 +29,65 @@ fun RecordCard(
     onClick: () -> Unit,
     onLongClick: () -> Unit
 ) {
-    arcRecord?.let { rec ->
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+    arcRecord.let { rec ->
+        Column(
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .padding(bottom = 10.dp)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(30.dp))
-                .border(2.dp, MaterialTheme.colorScheme.tertiaryContainer, RoundedCornerShape(30.dp))
+                .border(
+                    2.dp,
+                    MaterialTheme.colorScheme.tertiaryContainer,
+                    RoundedCornerShape(30.dp)
+                )
                 .background(MaterialTheme.colorScheme.background)
                 .combinedClickable(
-                    onClick = { onClick() },
+                    onClick = {
+                        if (arcRecord.type == ArcRecord.RecType.WorkingDay) {
+                            onClick()
+                        }
+                    },
                     onLongClick = { onLongClick() }
                 )
                 .padding(20.dp)
         ) {
-            AppText(
-                text = rec.name ?: "",
-                color = MaterialTheme.colorScheme.onBackground,
-                fontSize = 18.sp,
-            )
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                AppText(
+                    text = rec.name,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontSize = 18.sp,
+                )
 
-            AppText(
-                text = formatDate(rec.creationDate),
-                color = MaterialTheme.colorScheme.secondary,
-                fontSize = 12.sp,
-            )
+                AppText(
+                    text = if (rec.type == ArcRecord.RecType.WorkingDay) "Jornada" else "Deducción",
+                    color = MaterialTheme.colorScheme.tertiary,
+                    fontSize = 12.sp,
+                )
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                AppText(
+                    text = "Total: ${formatAmount(rec.totalAmount)}",
+                    color = MaterialTheme.colorScheme.secondary,
+                    fontSize = 12.sp,
+                )
+
+                AppText(
+                    text = formatDate(rec.creationDate),
+                    color = MaterialTheme.colorScheme.secondary,
+                    fontSize = 12.sp,
+                )
+            }
         }
     }
 }

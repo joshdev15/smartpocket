@@ -32,7 +32,9 @@ fun RecordTotalizer(
     recordList: List<ArcRecord>,
     currencyList: List<Currency>
 ) {
-    val finalAmount = recordList.sumOf { it.totalAmount }
+    val workingTotal = recordList.filter { it.type == ArcRecord.RecType.WorkingDay }.sumOf { it.totalAmount }
+    val deductionTotal = recordList.filter { it.type == ArcRecord.RecType.Deduction }.sumOf { it.totalAmount }
+    val finalAmount = workingTotal - deductionTotal
 
     Column(
         modifier = Modifier
@@ -97,6 +99,46 @@ fun RecordTotalizer(
                         .background(MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f))
                 )
             }
+
+            item {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    AppText("Total de Jornadas", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    AppText(
+                        formatAmount(workingTotal),
+                        fontSize = 12.sp
+                    )
+                }
+            }
+
+            item {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    AppText("Total de Deducciones", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    AppText(
+                        formatAmount(deductionTotal),
+                        fontSize = 12.sp
+                    )
+                }
+            }
+
+            item {
+                Spacer(
+                    modifier = Modifier
+                        .padding(vertical = 5.dp)
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f))
+                )
+            }
+
+
 
             items(currencyList) { currency ->
                 Row(
