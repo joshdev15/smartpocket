@@ -8,7 +8,6 @@ data class ArcProduct(
     @PrimaryKey(autoGenerate = true)
     val id: Long? = null,
     val name: String = "",
-    val categoryId: String = "",
-    val subCategoryId: String = "",
+    val categoryId: String? = null,
     val price: Double = 0.0,
 )

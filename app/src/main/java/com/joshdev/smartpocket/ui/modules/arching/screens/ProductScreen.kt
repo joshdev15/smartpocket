@@ -14,15 +14,17 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.joshdev.smartpocket.ui.modules.arching.components.ProductCard
-import com.joshdev.smartpocket.ui.modules.arching.components.NewArchingProductDialog
 import com.joshdev.smartpocket.ui.components.AppTopBarBasic
 import com.joshdev.smartpocket.ui.components.FloatingButton
 import com.joshdev.smartpocket.ui.modules.arching.activity.ArchingViewModel
+import com.joshdev.smartpocket.ui.modules.arching.components.NewArchingProductDialog
+import com.joshdev.smartpocket.ui.modules.arching.components.ProductCard
 import com.joshdev.smartpocket.ui.modules.arching.components.ProductOptionsDialog
 
 @Composable
 fun ProductScreen(viewModel: ArchingViewModel) {
+    viewModel.getCategories()
+
     Scaffold(
         topBar = { AppTopBarBasic("Productos de Cierre") },
         floatingActionButton = {
@@ -48,9 +50,13 @@ fun ProductScreen(viewModel: ArchingViewModel) {
                                 .height(if (idx == 0) 15.dp else 0.dp)
                         )
 
-                        ProductCard(product, onLongClick = {
-                            viewModel.toggleProductOptionsDialog(product, true)
-                        })
+                        ProductCard(
+                            product,
+                            viewModel.categories.value,
+                            onLongClick = {
+                                viewModel.toggleProductOptionsDialog(product, true)
+                            }
+                        )
                     }
 
                     item {

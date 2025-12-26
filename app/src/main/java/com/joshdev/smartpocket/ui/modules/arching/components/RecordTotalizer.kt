@@ -18,9 +18,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.joshdev.smartpocket.R
 import com.joshdev.smartpocket.domain.arching.ArcRecord
 import com.joshdev.smartpocket.domain.currency.Currency
 import com.joshdev.smartpocket.ui.components.AppText
@@ -32,8 +34,10 @@ fun RecordTotalizer(
     recordList: List<ArcRecord>,
     currencyList: List<Currency>
 ) {
-    val workingTotal = recordList.filter { it.type == ArcRecord.RecType.WorkingDay }.sumOf { it.totalAmount }
-    val deductionTotal = recordList.filter { it.type == ArcRecord.RecType.Deduction }.sumOf { it.totalAmount }
+    val workingTotal =
+        recordList.filter { it.type == ArcRecord.RecType.WorkingDay }.sumOf { it.totalAmount }
+    val deductionTotal =
+        recordList.filter { it.type == ArcRecord.RecType.Deduction }.sumOf { it.totalAmount }
     val finalAmount = workingTotal - deductionTotal
 
     Column(
@@ -47,6 +51,9 @@ fun RecordTotalizer(
             .width(70.dp)
             .height(125.dp)
     ) {
+        val green = colorResource(id = R.color.income)
+        val red = colorResource(id = R.color.egress)
+
         Row(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
@@ -77,6 +84,11 @@ fun RecordTotalizer(
             }
 
             items(recordList) { record ->
+                val typeColor = when (record.type) {
+                    ArcRecord.RecType.WorkingDay -> green
+                    ArcRecord.RecType.Deduction -> red
+                }
+
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
@@ -84,8 +96,9 @@ fun RecordTotalizer(
                 ) {
                     AppText(record.name, fontSize = 12.sp, fontWeight = FontWeight.Bold)
                     AppText(
-                        formatAmount(record.totalAmount),
-                        fontSize = 12.sp
+                        "${if (record.type == ArcRecord.RecType.Deduction) "-" else "+"} ${formatAmount(record.totalAmount)}",
+                        color = typeColor,
+                        fontSize = 10.sp,
                     )
                 }
             }
@@ -109,6 +122,7 @@ fun RecordTotalizer(
                     AppText("Total de Jornadas", fontSize = 12.sp, fontWeight = FontWeight.Bold)
                     AppText(
                         formatAmount(workingTotal),
+                        color = green,
                         fontSize = 12.sp
                     )
                 }
@@ -123,6 +137,7 @@ fun RecordTotalizer(
                     AppText("Total de Deducciones", fontSize = 12.sp, fontWeight = FontWeight.Bold)
                     AppText(
                         formatAmount(deductionTotal),
+                        color = red,
                         fontSize = 12.sp
                     )
                 }
@@ -137,8 +152,6 @@ fun RecordTotalizer(
                         .background(MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f))
                 )
             }
-
-
 
             items(currencyList) { currency ->
                 Row(
@@ -158,6 +171,7 @@ fun RecordTotalizer(
 
                         AppText(
                             formatAmount(currency.rate * finalAmount),
+                            fontWeight = FontWeight.Bold,
                             fontSize = 12.sp
                         )
                     }

@@ -11,7 +11,9 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.toColorInt
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
@@ -109,6 +111,14 @@ object UiUtils {
         }
 
         return goTo
+    }
+
+    fun hexToColor(hex: String): Color {
+        return try {
+            Color(hex.toColorInt())
+        } catch (e: IllegalArgumentException) {
+            Color.White
+        }
     }
 }
 

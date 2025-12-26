@@ -155,7 +155,12 @@ class ArchingViewModel : ViewModel() {
         }
     }
 
-    fun addRecord(archingId: Long, name: String? = null, isDeduction: Boolean = true, deductionAmount: Double = 0.0) {
+    fun addRecord(
+        archingId: Long,
+        name: String? = null,
+        isDeduction: Boolean = true,
+        deductionAmount: Double = 0.0
+    ) {
         val calendar = Calendar.getInstance()
         val dayName = calendar.getDisplayName(
             Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()
@@ -415,6 +420,14 @@ class ArchingViewModel : ViewModel() {
         viewModelScope.launch {
             database.value?.arcCategoryDao()?.getAllCategories()?.collect { tmpCategoryList ->
                 _categories.value = tmpCategoryList
+            }
+        }
+    }
+
+    fun getCategories() {
+        viewModelScope.launch {
+            database.value?.arcCategoryDao()?.getAllCategories()?.first()?.let { tmpCategories ->
+                _categories.value = tmpCategories
             }
         }
     }

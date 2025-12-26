@@ -1,5 +1,6 @@
 package com.joshdev.smartpocket.ui.modules.arching.components
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
@@ -9,27 +10,28 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.joshdev.smartpocket.domain.arching.ArcCategory
-import com.joshdev.smartpocket.domain.arching.ArcProduct
 import com.joshdev.smartpocket.ui.components.AppText
-import com.joshdev.smartpocket.ui.utils.UiUtils.formatAmount
 import com.joshdev.smartpocket.ui.utils.UiUtils.hexToColor
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ProductCard(
-    arcProduct: ArcProduct,
-    categoryList: List<ArcCategory>,
-    onLongClick: () -> Unit
-) {
+fun CategoryCard(arcCategory: ArcCategory, onLongClick: () -> Unit) {
+    val haptic = LocalHapticFeedback.current
+
     Row(
         modifier = Modifier
             .padding(bottom = 10.dp)
@@ -37,7 +39,10 @@ fun ProductCard(
             .clip(RoundedCornerShape(30.dp))
             .combinedClickable(
                 onClick = {},
-                onLongClick = { onLongClick() }
+                onLongClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    onLongClick()
+                }
             )
             .border(2.dp, MaterialTheme.colorScheme.secondaryContainer, RoundedCornerShape(30.dp))
             .background(MaterialTheme.colorScheme.background)
@@ -45,45 +50,26 @@ fun ProductCard(
     ) {
         Column {
             Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 AppText(
-                    text = arcProduct.name,
+                    text = arcCategory.name,
                     fontSize = 18.sp,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontWeight = FontWeight.Bold,
                 )
-                AppText(
-                    text = "$${formatAmount(arcProduct.price)}",
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    fontWeight = FontWeight.Medium,
-                )
-            }
 
-            arcProduct.categoryId?.let {
-                val productCategory = categoryList.find { it.id.toString() == arcProduct.categoryId }
-                productCategory?.let { cat ->
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        val color = hexToColor(cat.color)
+                val localColor: Color = hexToColor(arcCategory.color)
 
-                        Box(
-                            modifier = Modifier
-                                .padding(top = 10.dp)
-                                .clip(RoundedCornerShape(10.dp))
-                                .background(color)
-                                .padding(vertical = 2.dp, horizontal = 5.dp)
-                        ) {
-                            AppText(cat.name, fontSize = 10.sp)
-                        }
-                    }
-                }
+                Box(
+                    modifier = Modifier
+                        .padding(start = 5.dp)
+                        .size(10.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(localColor)
+                ) {}
             }
         }
     }
