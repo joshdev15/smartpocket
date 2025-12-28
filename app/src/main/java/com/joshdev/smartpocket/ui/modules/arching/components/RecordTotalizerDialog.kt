@@ -99,11 +99,11 @@ fun RecordTotalizerDialog(viewModel: ArchingViewModel) {
 
                         val symbol = when (record.type) {
                             ArcRecord.RecType.WorkingDay -> {
-                                "-"
+                                "+"
                             }
 
                             ArcRecord.RecType.Deduction -> {
-                                "+"
+                                "-"
                             }
                         }
 
