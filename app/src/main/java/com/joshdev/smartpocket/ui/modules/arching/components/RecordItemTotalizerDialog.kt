@@ -61,9 +61,6 @@ fun RecordItemTotalizerDialog(viewModel: ArchingViewModel) {
                     .background(MaterialTheme.colorScheme.surfaceBright)
                     .padding(10.dp)
             ) {
-                val green = colorResource(id = R.color.income)
-                val red = colorResource(id = R.color.egress)
-
                 Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,

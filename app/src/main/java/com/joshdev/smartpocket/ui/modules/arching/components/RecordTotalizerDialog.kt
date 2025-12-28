@@ -97,16 +97,24 @@ fun RecordTotalizerDialog(viewModel: ArchingViewModel) {
                             ArcRecord.RecType.Deduction -> red
                         }
 
+                        val symbol = when (record.type) {
+                            ArcRecord.RecType.WorkingDay -> {
+                                "-"
+                            }
+
+                            ArcRecord.RecType.Deduction -> {
+                                "+"
+                            }
+                        }
+
+                        val amount = formatAmount(record.totalAmount)
+                        val total = "$symbol $amount"
+
                         Row(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            val symbol =
-                                if (record.type == ArcRecord.RecType.Deduction) "-" else "+"
-                            val amount = formatAmount(record.totalAmount)
-                            val total = "$symbol $amount"
-
                             AppText(
                                 text = record.name,
                                 fontSize = 12.sp
@@ -177,7 +185,6 @@ fun RecordTotalizerDialog(viewModel: ArchingViewModel) {
                             AppText(
                                 "Total de Jornadas",
                                 fontSize = 12.sp,
-                                fontWeight = FontWeight.Bold
                             )
                             AppText(
                                 formatAmount(workingTotal),
@@ -196,7 +203,6 @@ fun RecordTotalizerDialog(viewModel: ArchingViewModel) {
                             AppText(
                                 "Total de Deducciones",
                                 fontSize = 12.sp,
-                                fontWeight = FontWeight.Bold
                             )
                             AppText(
                                 formatAmount(deductionTotal),
@@ -223,20 +229,23 @@ fun RecordTotalizerDialog(viewModel: ArchingViewModel) {
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             AppText(
-                                currency.name,
+                                text = currency.name,
+                                fontSize = 12.sp,
                                 fontWeight = FontWeight.Bold
                             )
 
                             Row {
                                 AppText(
-                                    currency.symbol,
+                                    text = currency.symbol,
                                     color = MaterialTheme.colorScheme.secondary,
+                                    fontSize = 12.sp,
                                     fontWeight = FontWeight.Bold,
                                     modifier = Modifier.padding(end = 5.dp),
                                 )
 
                                 AppText(
-                                    formatAmount(currency.rate * finalAmount),
+                                    text = formatAmount(currency.rate * finalAmount),
+                                    fontSize = 12.sp,
                                     fontWeight = FontWeight.Bold,
                                 )
                             }

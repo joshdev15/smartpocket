@@ -156,7 +156,10 @@ class ArchingViewModel : ViewModel() {
 
     fun toggleRecordTotalizerDialog(value: Boolean? = null) {
         _showRecordTotalizerDialog.value = value ?: false
-        viewModelScope.launch {
+
+        calculateArchingTotalAmount(currentArching.value?.id ?: 0)
+
+        viewModelScope.launch(Dispatchers.IO) {
             getArchingCategoriesTotals(currentArching.value?.id ?: 0)
         }
     }
@@ -295,6 +298,31 @@ class ArchingViewModel : ViewModel() {
         }
 
         calculateTotalAmount(recordId)
+    }
+
+    fun calculateArchingTotalAmount(archingId: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val recordsInArching =
+                database.value?.arcRecordDao()?.getRecordByArchingId(archingId)?.first()
+
+            recordsInArching?.forEach { tmpRecord ->
+                var totalAmount = 0.0
+                val allRecordItems = database.value?.arcRecordItemDao()
+                    ?.getAllRecordItemsByRecordId(tmpRecord.id ?: 0L)?.first()
+
+                allRecordItems?.let { tmpRecordItems ->
+                    tmpRecordItems.forEach { recItem ->
+                        val productRelated = products.value.find { it.id == recItem.productId }
+                        productRelated?.let {
+                            totalAmount += it.price * recItem.quantity
+                        }
+                    }
+                }
+
+                val updatedRecord = tmpRecord.copy(totalAmount = totalAmount)
+                database.value?.arcRecordDao()?.update(updatedRecord)
+            }
+        }
     }
 
     suspend fun getRecordCategoriesTotals(archingId: Long, recordId: Long) {
