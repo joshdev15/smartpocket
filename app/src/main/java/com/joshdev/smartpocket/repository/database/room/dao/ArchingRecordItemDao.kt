@@ -3,10 +3,10 @@ package com.joshdev.smartpocket.repository.database.room.dao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
-import androidx.room.MapColumn
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.joshdev.smartpocket.domain.arching.ArcRecordDetails
 import com.joshdev.smartpocket.domain.arching.ArcRecordItem
 import kotlinx.coroutines.flow.Flow
 
@@ -41,12 +41,18 @@ interface ArchingRecordItemDao {
 
     @Query(
         """
-        select c.name as name, sum(item.quantity * p.price) as sum from arcRecordItem as item
-        inner join arcProduct as p on item.productId = p.id
+        select
+            c.name as categoryName,
+            p.price as productPrice,
+            p.name as productName,
+            i.quantity as itemQuantity
+        from arcRecordItem as i
+        inner join arcProduct as p on i.productId = p.id
         inner join arcCategory as c on p.categoryId = c.id
-        inner join arcRecord as r on item.recordId = r.id
-        where r.id = :recordId
+        inner join arcRecord as r on i.recordId = r.id
+        inner join arching as a on r.archingId = a.id
+        where a.id = :archingId and i.recordId = :recordId
         """
     )
-    fun getTotals(recordId: Long): Flow<Map<@MapColumn(columnName = "name") String?, @MapColumn(columnName = "sum") Double?>>
+    fun getCategoryTotals(archingId: Long, recordId: Long): Flow<List<ArcRecordDetails>>
 }

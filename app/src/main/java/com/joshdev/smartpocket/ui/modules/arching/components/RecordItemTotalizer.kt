@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.joshdev.smartpocket.domain.arching.ArcProduct
+import com.joshdev.smartpocket.domain.arching.ArcRecordDetails
 import com.joshdev.smartpocket.domain.arching.ArcRecordItem
 import com.joshdev.smartpocket.domain.currency.Currency
 import com.joshdev.smartpocket.ui.components.AppText
@@ -30,7 +31,7 @@ fun RecordItemTotalizer(
     itemList: List<ArcRecordItem>,
     arcProductList: List<ArcProduct>,
     currencyList: List<Currency>,
-    totalsMap: Map<String?, Double?>
+    totalList: List<ArcRecordDetails>
 ) {
     val subTotals = itemList.map { recItem ->
         val currentProduct = arcProductList.find { recItem.productId == it.id }
@@ -87,17 +88,18 @@ fun RecordItemTotalizer(
                 .background(MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f))
         )
 
-        val totalList = totalsMap.toList()
-        Column() {
+        Column {
             for (total in totalList) {
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    AppText(total.first ?: "", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    val amount = total.itemQuantity * total.productPrice
+
+                    AppText(total.productName, fontSize = 12.sp, fontWeight = FontWeight.Bold)
                     AppText(
-                        formatAmount(total.second ?: 0.0),
+                        formatAmount(amount),
                         color = MaterialTheme.colorScheme.onBackground,
                         fontSize = 12.sp
                     )

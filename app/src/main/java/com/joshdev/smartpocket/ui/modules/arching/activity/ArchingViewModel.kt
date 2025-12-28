@@ -9,6 +9,7 @@ import androidx.navigation.NavController
 import com.joshdev.smartpocket.domain.arching.ArcCategory
 import com.joshdev.smartpocket.domain.arching.ArcProduct
 import com.joshdev.smartpocket.domain.arching.ArcRecord
+import com.joshdev.smartpocket.domain.arching.ArcRecordDetails
 import com.joshdev.smartpocket.domain.arching.ArcRecordItem
 import com.joshdev.smartpocket.domain.arching.Arching
 import com.joshdev.smartpocket.domain.currency.Currency
@@ -16,6 +17,7 @@ import com.joshdev.smartpocket.repository.database.room.AppDatabase
 import com.joshdev.smartpocket.repository.database.room.AppDatabaseSingleton
 import com.joshdev.smartpocket.ui.models.FastPanelOption
 import com.joshdev.smartpocket.ui.utils.UiUtils.getIntentByFastOptionID
+import com.joshdev.smartpocket.ui.utils.UiUtils.showToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -46,6 +48,12 @@ class ArchingViewModel : ViewModel() {
         getCurrencies()
         observeProducts()
         observeArchingList()
+    }
+
+    fun toast(message: String) {
+        context.value?.let {
+            showToast(it, message)
+        }
     }
 
     //////////////
@@ -126,6 +134,9 @@ class ArchingViewModel : ViewModel() {
     private val _showRecordOptionsDialog = mutableStateOf(false)
     val showRecordOptionsDialog: State<Boolean> = _showRecordOptionsDialog
 
+    private val _showRecordTotalizerDialog = mutableStateOf(false)
+    val showRecordTotalizerDialog: State<Boolean> = _showRecordTotalizerDialog
+
     private val _totalsMap = mutableStateOf<Map<String?, Double?>>(mapOf())
     val totalsMap: State<Map<String?, Double?>> = _totalsMap
 
@@ -143,6 +154,13 @@ class ArchingViewModel : ViewModel() {
         _showNewRecordDialog.value = value ?: !_showNewRecordDialog.value
     }
 
+    fun toggleRecordTotalizerDialog(value: Boolean? = null) {
+        _showRecordTotalizerDialog.value = value ?: false
+        viewModelScope.launch {
+            getArchingCategoriesTotals(currentArching.value?.id ?: 0)
+        }
+    }
+
     // Operations
     fun observeRecords(archingId: Long) {
         _currentArching.value = archingList.value.find { it.id == archingId }
@@ -156,14 +174,10 @@ class ArchingViewModel : ViewModel() {
                 _records.value = tmpRecords
             }
         }
-
-//        viewModelScope.launch {
-//            getArchingCategoriesTotals(archingId)
-//        }
     }
 
     suspend fun getArchingCategoriesTotals(archingId: Long) {
-        database.value?.arcRecordDao()?.getTotals(archingId)?.collect { totals ->
+        database.value?.arcRecordDao()?.getCategoryTotals(archingId)?.first()?.let { totals ->
             _totalsMap.value = totals
         }
     }
@@ -238,8 +252,11 @@ class ArchingViewModel : ViewModel() {
     private val _showItemOptions = mutableStateOf(false)
     val showItemOptions: State<Boolean> = _showItemOptions
 
-    private val _itemTotalsMap = mutableStateOf<Map<String?, Double?>>(mapOf())
-    val itemTotalsMap: State<Map<String?, Double?>> = _itemTotalsMap
+    private val _showItemTotalizer = mutableStateOf(false)
+    val showItemTotalizer: State<Boolean> = _showItemTotalizer
+
+    private val _itemTotals = mutableStateOf<List<ArcRecordDetails>>(listOf())
+    val itemTotals: State<List<ArcRecordDetails>> = _itemTotals
 
     // UI Actions
     fun toggleItemOptionsDialog(arcRecordItem: ArcRecordItem?, show: Boolean? = null) {
@@ -249,6 +266,17 @@ class ArchingViewModel : ViewModel() {
 
     fun toggleNewItemDialog(value: Boolean? = null) {
         _showNewItem.value = value ?: !_showNewItem.value
+    }
+
+    fun toggleItemTotalizer(value: Boolean? = null) {
+        _showItemTotalizer.value = value ?: false
+        viewModelScope.launch {
+            currentArching.value?.id?.let { archingId ->
+                currentRecord.value?.id?.let { recordId ->
+                    getRecordCategoriesTotals(archingId, recordId)
+                }
+            }
+        }
     }
 
     // Operations
@@ -263,17 +291,17 @@ class ArchingViewModel : ViewModel() {
             database.value?.arcRecordItemDao()?.getAllRecordItemsByRecordId(recordId)
                 ?.collect { tmpRecordItems ->
                     _recordItems.value = tmpRecordItems
-                    getRecordCategoriesTotals(recordId)
                 }
         }
 
         calculateTotalAmount(recordId)
     }
 
-    suspend fun getRecordCategoriesTotals(recordId: Long) {
-        database.value?.arcRecordDao()?.getTotals(recordId)?.first()?.let { totals ->
-            _totalsMap.value = totals
-        }
+    suspend fun getRecordCategoriesTotals(archingId: Long, recordId: Long) {
+        database.value?.arcRecordItemDao()?.getCategoryTotals(archingId, recordId)?.first()
+            ?.let { totals ->
+                _itemTotals.value = totals
+            }
     }
 
     fun addAllItems(itemList: List<ArcRecordItem>, recordId: Long) {

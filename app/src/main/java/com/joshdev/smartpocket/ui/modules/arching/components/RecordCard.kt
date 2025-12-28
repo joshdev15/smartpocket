@@ -44,11 +44,7 @@ fun RecordCard(
                 )
                 .background(MaterialTheme.colorScheme.background)
                 .combinedClickable(
-                    onClick = {
-                        if (arcRecord.type == ArcRecord.RecType.WorkingDay) {
-                            onClick()
-                        }
-                    },
+                    onClick = { onClick() },
                     onLongClick = { onLongClick() }
                 )
                 .padding(20.dp)

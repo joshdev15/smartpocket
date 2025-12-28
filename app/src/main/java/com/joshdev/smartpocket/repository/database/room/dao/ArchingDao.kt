@@ -3,6 +3,7 @@ package com.joshdev.smartpocket.repository.database.room.dao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.MapColumn
 import androidx.room.Query
 import androidx.room.Update
 import com.joshdev.smartpocket.domain.arching.Arching
@@ -27,4 +28,5 @@ interface ArchingDao {
 
     @Query("DELETE FROM ledProducts")
     suspend fun deleteAllArching()
+
 }
