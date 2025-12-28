@@ -3,6 +3,7 @@ package com.joshdev.smartpocket.repository.database.room.dao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.MapColumn
 import androidx.room.Query
 import androidx.room.Update
 import com.joshdev.smartpocket.domain.arching.ArcRecord
@@ -30,4 +31,16 @@ interface ArchingRecordDao {
 
     @Query("DELETE FROM arching")
     suspend fun deleteAllRecords()
+
+    @Query(
+        """
+        select c.name as name, sum(item.quantity * p.price) as sum from arcRecordItem as item
+        inner join arcProduct as p on item.productId = p.id
+        inner join arcCategory as c on p.categoryId = c.id
+        inner join arcRecord as r on item.recordId = r.id
+        inner join arching as a on r.archingId = a.id
+        where a.id = :archingId
+        """
+    )
+    fun getTotals(archingId: Long): Flow<Map<@MapColumn(columnName = "name") String?, @MapColumn(columnName = "sum") Double?>>
 }

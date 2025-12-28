@@ -126,6 +126,9 @@ class ArchingViewModel : ViewModel() {
     private val _showRecordOptionsDialog = mutableStateOf(false)
     val showRecordOptionsDialog: State<Boolean> = _showRecordOptionsDialog
 
+    private val _totalsMap = mutableStateOf<Map<String?, Double?>>(mapOf())
+    val totalsMap: State<Map<String?, Double?>> = _totalsMap
+
     // UI Actions
     fun navToRecordItem(recordId: Long) {
         navController.value?.navigate("recordItems/$recordId")
@@ -152,6 +155,16 @@ class ArchingViewModel : ViewModel() {
             database.value?.arcRecordDao()?.getRecordByArchingId(archingId)?.collect { tmpRecords ->
                 _records.value = tmpRecords
             }
+        }
+
+//        viewModelScope.launch {
+//            getArchingCategoriesTotals(archingId)
+//        }
+    }
+
+    suspend fun getArchingCategoriesTotals(archingId: Long) {
+        database.value?.arcRecordDao()?.getTotals(archingId)?.collect { totals ->
+            _totalsMap.value = totals
         }
     }
 
@@ -203,6 +216,7 @@ class ArchingViewModel : ViewModel() {
             _selectedRecord.value = null
             _showNewRecordDialog.value = false
             _showRecordOptionsDialog.value = false
+            _totalsMap.value = mapOf()
             recordJob.value?.cancel()
         }
     }
@@ -223,6 +237,9 @@ class ArchingViewModel : ViewModel() {
 
     private val _showItemOptions = mutableStateOf(false)
     val showItemOptions: State<Boolean> = _showItemOptions
+
+    private val _itemTotalsMap = mutableStateOf<Map<String?, Double?>>(mapOf())
+    val itemTotalsMap: State<Map<String?, Double?>> = _itemTotalsMap
 
     // UI Actions
     fun toggleItemOptionsDialog(arcRecordItem: ArcRecordItem?, show: Boolean? = null) {
@@ -246,10 +263,17 @@ class ArchingViewModel : ViewModel() {
             database.value?.arcRecordItemDao()?.getAllRecordItemsByRecordId(recordId)
                 ?.collect { tmpRecordItems ->
                     _recordItems.value = tmpRecordItems
+                    getRecordCategoriesTotals(recordId)
                 }
         }
 
         calculateTotalAmount(recordId)
+    }
+
+    suspend fun getRecordCategoriesTotals(recordId: Long) {
+        database.value?.arcRecordDao()?.getTotals(recordId)?.first()?.let { totals ->
+            _totalsMap.value = totals
+        }
     }
 
     fun addAllItems(itemList: List<ArcRecordItem>, recordId: Long) {

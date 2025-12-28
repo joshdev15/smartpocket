@@ -61,7 +61,8 @@ fun RecordItemsScreen(
                 title,
                 viewModel.recordItems.value,
                 viewModel.products.value,
-                viewModel.currencies.value
+                viewModel.currencies.value,
+                viewModel.itemTotalsMap.value
             )
 
             LazyColumn(

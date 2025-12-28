@@ -29,7 +29,8 @@ fun RecordItemTotalizer(
     title: String,
     itemList: List<ArcRecordItem>,
     arcProductList: List<ArcProduct>,
-    currencyList: List<Currency>
+    currencyList: List<Currency>,
+    totalsMap: Map<String?, Double?>
 ) {
     val subTotals = itemList.map { recItem ->
         val currentProduct = arcProductList.find { recItem.productId == it.id }
@@ -76,6 +77,32 @@ fun RecordItemTotalizer(
         ) {
             AppText("Cant. Productos", fontSize = 12.sp, fontWeight = FontWeight.Bold)
             AppText(totalQuantities.toString(), fontSize = 12.sp)
+        }
+
+        Spacer(
+            modifier = Modifier
+                .padding(vertical = 5.dp)
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f))
+        )
+
+        val totalList = totalsMap.toList()
+        Column() {
+            for (total in totalList) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    AppText(total.first ?: "", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    AppText(
+                        formatAmount(total.second ?: 0.0),
+                        color = MaterialTheme.colorScheme.onBackground,
+                        fontSize = 12.sp
+                    )
+                }
+            }
         }
 
         Spacer(

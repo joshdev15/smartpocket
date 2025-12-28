@@ -32,7 +32,8 @@ import com.joshdev.smartpocket.ui.utils.UiUtils.formatAmount
 fun RecordTotalizer(
     title: String,
     recordList: List<ArcRecord>,
-    currencyList: List<Currency>
+    currencyList: List<Currency>,
+    totalsMap: Map<String?, Double?>
 ) {
     val workingTotal =
         recordList.filter { it.type == ArcRecord.RecType.WorkingDay }.sumOf { it.totalAmount }
@@ -96,10 +97,44 @@ fun RecordTotalizer(
                 ) {
                     AppText(record.name, fontSize = 12.sp, fontWeight = FontWeight.Bold)
                     AppText(
-                        "${if (record.type == ArcRecord.RecType.Deduction) "-" else "+"} ${formatAmount(record.totalAmount)}",
+                        "${if (record.type == ArcRecord.RecType.Deduction) "-" else "+"} ${
+                            formatAmount(
+                                record.totalAmount
+                            )
+                        }",
                         color = typeColor,
                         fontSize = 10.sp,
                     )
+                }
+            }
+
+            item {
+                Spacer(
+                    modifier = Modifier
+                        .padding(vertical = 5.dp)
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f))
+                )
+            }
+
+            item {
+                val totalList = totalsMap.toList()
+                Column() {
+                    for (total in totalList) {
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            AppText(total.first ?: "", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            AppText(
+                                formatAmount(total.second ?: 0.0),
+                                color = MaterialTheme.colorScheme.onBackground,
+                                fontSize = 12.sp
+                            )
+                        }
+                    }
                 }
             }
 

@@ -61,7 +61,6 @@ fun RecordsScreen(
         floatingActionButton = {
             FloatingButton {
                 viewModel.toggleNewRecordDialog(true)
-//                viewModel.addRecord(archingId)
             }
         },
     ) { innerPadding ->
@@ -84,7 +83,8 @@ fun RecordsScreen(
             RecordTotalizer(
                 title,
                 viewModel.records.value,
-                viewModel.currencies.value
+                viewModel.currencies.value,
+                viewModel.totalsMap.value
             )
 
             LazyColumn(
