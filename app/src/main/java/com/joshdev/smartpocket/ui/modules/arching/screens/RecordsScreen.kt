@@ -56,6 +56,7 @@ fun RecordsScreen(
 
     LaunchedEffect(archingId) {
         viewModel.observeRecords(archingId)
+        viewModel.calculateArchingTotalAmount(archingId)
     }
 
     BackHandler {

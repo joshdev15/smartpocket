@@ -320,7 +320,9 @@ class ArchingViewModel : ViewModel() {
                 }
 
                 val updatedRecord = tmpRecord.copy(totalAmount = totalAmount)
-                database.value?.arcRecordDao()?.update(updatedRecord)
+                if (updatedRecord.type == ArcRecord.RecType.WorkingDay) {
+                    database.value?.arcRecordDao()?.update(updatedRecord)
+                }
             }
         }
     }
